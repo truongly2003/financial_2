@@ -1,0 +1,36 @@
+spring:
+  datasource:
+    url: "jdbc:mysql://localhost:3306/financial"
+    username: root
+    password:  # Store this in an environment variable
+    driverClassName: "com.mysql.cj.jdbc.Driver"
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    open-in-view: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${GOOGLE_CLIENT_ID}
+            client-secret: ${GOOGLE_CLIENT_SECRET}
+            redirect-uri: http://localhost:5173/oauth2/redirect
+            scope:
+              - email
+              - profile
+        provider:
+          google:
+            token-uri: https://oauth2.googleapis.com/token
+            user-info-uri: https://www.googleapis.com/oauth2/v3/userinfo
+            authorization-uri: https://accounts.google.com/o/oauth2/v2/auth
+            user-name-attribute: sub
+jwt:
+  secret: ${SECRET}
+  access-token-expiration: 300000  # 5 minutes
+  refresh-token-expiration: 604800000  # 7 days
