@@ -9,6 +9,7 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class RefreshTokenResponse {
+     String status;
      String accessToken;
      String refreshToken;
 }

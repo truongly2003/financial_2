@@ -29,18 +29,17 @@ public class JwtUtil {
     public String generateAccessToken(String email, String role) {
         return Jwts.builder()
                 .setSubject(email)
-                .claim("role", role)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + 3600000))
+                .setExpiration(new Date(System.currentTimeMillis() +accessTokenExpiration))
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
     }
 
-    public String generateRefreshToken(String email) {
+    public String generateRefreshToken(String email,String role) {
         return Jwts.builder()
                 .setSubject(email)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + 360000))
+                .setExpiration(new Date(System.currentTimeMillis() +refreshTokenExpiration))
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
 
@@ -49,7 +48,7 @@ public class JwtUtil {
     public boolean validateToken(String token) {
         try {
             Jwts.parserBuilder()
-                    .setSigningKey(secret.getBytes())
+                    .setSigningKey(key)
                     .build()
                     .parseClaimsJws(token);
             return true;
@@ -59,7 +58,7 @@ public class JwtUtil {
     }
     public String extractUsername(String token) {
         return Jwts.parserBuilder()
-                .setSigningKey(Keys.hmacShaKeyFor(secret.getBytes()))
+                .setSigningKey(key)
                 .build()
                 .parseClaimsJws(token)
                 .getBody()

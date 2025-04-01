@@ -45,6 +45,7 @@ public class User {
     @ColumnDefault("current_timestamp()")
     @Column(name = "updated_at", nullable = true)
     private Instant updatedAt;
+
     @PrePersist
     public void generateUUID() {
         if (this.userId == null) {

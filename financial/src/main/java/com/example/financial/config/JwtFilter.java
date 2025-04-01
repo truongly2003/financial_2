@@ -26,8 +26,13 @@ public class JwtFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String token = request.getHeader("Authorization");
+        if (token == null || !token.startsWith("Bearer ")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+        logger.info(token);
+        token = token.substring(7);
         try{
-            if (token != null) {
                 if (jwtUtil.validateToken(token)) {
                     String email = jwtUtil.extractUsername(token);
                     UserDetails userDetails = userDetailsService.loadUserByUsername(email);
@@ -37,7 +42,6 @@ public class JwtFilter extends OncePerRequestFilter {
                 }else{
                     throw new JwtException("Invalid Token");
                 }
-            }
         }
         catch (JwtException e) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
@@ -48,4 +52,3 @@ public class JwtFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 }
-//token.startsWith("Bearer ")

@@ -7,6 +7,7 @@ export const addTransaction = async (data) => {
     console.error(error);
   }
 };
+
 export const getTransactionById = async (id) => {
   try {
     const response = await httpRequest.get(`/transaction?transactionId=${id}`);

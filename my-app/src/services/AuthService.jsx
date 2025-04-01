@@ -1,3 +1,4 @@
+import httpRequest from '@/utils/httpRequest';
 import axios from 'axios';
 export const loginWithOAuth =async (provider,token) => {
   try {
@@ -18,6 +19,14 @@ export const loginWithOAuth =async (provider,token) => {
       success: false, 
       message: error.response?.data?.errorMessage || `Đăng nhập với ${provider} thất bại.` 
     };
+  }
+}
+export const loginWithEmail =async  (data) => {
+  try {
+    const response=await httpRequest.post(`/auth/login`,data);
+    return response.data;
+  } catch (error) {
+    console.error(error);
   }
 }
 // const AuthService = {

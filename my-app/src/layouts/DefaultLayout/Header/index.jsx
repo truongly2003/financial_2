@@ -3,8 +3,10 @@ import { Link, NavLink } from "react-router-dom";
 import { ChevronDown, ChevronUp, Bell } from "lucide-react";
 
 import NotificationDropdown from "@/components/NotificationDropdown";
+import { useNavigate } from "react-router-dom";
 
 export default function Header() {
+  const navigate = useNavigate();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isShowNotifications, setIsShowNotifications] = useState(false);
   const toggleNotification = () => {
@@ -13,7 +15,11 @@ export default function Header() {
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
-
+  const logout = () => {
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
+    navigate("/login");
+  };
   const getNavClass = ({ isActive }) =>
     isActive
       ? "font-semibold text-yellow-600"
@@ -78,11 +84,11 @@ export default function Header() {
                       Cài đặt
                     </li>
                   </Link>
-                  <Link to="/logout">
-                    <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
+                
+                    <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer" onClick={logout}>
                       Đăng xuất
                     </li>
-                  </Link>
+                
                 </ul>
               </div>
             )}

@@ -5,10 +5,42 @@ import {
   LinkedIn,
   Email,
 } from "@mui/icons-material";
-
+import { useState } from "react";
 import { Link } from "react-router-dom";
-// import GppMaybeIcon from "@mui/icons-material/GppMaybe";
+import { useNavigate } from "react-router-dom";
+import { loginWithEmail } from "@/services/AuthService";
+import useAuth from "@/context/useAuth";
 function Login() {
+  const {login} =useAuth();
+  const [data, setData] = useState({
+    email: "truong@gmail.com",
+    password: "12345",
+  });
+  const navigate=useNavigate()
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await loginWithEmail(data);
+      if (response.status){
+        // alert("login successful")
+        // console.log(response)
+        login(response.accessToken);
+        localStorage.setItem("accessToken",response.accessToken)
+        localStorage.setItem("refreshToken",response.refreshToken)
+        navigate("/")
+      }else{
+        alert("login failed");
+        navigate("/login")
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const handleChange = (e) => {
+    setData({
+      [e.target.name]: e.target.value,
+    });
+  };
   return (
     <div className="flex h-screen items-center justify-center bg-gray-100">
       <div className="w-full max-w-md bg-white p-6 rounded-lg shadow-md">
@@ -17,29 +49,30 @@ function Login() {
           <div className="mb-3">
             <div className="flex items-center border border-gray-300 rounded p-2">
               <Email className="text-gray-500" />
-              {/* <GoogleIcon/> */}
-              {/* <FacebookIcon/> */}
               <input
                 type="email"
                 className="ml-2 w-full outline-none"
                 placeholder="Email"
                 required
+                value={data.email}
+                onChange={handleChange}
               />
             </div>
           </div>
 
           <div className="mb-3">
             <div className="flex items-center border border-gray-300 rounded p-2">
-              {/* <GppMaybeIcon className="text-gray-500" /> */}
               <input
-                type="password"
+                // type="password"
+                type="text"
                 className="ml-2 w-full outline-none"
                 placeholder="Mật khẩu"
                 required
+                value={data.password}
+                onChange={handleChange}
               />
             </div>
           </div>
-
           <div className="flex justify-between text-sm">
             <label>
               <input type="checkbox" className="mr-2" /> Nhớ mật khẩu
@@ -49,7 +82,10 @@ function Login() {
             </Link>
           </div>
 
-          <button className="mt-4 w-full bg-blue-500 text-white py-2 rounded">
+          <button
+            className="mt-4 w-full bg-blue-500 text-white py-2 rounded"
+            onClick={handleLogin}
+          >
             Đăng nhập
           </button>
 

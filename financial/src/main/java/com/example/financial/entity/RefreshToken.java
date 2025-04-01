@@ -1,9 +1,6 @@
 package com.example.financial.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,13 +12,14 @@ import java.time.Instant;
 @Table(name = "refresh_tokens")
 public class RefreshToken {
     @Id
-    @Column(name = "token", nullable = false)
-    private String token;
-
-    @Column(name = "user_id", length = 36)
-    private String userId;
-    @Column(name = "expiry_date")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "refresh_token_id", nullable = true)
+    private Long id;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+    @Column(name = "expiry_date", nullable = true)
     private Instant expiryDate;
-
-
+    @Column(name = "token", nullable = true)
+    private String token;
 }

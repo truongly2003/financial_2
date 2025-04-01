@@ -2,34 +2,50 @@ import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Fragment } from "react";
 import DefaultLayout from "@layouts/DefaultLayout";
-import publicRoutes from "@routes";
+import { publicRoutes, privateRoutes } from "@routes";
+import PrivateRoute from "@routes/PrivateRoute";
+import { AuthProvider } from "./context/AuthContext";
 function App() {
   return (
     <Router>
-      <div className="App">
-        <Routes>
-          {publicRoutes.map((route, index) => {
-            const Page = route.component;
-            let Layout = DefaultLayout;
-            if (route.layout) {
-              Layout = route.layout;
-            } else if (route.layout === null) {
-              Layout = Fragment;
-            }
-            return (
+      <AuthProvider>
+        <div className="App">
+          <Routes>
+            {publicRoutes.map((route, index) => {
+              const Page = route.component;
+              let Layout = DefaultLayout;
+              if (route.layout) {
+                Layout = route.layout;
+              } else if (route.layout === null) {
+                Layout = Fragment;
+              }
+              return (
+                <Route
+                  key={index}
+                  path={route.path}
+                  element={
+                    <Layout>
+                      <Page />
+                    </Layout>
+                  }
+                />
+              );
+            })}
+            {privateRoutes.map((route, index) => (
               <Route
                 key={index}
                 path={route.path}
                 element={
-                  <Layout>
-                    <Page />
-                  </Layout>
+                  <PrivateRoute
+                    component={route.component}
+                    layout={route.layout}
+                  />
                 }
               />
-            );
-          })}
-        </Routes>
-      </div>
+            ))}
+          </Routes>
+        </div>
+      </AuthProvider>
     </Router>
   );
 }
