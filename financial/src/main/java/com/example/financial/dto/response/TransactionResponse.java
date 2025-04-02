@@ -22,7 +22,7 @@ public class TransactionResponse {
     Integer categoryId;
     String categoryName;
     String categoryType;
-    String transactionType;
+
     Integer walletId;
     String paymentMethod;
     String transactionStatus;

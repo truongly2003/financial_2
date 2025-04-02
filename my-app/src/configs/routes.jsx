@@ -1,7 +1,8 @@
 
 const routes={
-    Transaction: '/',
-    Statistical:'/statistical',
+    Home:"/",
+    Transaction: '/transaction',
+    Overview:'/overview',
     Budget: '/budget',
     BudgetDetail: '/budget/budget-detail/:id',
     Goal: '/goal',

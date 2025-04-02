@@ -22,14 +22,14 @@ public class Wallet {
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id", nullable = true)
     private User user;
 
-    @Column(name = "wallet_name", nullable = false)
+    @Column(name = "wallet_name", nullable = true)
     private String walletName;
 
     @Lob
-    @Column(name = "wallet_type", nullable = false)
+    @Column(name = "wallet_type", nullable = true)
     private String walletType;
 
     @ColumnDefault("'VND'")
@@ -41,7 +41,7 @@ public class Wallet {
     private BigDecimal balance;
 
     @ColumnDefault("current_timestamp()")
-    @Column(name = "created_at", nullable = false)
+    @Column(name = "created_at", nullable = true)
     private Instant createdAt;
 
 }

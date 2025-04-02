@@ -22,7 +22,7 @@ export default function Budget() {
     fetchBudgets();
   }, []);
   return (
-    <div className="min-h-screen mt-4">
+    <div className="min-h-screen ">
       <button
         onClick={() => {
           setShowFormBudget(true);
@@ -33,11 +33,18 @@ export default function Budget() {
         <PlusCircle size={20} />
         <span>Thêm ngân sách</span>
       </button>
-      <div className="bg-white shadow-md rounded-lg mt-2  p-4">
+      <div className="bg-[#ff6f61] shadow-md rounded-lg mt-2  p-4">
         <div className="flex justify-between items-center">
           <h2 className="text-lg font-semibold">Lọc</h2>
         </div>
-        <div className="grid grid-cols-6 gap-4  ">
+        <div className="grid grid-cols-3 gap-4  ">
+        <div className="col-span-1 ">
+            <label className="text-sm text-gray-600">Tìm kiếm</label>
+            <input
+              placeholder="Tìm kiếm ngân sách..."
+              className="outline-none border rounded p-2 w-full"
+            />
+          </div>
           <div className="col-span-1 ">
             <label className="text-sm text-gray-600">Trạng thái</label>
             <select className=" border rounded p-2 w-full ">
@@ -46,13 +53,7 @@ export default function Budget() {
               <option value="income">Vượt mức</option>
             </select>
           </div>
-          <div className="col-span-1 ">
-            <label className="text-sm text-gray-600">Tìm kiếm</label>
-            <input
-              placeholder="Tìm kiếm ngân sách..."
-              className="outline-none border rounded p-2 w-full"
-            />
-          </div>
+         
           <div className="col-span-1"></div>
         </div>
       </div>

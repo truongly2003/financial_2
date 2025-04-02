@@ -41,9 +41,6 @@ public class Transaction {
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
-    @Lob
-    @Column(name = "transaction_type", nullable = false)
-    private String transactionType;
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)

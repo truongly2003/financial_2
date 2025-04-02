@@ -12,4 +12,5 @@ public class RefreshTokenResponse {
      String status;
      String accessToken;
      String refreshToken;
+
 }

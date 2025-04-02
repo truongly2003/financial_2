@@ -9,7 +9,7 @@ function App() {
   return (
     <Router>
       <AuthProvider>
-        <div className="App">
+        <div className="App bg-[#f9e4d4]">
           <Routes>
             {publicRoutes.map((route, index) => {
               const Page = route.component;

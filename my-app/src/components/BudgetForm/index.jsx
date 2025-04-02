@@ -12,12 +12,12 @@ export default function BudgetForm({ onClose, onSuccess, initialBudget }) {
   const [budget, setBudget] = useState(
     initialBudget || {
       userId: 1,
-      categoryId: "",
+      categoryId: "1",
       budgetName: "",
       amountLimit: "",
       startDate: "",
       endDate: "",
-      status: "",
+      status: "1",
     }
   );
   const handleChangeBudget = (e) => {

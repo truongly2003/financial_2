@@ -76,9 +76,9 @@ function BudgetDetail() {
   const overspentAmount = totalSpent - amountLimit;
 
   return (
-    <div className="min-h-screen mt-4  ">
+    <div className="min-h-screen  ">
       <div className="rounded-lg bg-white">
-        <div className="flex items-center justify-between   p-4  ">
+        <div className="flex items-center justify-between    ">
           {/* Thanh điều hướng */}
           <div className="flex items-center space-x-1">
             <Link to="/budget" className="text-gray-800">
@@ -103,15 +103,15 @@ function BudgetDetail() {
           </button>
         </div>
 
-        <div className="flex space-x-4  p-2 justify-center">
-          <div className="p-4 bg-white rounded-2xl shadow border text-center min-w-[250px]">
+        <div className="flex space-x-2 mt-4 justify-center">
+          <div className="p-4 bg-white rounded-2xl shadow border text-center min-w-[225px]">
             <p className="text-gray-600 font-semibold">Ngân sách ban đầu</p>
             <p className="text-green-500 font-bold text-xl">
               {amountLimit.toLocaleString()} đ
             </p>
           </div>
 
-          <div className="p-4 bg-white rounded-2xl shadow border text-center min-w-[250px]">
+          <div className="p-4 bg-white rounded-2xl shadow border text-center min-w-[225px]">
             <p className="text-gray-600 font-semibold">
               Đã chi tiêu cho đến nay
             </p>
@@ -120,7 +120,7 @@ function BudgetDetail() {
             </p>
           </div>
 
-          <div className="p-4 bg-white rounded-2xl shadow border text-center min-w-[250px]">
+          <div className="p-4 bg-white rounded-2xl shadow border text-center min-w-[225px]">
             <p className="text-gray-600 font-semibold">Tiền chi tiêu thêm</p>
             <p className="text-red-500 font-bold text-xl">
               {overspentAmount > 0
@@ -129,7 +129,7 @@ function BudgetDetail() {
             </p>
           </div>
 
-          <div className="p-4 bg-white rounded-2xl shadow border text-center min-w-[250px]">
+          <div className="p-4 bg-white rounded-2xl shadow border text-center min-w-[225px]">
             <p className="text-gray-600 font-semibold">Bạn có thể chi tiêu</p>
             <p className="text-gray-700 font-bold text-xl">
               {remainingAmount > 0

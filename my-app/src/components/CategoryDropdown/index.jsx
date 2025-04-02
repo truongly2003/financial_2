@@ -11,7 +11,7 @@ export default function CategoryDropdown({
   const [selectedType, setSelectedType] = useState("expense");
   const [categories, setCategories] = useState({ expense: [], income: [] });
   const [selectedCategory, setSelectedCategory] = useState(null);
-  const userId = 1;
+  const userId = "167fe432-0c3f-11f0-ab02-088fc30e3d19";
 
   useEffect(() => {
     async function fetchCategories() {

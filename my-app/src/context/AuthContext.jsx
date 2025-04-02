@@ -4,8 +4,10 @@ import PropTypes from "prop-types";
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [token, setToken] = useState(localStorage.getItem("accessToken") || null);
-
+  const [token, setToken] = useState(
+    localStorage.getItem("accessToken") || null
+  );
+  const userId = localStorage.getItem("userId");
   const navigate = useNavigate();
 
   const login = (newToken) => {
@@ -13,16 +15,19 @@ export const AuthProvider = ({ children }) => {
     localStorage.setItem("accessToken", newToken);
     navigate("/dashboard");
   };
-  
+
   const logout = () => {
     setToken(null);
     localStorage.removeItem("accessToken");
     localStorage.removeItem("refreshToken");
+    localStorage.removeItem("userId");
     navigate("/login");
   };
   const isAuthenticated = () => !!token;
   return (
-    <AuthContext.Provider value={{ token, isAuthenticated, login, logout }}>
+    <AuthContext.Provider
+      value={{ token, isAuthenticated, login, logout, userId }}
+    >
       {children}
     </AuthContext.Provider>
   );

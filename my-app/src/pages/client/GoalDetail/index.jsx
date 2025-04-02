@@ -43,7 +43,7 @@ export default function GoalDetail() {
   }
 
   return (
-    <div className="min-h-screen mt-4 w-full">
+    <div className="min-h-screen w-full">
       <div className="rounded-lg bg-white">
         <div className="flex items-center justify-between   p-4  ">
           {/* Thanh điều hướng */}
@@ -79,29 +79,29 @@ export default function GoalDetail() {
           </div>
         </div>
 
-        <div className="flex space-x-4  p-2 justify-center">
-          <div className="p-4 bg-white rounded-2xl shadow border text-center min-w-[250px]">
+        <div className="flex space-x-2 mt-4 justify-center">
+          <div className="p-4 bg-white rounded-2xl shadow border text-center min-w-[225px]">
             <p className="text-gray-600 font-semibold">Số tiền cần đạt</p>
             <p className="text-green-500 font-bold text-xl">
               {goal.targetAmount.toLocaleString()} đ
             </p>
           </div>
 
-          <div className="p-4 bg-white rounded-2xl shadow border text-center min-w-[250px]">
+          <div className="p-4 bg-white rounded-2xl shadow border text-center min-w-[225px]">
             <p className="text-gray-600 font-semibold">Số tiền hiện có</p>
             <p className="text-red-500 font-bold text-xl">
               {goal.currentAmount.toLocaleString()} đ
             </p>
           </div>
 
-          <div className="p-4 bg-white rounded-2xl shadow border text-center min-w-[250px]">
+          <div className="p-4 bg-white rounded-2xl shadow border text-center min-w-[225px]">
             <p className="text-gray-600 font-semibold">Số tiền còn thiếu</p>
             <p className="text-red-500 font-bold text-xl">
               {(goal.targetAmount - goal.currentAmount).toLocaleString()} đ
             </p>
           </div>
 
-          <div className="p-4 bg-white rounded-2xl shadow border text-center min-w-[250px]">
+          <div className="p-4 bg-white rounded-2xl shadow border text-center min-w-[225px]">
             <p className="text-gray-600 font-semibold">Bạn có thể tiết kiệm</p>
             <p className="text-gray-700 font-bold text-xl">
               {/* {goal > 0 ? `${goal.toLocaleString()} đ` : "0 đ"} */}

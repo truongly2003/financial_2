@@ -44,4 +44,20 @@ public interface TransactionRepository extends JpaRepository<Transaction, Intege
             """)
     List<Transaction> getTransactionsByUserIdAndBudgetId(@Param("userId") String userId, @Param("budgetId") Integer budgetId);
 
+
+    @Query("""
+            SELECT COALESCE(SUM(t.amount), 0)
+            FROM Transaction t
+                JOIN Category c on t.category.id = c.id
+                WHERE t.user.userId = :userId AND c.categoryType = 'income'
+            """)
+    BigDecimal getTotalIncome(@Param("userId") String userId);
+
+    @Query("""
+            SELECT COALESCE(SUM(t.amount), 0)
+            FROM Transaction t
+             JOIN Category c on t.category.id = c.id
+            WHERE t.user.userId = :userId AND c.categoryType = 'expense'
+            """)
+    BigDecimal getTotalExpense(@Param("userId") String userId);
 }

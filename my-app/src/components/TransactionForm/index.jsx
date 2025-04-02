@@ -7,6 +7,7 @@ import {
 } from "@/services/TransactionService";
 import { CircleX } from "lucide-react";
 import CategoryDropdown from "../CategoryDropdown";
+import useAuth from "@/context/useAuth";
 
 
 export default function TransactionForm({
@@ -14,9 +15,10 @@ export default function TransactionForm({
   initialTransaction,
   onSuccess,
 }) {
+  const {userId}=useAuth()
   const [transaction, setTransactions] = useState(
     initialTransaction || {
-      userId: 1,
+      userId: userId,
       amount: "",
       description: "",
       transactionDate: new Date().toISOString().split("T")[0],

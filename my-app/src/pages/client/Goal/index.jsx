@@ -18,7 +18,7 @@ function Goal() {
     fetchGoal();
   }, []);
   return (
-    <div className="min-h-screen mt-4 ">
+    <div className="min-h-screen  ">
       <button
         className="w-[180px] flex items-center gap-2 px-4 py-2 text-white bg-emerald-500 rounded-lg shadow hover:bg-emerald-600"
         onClick={() => setShowFormGoal(true)}
@@ -26,11 +26,18 @@ function Goal() {
         <PlusCircle size={20} />
         <span>Thêm mục tiêu</span>
       </button>
-      <div className="bg-white shadow-md rounded-lg mt-2  p-4">
+      <div className="bg-[#ff6f61] shadow-md rounded-lg mt-2  p-4">
         <div className="flex justify-between items-center">
           <h2 className="text-lg font-semibold">Lọc</h2>
         </div>
-        <div className="grid grid-cols-6 gap-4  ">
+        <div className="grid grid-cols-3 gap-4  ">
+          <div className="col-span-1 ">
+            <label className="text-sm text-gray-600">Tìm kiếm</label>
+            <input
+              placeholder="Tìm kiếm mục tiêu..."
+              className="outline-none border rounded p-2 w-full"
+            />
+          </div>
           <div className="col-span-1 ">
             <label className="text-sm text-gray-600">Trạng thái</label>
             <select className=" border rounded p-2 w-full ">
@@ -39,21 +46,15 @@ function Goal() {
               <option value="income">Vượt mức</option>
             </select>
           </div>
-          <div className="col-span-1 ">
-            <label className="text-sm text-gray-600">Tìm kiếm</label>
-            <input
-              placeholder="Tìm kiếm mục tiêu..."
-              className="outline-none border rounded p-2 w-full"
-            />
-          </div>
+
           <div className="col-span-1"></div>
         </div>
       </div>
       <div className=" ">
         <div className="bg-white shadow-md rounded-lg mt-4 p-4">
-          <table className="w-full  text-dark">
+          <table className="w-full  ">
             <thead>
-              <tr className=" text-gray-800">
+              <tr className=" text-gray-500">
                 <th className="p-3 text-left">Mục tiêu</th>
                 <th className="p-3 text-left">Số tiền cần đạt</th>
                 <th className="p-3 text-left">Số tiền hiện có</th>

@@ -1,5 +1,4 @@
 import axios from "axios";
-
 const httpRequest = axios.create({
   baseURL: "http://localhost:8080/api",
 });
@@ -64,6 +63,7 @@ httpRequest.interceptors.response.use(
       } catch (refreshError) {
         localStorage.removeItem("accessToken");
         localStorage.removeItem("refreshToken");
+        localStorage.removeItem("userId");
         if (typeof window !== "undefined") window.location.href = "/login";
         return Promise.reject(refreshError);
       } finally {
@@ -76,6 +76,8 @@ httpRequest.interceptors.response.use(
 );
 
 export default httpRequest;
+
+
 // Ví dụ minh họa thời gian
 // Thời gian	Sự kiện	isRefreshing	refreshSubscribers
 // T0	/users gửi, nhận 401, bắt đầu làm mới	true	[]

@@ -13,5 +13,6 @@ public class AuthResponse {
     boolean status=false;
     String accessToken;
     String refreshToken;
-//    UserResponse user;
+    String userId;
+
 }

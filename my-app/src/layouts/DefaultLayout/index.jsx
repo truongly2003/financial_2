@@ -2,20 +2,19 @@ import PropTypes from "prop-types";
 import Header from "./Header";
 // import Sidebar from "./SideBar";
 import { AlignJustify } from "lucide-react";
+import Footer from "../Footer";
 function DefaultLayout({ children }) {
   return (
-    <div className=" bg-gray-200 min-h-screen">
-      {/* Header cố định trên cùng */}
-      <div className="sticky top-0 z-10 bg-white ">
+    <div className="bg-[#f9e4d4] min-h-screen ">
+      <div className="sticky top-0 z-20 bg-white ">
         <Header icon={AlignJustify} />
       </div>
-
-      {/* Nội dung bên dưới Header */}
       <div className="w-full">
-        <div className="  max-w-6xl mx-auto px-4    ">
+        <div className="">
           <div className="w-full">{children}</div>
         </div>
       </div>
+      <Footer/>
     </div>
   );
 }

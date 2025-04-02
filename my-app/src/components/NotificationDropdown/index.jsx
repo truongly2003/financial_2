@@ -9,7 +9,7 @@ export default function NotificationDropdown() {
   return (
     <div className="relative">
       {/* Dropdown */}
-      <div className="absolute right-0  w-64 bg-white rounded-md shadow-lg overflow-hidden transition-opacity duration-300">
+      <div className="absolute right-0 z-50 w-64 bg-white rounded-md shadow-lg overflow-hidden transition-opacity duration-300">
         <div className="p-2 font-semibold text-gray-700 text-center bg-gray-100">
           Thông báo
         </div>

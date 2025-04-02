@@ -10,8 +10,10 @@ import com.example.financial.entity.RefreshToken;
 import com.example.financial.entity.User;
 import com.example.financial.repository.RefreshTokenRepository;
 import com.example.financial.repository.UserRepository;
+import com.example.financial.repository.WalletRepository;
 import com.example.financial.security.JwtUtil;
 import com.example.financial.service.IAuthService;
+import com.example.financial.service.IWalletService;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.NonFinal;
 import lombok.extern.slf4j.Slf4j;
@@ -35,8 +37,9 @@ import java.util.Optional;
 public class AuthService implements IAuthService {
     private final UserRepository userRepository;
     private final RefreshTokenRepository refreshTokenRepository;
+    private final WalletRepository walletRepository;
     private final JwtUtil jwtUtil;
-
+    private final IWalletService walletService;
     @NonFinal
     @Value("${spring.security.oauth2.client.registration.google.client-id}")
     protected String GOOGLE_CLIENT_ID;
@@ -45,19 +48,7 @@ public class AuthService implements IAuthService {
     @Value("${spring.security.oauth2.client.registration.google.client-secret}")
     protected String GOOGLE_CLIENT_SECRET;
 
-//     @Override
-//     public AuthResponse refreshToken(String refreshToken) {
-//         RefreshToken refreshToken1 = refreshTokenRepository.findByToken(refreshToken)
-//                 .orElseThrow(() -> new RuntimeException("refreshToken not found"));
-//         if (refreshToken1.getExpiryDate().isBefore(Instant.now())) {
-//             refreshTokenRepository.delete(refreshToken1);
-//             throw new RuntimeException("Refresh token expired");
-//         }
-//         User user = userRepository.findById(refreshToken1.getUserId())
-//                 .orElseThrow(() -> new RuntimeException("User not found"));
-//         String newAccessToken = jwtUtil.generateAccessToken(user.getEmail(), user.getEmail());
-//         return new AuthResponse(true,newAccessToken, refreshToken);
-//     }
+
 
     @Override
     public UserResponse processOAuth2User(OAuth2User oAuth2User) {
@@ -87,10 +78,15 @@ public class AuthService implements IAuthService {
             if (request.getPassword().equals(emailExist.get().getPassword())) {
                 String accessToken = jwtUtil.generateAccessToken(user.getEmail(), user.getEmail());
                 String refreshToken = jwtUtil.generateRefreshToken(user.getEmail(), user.getEmail());
-                return new AuthResponse(true, accessToken, refreshToken);
+                if (!walletRepository.existsByUserUserId(user.getUserId())) {
+                    walletService.createDefaultWalletForUser(user.getUserId());
+                }
+                return new AuthResponse(true, accessToken, refreshToken,emailExist.get().getUserId());
             }
+
         }
-        return new AuthResponse(false, "", "");
+
+        return new AuthResponse(false, "", "","");
     }
 
     @Override
