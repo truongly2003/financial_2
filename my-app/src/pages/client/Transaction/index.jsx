@@ -103,7 +103,7 @@ function Transaction() {
     <div className="min-h-screen  ">
       {/* filter start */}
       <button
-        className="w-[180px] flex items-center gap-2 px-4 py-2 text-white bg-emerald-500 rounded-lg shadow hover:bg-emerald-600 transition"
+        className="w-[180px] flex items-center gap-2 px-4 py-2 text-white bg-[#ff6f61] rounded-lg shadow  transition"
         onClick={() => {
           setShowFormTransaction(true);
           setEditingTransaction(null);
@@ -112,46 +112,11 @@ function Transaction() {
         <PlusCircle size={20} />
         <span> Thêm giao dịch</span>
       </button>
-      <div className="bg-[#ff6f61] shadow-md rounded-lg mt-2  p-4">
-        <div className="grid grid-cols-3 gap-4">
-          <div className="col-span-1">
-            <label className="text-sm text-gray-600">Tìm kiếm</label>
-            <input
-              placeholder="Tìm kiếm giao dịch..."
-              className="outline-none border rounded p-2 w-full"
-              value={searchItem}
-              onChange={(e) => setSearchItem(e.target.value)}
-            />
-          </div>
-          <div className="col-span-1">
-            <label className="text-sm text-gray-600 ">
-              Theo khoảng thời gian
-            </label>
-            <div className="flex gap-4 items-center">
-              <Input
-                type="date"
-                value={startDate}
-                onChange={(e) => {
-                  setStartDate(e.target.value);
-                  setFilter("");
-                }}
-              />
-              <Input
-                type="date"
-                value={endDate}
-                onChange={(e) => {
-                  setEndDate(e.target.value);
-                  setFilter("");
-                }}
-              />
-           
-            </div>
-          </div>
-        </div>
+      <div className="bg-[#f9e4d4] shadow-md rounded-lg mt-2  p-4">
         <div className="flex justify-between items-center">
           <h2 className="text-lg font-semibold">Lọc</h2>
         </div>
-        <div className="grid grid-cols-3 gap-4  ">
+        <div className="grid grid-cols-5 gap-4  ">
           {/* Loại */}
           <div className="col-span-1 ">
             <label className="text-sm text-gray-600">Loại</label>
@@ -198,6 +163,29 @@ function Transaction() {
               <option value="month">Tháng</option>
               <option value="year">Năm</option>
             </select>
+          </div>
+          <div className="col-span-1">
+            <label className="text-sm text-gray-600 ">
+              Theo khoảng thời gian
+            </label>
+            <div className="flex gap-4 items-center">
+              <Input
+                type="date"
+                value={startDate}
+                onChange={(e) => {
+                  setStartDate(e.target.value);
+                  setFilter("");
+                }}
+              />
+              <Input
+                type="date"
+                value={endDate}
+                onChange={(e) => {
+                  setEndDate(e.target.value);
+                  setFilter("");
+                }}
+              />
+            </div>
           </div>
         </div>
       </div>

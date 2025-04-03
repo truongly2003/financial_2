@@ -22,7 +22,7 @@ function BudgetDetail() {
 
   const fetchTransactions = useCallback(async () => {
     try {
-      const response = await getAllTransactionByUserIdAndBudgetId(1, id);
+      const response = await getAllTransactionByUserIdAndBudgetId(2, id);
       if (response.data) {
         setTransactions(response.data);
       }
@@ -47,7 +47,6 @@ function BudgetDetail() {
   const filter = "year";
   const groupedTransactions = transactions.reduce((acc, item) => {
     let dateKey;
-
     if (filter === "year") {
       dateKey = new Date(item.transactionDate).getFullYear().toString();
     }
@@ -74,7 +73,9 @@ function BudgetDetail() {
   const totalSpent = budget.totalSpent || 0;
   const remainingAmount = amountLimit - totalSpent;
   const overspentAmount = totalSpent - amountLimit;
-
+  const progress = (budget.totalSpent / budget.amountLimit) * 100;
+  const progressColor =
+    budget.totalSpent >= budget.amountLimit ? "bg-red-500" : "bg-green-500";
   return (
     <div className="min-h-screen  ">
       <div className="rounded-lg bg-white">
@@ -82,7 +83,7 @@ function BudgetDetail() {
           {/* Thanh điều hướng */}
           <div className="flex items-center space-x-1">
             <Link to="/budget" className="text-gray-800">
-              <ChevronLeft  />
+              <ChevronLeft />
             </Link>
             <p className="text-gray-600">Ngân sách</p>
 
@@ -93,7 +94,7 @@ function BudgetDetail() {
 
           {/* Nút thay đổi ngân sách */}
           <button
-            className="bg-green-100 text-green-600 font-semibold py-1 px-3 rounded-lg hover:bg-green-200"
+            className="bg-green-100 text-green-600 font-semibold py-2 px-3 rounded-lg hover:bg-green-200"
             onClick={() => {
               setShowFormBudget(true);
               setEditingBudget(budget);
@@ -143,13 +144,17 @@ function BudgetDetail() {
         <div className="p-4">
           <span className="text-gray-600">Tiến trình</span>
           <div className="flex justify-center">
-            <span className="text-gray-600">Ngân sách đã vượt quá 5000</span>
+            {amountLimit > totalSpent ? (
+              <span className="text-gray-600">Ngân sách đã chi: <span className="text-red-500 font-bold ">{totalSpent.toLocaleString()}đ</span></span>
+            ) : (
+              <span className="text-red-500 font-bold">Ngân sách đã vượt quá: {totalSpent.toLocaleString()}đ</span>
+            )}
           </div>
           <div className="flex justify-center w-full">
             <div className="w-full max-w-4xl">
               <ProgressBar
-                progress={50}
-                progressColor="bg-green-600"
+                progress={progress}
+                progressColor={progressColor}
                 startDate={budget.startDate}
                 endDate={budget.endDate}
               />

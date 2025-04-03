@@ -33,7 +33,7 @@ const TransactionList = ({
                   color: "bg-gray-400",
                 };
                 return (
-                  <div key={idx} className="pb-4">
+                  <div key={idx} className="">
                     <div
                       className="p-4 flex justify-between items-center cursor-pointer ml-2 mr-2  hover:bg-gray-200 hover:rounded-lg transition"
                       onClick={() => {

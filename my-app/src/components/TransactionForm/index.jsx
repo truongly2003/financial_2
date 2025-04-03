@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import {  useState } from "react";
+import { useState } from "react";
 import {
   addTransaction,
   deleteTransaction,
@@ -8,14 +8,18 @@ import {
 import { CircleX } from "lucide-react";
 import CategoryDropdown from "../CategoryDropdown";
 import useAuth from "@/context/useAuth";
-
+import useWallet from "@/context/useWallet";
+import MoneyInput from "../ui/MoneyInput";
+import useNotification from "@/context/useNotification";
 
 export default function TransactionForm({
   onClose,
   initialTransaction,
   onSuccess,
 }) {
-  const {userId}=useAuth()
+  const { userId } = useAuth();
+  const { selectedWalletId, fetchWallets } = useWallet();
+  const { notify } = useNotification();
   const [transaction, setTransactions] = useState(
     initialTransaction || {
       userId: userId,
@@ -23,17 +27,16 @@ export default function TransactionForm({
       description: "",
       transactionDate: new Date().toISOString().split("T")[0],
       categoryId: "",
-      walletId: 1,
+      walletId: selectedWalletId,
       paymentMethod: "Card",
       transactionStatus: "complete",
     }
   );
-  
-
   const handleChangeTransaction = (e) => {
+    const { name, value } = e.target;
     setTransactions({
       ...transaction,
-      [e.target.name]: e.target.value,
+      [name]: value,
     });
   };
   const handleSubmit = async () => {
@@ -44,7 +47,9 @@ export default function TransactionForm({
       } else {
         response = await addTransaction(transaction);
       }
-      alert(response.message);
+
+      notify(response.message, response.code === 200 ? "success" : "error");
+      fetchWallets();
       onClose();
       onSuccess();
     } catch (error) {
@@ -55,19 +60,20 @@ export default function TransactionForm({
     if (!confirm("Bạn có chắc chắn xóa giao dịch này không")) return;
     try {
       const response = await deleteTransaction(transaction.id);
-      alert(response.message);
+      notify(response.message, response.code === 200 ? "success" : "error");
       onClose();
       onSuccess();
+      fetchWallets();
     } catch (error) {
       console.log(error);
     }
   };
-  const handleSelectCategory =(category) => {
+  const handleSelectCategory = (category) => {
     setTransactions({
       ...transaction,
-      categoryId:category.id
-    })
-  }
+      categoryId: category.id,
+    });
+  };
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-gray-700 bg-opacity-50">
       <div className="bg-white p-4 rounded-lg shadow-lg w-[1200px] relative">
@@ -75,7 +81,10 @@ export default function TransactionForm({
           {/* Loại */}
           <div className="col-span-1 ">
             <label className="text-sm text-gray-600">Danh mục</label>
-            <CategoryDropdown onSelectCategory={handleSelectCategory}     initialCategoryId={transaction.categoryId} />
+            <CategoryDropdown
+              onSelectCategory={handleSelectCategory}
+              initialCategoryId={Number(transaction.categoryId)}
+            />
           </div>
 
           {/* Ngày */}
@@ -92,10 +101,15 @@ export default function TransactionForm({
 
           {/* Số tiền */}
           <div className="col-span-2">
-            <label className="text-sm text-gray-600">Số tiền</label>
+            {/* <label className="text-sm text-gray-600">Số tiền</label>
             <input
               type="number"
               className="border rounded p-2 w-full text-red-500"
+              name="amount"
+              value={transaction.amount}
+              onChange={handleChangeTransaction}
+            /> */}
+            <MoneyInput
               name="amount"
               value={transaction.amount}
               onChange={handleChangeTransaction}

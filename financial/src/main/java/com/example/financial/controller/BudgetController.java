@@ -38,7 +38,7 @@ public class BudgetController {
             if (create) {
                 return ResponseEntity.ok(new ApiResponse<>(200, "Thêm ngân sách thành công", true));
             } else {
-                return ResponseEntity.ok(new ApiResponse<>(200, "Thêm ngân sách thất bại", false));
+                return ResponseEntity.ok(new ApiResponse<>(201, "Thêm ngân sách thất bại", false));
             }
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -54,7 +54,7 @@ public class BudgetController {
                 return ResponseEntity.ok(new ApiResponse<>(200, "Cập nhật ngân sách thành công", true));
 
             } else {
-                return ResponseEntity.ok(new ApiResponse<>(200, "Cập nhật ngân sách thất bại", false));
+                return ResponseEntity.ok(new ApiResponse<>(201, "Cập nhật ngân sách thất bại", false));
             }
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -67,7 +67,7 @@ public class BudgetController {
         try {
             boolean delete = budgetService.deleteBudget(budgetId);
             if (delete) {
-                return ResponseEntity.ok(new ApiResponse<>(201, "Xóa ngân sách thành công ", true));
+                return ResponseEntity.ok(new ApiResponse<>(200, "Xóa ngân sách thành công ", true));
 
             } else {
                 return ResponseEntity.ok(new ApiResponse<>(201, "Xóa ngân sách thất bại ", false));

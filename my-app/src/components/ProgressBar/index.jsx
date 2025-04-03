@@ -18,7 +18,7 @@ function ProgressBar({
       </div>
 
       {(startDate || endDate) && (
-        <div className="text-sm text-gray-500 flex justify-center mt-2">
+        <div className="text-sm text-gray-500 flex justify-center mt-2 space-x-4">
           <span>{startDate}</span>
           <span>{endDate}</span>
         </div>

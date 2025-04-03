@@ -1,25 +1,22 @@
-import { ChevronDown, ChevronUp, Bell } from "lucide-react";
+import { ChevronDown, ChevronUp, BellRing  } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import useAuth from "@/context/useAuth";
 import NotificationDropdown from "@/components/NotificationDropdown";
-// import avatar from "@assets/avatar.jpg";
+import avatar from "@assets/avatar_1.jpg";
 const Header = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isShowNotifications, setIsShowNotifications] = useState(false);
-  const toggleNotification = () => {
-    setIsShowNotifications(!isShowNotifications);
-  };
+
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
   const { isAuthenticated, logout } = useAuth();
   return (
-    <header className="flex justify-between items-center p-6  bg-[#ff6f61]">
+    <header className="flex justify-between items-center p-4  bg-[#ff6f61]">
       <div className=" font-bold">
         <Link to="/" className="text-3xl">
-          $
-          <span className="text-3xl">martmoney</span>
+          $<span className="text-3xl text-[#16a085]">martmoney</span>
         </Link>
       </div>
       <nav className="flex items-center gap-8">
@@ -51,23 +48,29 @@ const Header = () => {
           <div>
             <div className="flex items-center space-x-4 cursor-pointer">
               {/* notify */}
-              <div>
-                <button
-                  className="relative p-2 rounded-md text-[#333]"
-                  onClick={toggleNotification}
-                >
-                  <Bell size={22} />
-                  <span className="absolute top-0 right-0 flex items-center justify-center w-5 h-5 text-xs text-black bg-red-50 rounded-full">
-                    {/* {notificationsCount} */}5
-                  </span>
+              <div
+                className="relative"
+                onMouseEnter={() => setIsShowNotifications(true)}
+                onMouseLeave={() => setIsShowNotifications(false)}
+              >
+                <button className="relative  rounded-md text-[#333] mt-[10px] ">
+                  <BellRing  size={22} />
+                 
                 </button>
-                {isShowNotifications && <NotificationDropdown />}
+                {isShowNotifications && (
+                  <div className="absolute right-0  w-64 bg-white  rounded-md shadow-lg transition-all duration-200">
+                    <NotificationDropdown />
+                  </div>
+                )}
               </div>
               {/* user */}
               <div className="relative">
-                <div className="flex space-x-2" onClick={toggleDropdown}>
+                <div
+                  className="flex space-x-2 items-center"
+                  onClick={toggleDropdown}
+                >
                   <img
-                    // src={avatar}
+                    src={avatar}
                     alt="Avatar"
                     className="w-8 h-8 rounded-full border"
                   />

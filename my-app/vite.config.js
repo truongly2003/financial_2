@@ -27,4 +27,7 @@ export default defineConfig({
       "@constant": path.resolve(__dirname, "./src/constants"),
     },
   },
+  optimizeDeps: {
+    include: ["react-number-format"]
+  }
 });

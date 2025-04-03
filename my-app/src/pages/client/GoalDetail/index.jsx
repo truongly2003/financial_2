@@ -45,7 +45,7 @@ export default function GoalDetail() {
   return (
     <div className="min-h-screen w-full">
       <div className="rounded-lg bg-white">
-        <div className="flex items-center justify-between   p-4  ">
+        <div className="flex items-center justify-between     ">
           {/* Thanh điều hướng */}
           <div className="flex items-center space-x-1">
             <Link to="/goal" className="text-gray-800">
@@ -59,7 +59,8 @@ export default function GoalDetail() {
           </div>
           <div className="space-x-4">
             <button
-              className="w-[180px] bg-green-100 text-green-600 font-semibold py-1 px-3 rounded-lg hover:bg-green-200"
+           
+              className="w-[180px] bg-green-100  px-4 text-green-600 font-semibold py-2 rounded-lg hover:bg-green-200"
               onClick={() => {
                 setShowFormGoal(true);
                 setEditingGoal(goal);
@@ -68,7 +69,7 @@ export default function GoalDetail() {
               Chỉnh sửa mục tiêu
             </button>
             <button
-              className="w-[180px] bg-green-100 text-green-600 font-semibold py-1 px-3 rounded-lg hover:bg-green-200"
+              className="w-[180px] bg-green-100 text-green-600 font-semibold py-2 px-3 rounded-lg hover:bg-green-200"
               onClick={() => {
                 setShowFormContribution(true);
                 setEditingContribute(null);
@@ -104,7 +105,7 @@ export default function GoalDetail() {
           <div className="p-4 bg-white rounded-2xl shadow border text-center min-w-[225px]">
             <p className="text-gray-600 font-semibold">Bạn có thể tiết kiệm</p>
             <p className="text-gray-700 font-bold text-xl">
-              {/* {goal > 0 ? `${goal.toLocaleString()} đ` : "0 đ"} */}
+            {(goal.targetAmount - goal.currentAmount).toLocaleString()} đ
             </p>
           </div>
         </div>

@@ -57,7 +57,5 @@ public class Budget {
     @Column(name = "budget_name")
     private String budgetName;
 
-    @Column(name = "total_spent", precision = 38, scale = 2)
-    private BigDecimal totalSpent;
 
 }

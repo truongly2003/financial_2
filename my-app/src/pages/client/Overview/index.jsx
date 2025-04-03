@@ -289,6 +289,9 @@ const Overview = () => {
       </div>
 
       <Card title="Thống Kê Thu & Chi">
+      <h2 className="text-2xl font-bold text-gray-800">
+          Thu nhập và chi tiêu
+        </h2>
         <div className="p-4">
           <p className="text-green-600 font-semibold">
             Thu nhập: {filteredTotals.income.toLocaleString()}đ

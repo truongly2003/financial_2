@@ -15,6 +15,7 @@ import com.example.financial.service.ITransactionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -55,22 +56,34 @@ public class TransactionService implements ITransactionService {
     }
 
 
-
     @Override
     public TransactionResponse getTransactionById(Integer id) {
         Transaction transaction = transactionRepository.getTransactionById(id);
         return transactionMapper.toTransactionResponse(transaction);
     }
-
+    private void updateWalletBalance(Transaction transaction,BigDecimal amount, boolean isReversal) {
+        BigDecimal adjAmount=amount;
+        if("expense".equalsIgnoreCase(transaction.getCategory().getCategoryType())){
+            adjAmount=adjAmount.negate();
+        }
+        if(isReversal){
+            adjAmount=adjAmount.negate();
+        }
+        walletRepository.updateBalance(transaction.getWallet().getId(), adjAmount);
+    }
     @Override
     public boolean addTransaction(TransactionRequest request) {
         Category category = categoryRepository.findById(request.getCategoryId()).orElse(null);
         Wallet wallet = walletRepository.findById(request.getWalletId()).orElse(null);
         User user = userRepository.findById(request.getUserId()).orElse(null);
+        if (category == null || wallet == null || user == null) {
+            return false;
+        }
         Transaction transaction = transactionMapper.toTransaction(request);
         transaction.setCategory(category);
         transaction.setWallet(wallet);
         transaction.setUser(user);
+        updateWalletBalance(transaction, transaction.getAmount(), false);
         transactionRepository.save(transaction);
         return true;
     }
@@ -84,6 +97,7 @@ public class TransactionService implements ITransactionService {
             transaction.setAmount(request.getAmount());
             transaction.setDescription(request.getDescription());
             transaction.setCategory(category);
+            updateWalletBalance(transaction, transaction.getAmount(), false);
             transactionRepository.save(transaction);
             return true;
         }
@@ -92,9 +106,11 @@ public class TransactionService implements ITransactionService {
 
     @Override
     public boolean deleteTransaction(Integer transactionId) {
-        if (transactionRepository.existsById(transactionId)) {
-            transactionRepository.deleteById(transactionId);
-            return true;
+        Optional<Transaction> optionalTransaction = transactionRepository.findById(transactionId);
+        if (optionalTransaction.isPresent()) {
+            Transaction transaction = optionalTransaction.get();
+            updateWalletBalance(transaction, transaction.getAmount(), true);
+            transactionRepository.delete(transaction);
         }
         return false;
     }

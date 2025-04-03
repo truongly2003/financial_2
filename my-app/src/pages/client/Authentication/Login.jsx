@@ -10,10 +10,12 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { loginWithEmail } from "@/services/AuthService";
 import useAuth from "@/context/useAuth";
+import useNotification from "@/context/useNotification";
 function Login() {
   const { login } = useAuth();
+  const { notify } = useNotification();
   const [data, setData] = useState({
-    email: "truonglykhong2003@gmail.com",
+    email: "ly@gmail.com",
     password: "12345",
   });
   const navigate = useNavigate();
@@ -22,13 +24,15 @@ function Login() {
     try {
       const response = await loginWithEmail(data);
       if (response.status) {
+        notify("Đăng nhập thành công! 🎉", "success");
         login(response.accessToken);
         localStorage.setItem("accessToken", response.accessToken);
         localStorage.setItem("refreshToken", response.refreshToken);
         localStorage.setItem("userId", response.userId);
+        
         navigate("/");
       } else {
-        alert("login failed");
+        notify("email hoặc mật khẩu không đúng 🎉", "error");
         navigate("/login");
       }
     } catch (error) {
@@ -78,10 +82,7 @@ function Login() {
               <input type="checkbox" className="mr-2 accent-white" /> Nhớ mật
               khẩu
             </label>
-            <Link
-              to="/forgot-password"
-              className="text-blac hover:underline"
-            >
+            <Link to="/forgot-password" className="text-blac hover:underline">
               Quên mật khẩu?
             </Link>
           </div>

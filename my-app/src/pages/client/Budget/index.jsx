@@ -1,65 +1,75 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { PlusCircle } from "lucide-react";
 // import BudgetForm from "@/components/BudgetForm";
 import { getAllBudgetByUserId } from "@/services/BudgetService";
 import { Link } from "react-router-dom";
 import ProgressBar from "@/components/ProgressBar";
 import BudgetForm from "@/components/BudgetForm";
+import useAuth from "@/context/useAuth";
 export default function Budget() {
+  const { userId } = useAuth();
   const [budgets, setBudgets] = useState([]);
   const [showFormBudget, setShowFormBudget] = useState(false);
-  // const [editingBudget, setEditingBudget] = useState(null);
-
-  const fetchBudgets = async () => {
+  const [statusFilter, setStatusFilter] = useState("active");
+  const handleStatusChange = (e) => {
+    setStatusFilter(e.target.value);
+  };
+  const fetchBudgets = useCallback(async () => {
     try {
-      const response = await getAllBudgetByUserId(1);
+      const response = await getAllBudgetByUserId(userId);
       setBudgets(response.data);
     } catch (error) {
       console.error(error);
     }
-  };
+  }, [userId]);
+  const filteredBudgets=budgets.filter((budget)=>{
+    const currentDate = new Date(); 
+    const endDate = new Date(budget.endDate);
+    const isActive = endDate > currentDate;
+    const isExpired = endDate < currentDate;
+    const isOverlimit = budget.totalSpent > budget.amountLimit;
+    if (statusFilter === "active") return isActive && !isOverlimit;
+    if (statusFilter === "expired") return isExpired;
+    if (statusFilter === "overlimit") return isOverlimit;
+    return true;
+  })
   useEffect(() => {
     fetchBudgets();
-  }, []);
+  }, [fetchBudgets]);
   return (
     <div className="min-h-screen ">
       <button
         onClick={() => {
           setShowFormBudget(true);
-          // setEditingBudget(null);
         }}
-        className="w-[180px] flex items-center gap-2 px-4 py-2 text-white bg-emerald-500 rounded-lg shadow hover:bg-emerald-600"
+        className="w-[180px] flex items-center gap-2 px-4 py-2 text-white bg-[#ff6f61] rounded-lg shadow "
       >
         <PlusCircle size={20} />
         <span>Thêm ngân sách</span>
       </button>
-      <div className="bg-[#ff6f61] shadow-md rounded-lg mt-2  p-4">
+      <div className=" bg-[#f9e4d4] shadow-md rounded-lg mt-2  p-4">
         <div className="flex justify-between items-center">
           <h2 className="text-lg font-semibold">Lọc</h2>
         </div>
         <div className="grid grid-cols-3 gap-4  ">
-        <div className="col-span-1 ">
-            <label className="text-sm text-gray-600">Tìm kiếm</label>
-            <input
-              placeholder="Tìm kiếm ngân sách..."
-              className="outline-none border rounded p-2 w-full"
-            />
-          </div>
           <div className="col-span-1 ">
             <label className="text-sm text-gray-600">Trạng thái</label>
-            <select className=" border rounded p-2 w-full ">
-              <option value="expense">Đang hoạt động</option>
-              <option value="income">Hết hạn</option>
-              <option value="income">Vượt mức</option>
+            <select
+              value={statusFilter}
+              onChange={handleStatusChange}
+              className=" border rounded p-2 w-full "
+            >
+              <option value="active">Đang hoạt động</option>
+              <option value="expired">Hết hạn</option>
+              <option value="overlimit">Vượt mức</option>
             </select>
           </div>
-         
           <div className="col-span-1"></div>
         </div>
       </div>
       <div className="mt-2">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-4">
-          {budgets.map((budget, index) => {
+          {filteredBudgets.map((budget, index) => {
             const progress = (budget.totalSpent / budget.amountLimit) * 100;
             const progressColor =
               budget.totalSpent >= budget.amountLimit
@@ -76,35 +86,19 @@ export default function Budget() {
                   <div>
                     <p className="text-gray-500 text-sm">{budget.walletName}</p>
                     <p className="text-xl font-bold text-red-500">
-                      {budget.totalSpent.toLocaleString()} đ đã chi tiêu nhiều
-                      hơn
+                      Đã chi tiêu: {budget.totalSpent.toLocaleString()} đ
                     </p>
-                    <p className="text-sm text-gray-500">
+                    <p className="text-sm text-gray-900">
                       Từ {budget.amountLimit.toLocaleString()} đ
                     </p>
                   </div>
                   {/* progress */}
                   <ProgressBar
                     progress={progress}
-                    progressColor={progressColor} 
-                    startDate={budget.startDate} 
-                    endDate={budget.endDate} 
+                    progressColor={progressColor}
+                    startDate={budget.startDate}
+                    endDate={budget.endDate}
                   />
-                  {/* <div className="progress">
-                    <div className="w-full bg-gray-200 rounded-full h-6 mt-2">
-                      <div
-                        className={`${progressColor} h-full rounded-full text-white text-xs flex items-center justify-center`}
-                        style={{ width: `${Math.min(progress, 100)}%` }}
-                      >
-                        {progress.toFixed(2)}%
-                      </div>
-                    </div>
-
-                    <div className="text-sm text-gray-500 flex justify-between mt-2">
-                      <span>{budget.startDate}</span>
-                      <span>{budget.endDate}</span>
-                    </div>
-                  </div> */}
                 </div>
               </Link>
             );
@@ -115,29 +109,9 @@ export default function Budget() {
       {showFormBudget && (
         <BudgetForm
           onClose={() => setShowFormBudget(false)}
-          // initialBudget={editingBudget}
           onSuccess={fetchBudgets}
         />
       )}
     </div>
   );
 }
-
-// <div className="flex justify-between mb-4">
-// <div className="p-4 bg-white rounded-lg shadow border text-center">
-//   <p className="text-gray-600">Ngân sách ban đầu</p>
-//   <p className="text-green-500 font-bold">+34,00 €</p>
-// </div>
-// <div className="p-4 bg-white rounded-lg shadow border text-center">
-//   <p className="text-gray-600">Đã chi tiêu cho đến nay</p>
-//   <p className="text-red-500 font-bold">-4,333.00 EUR</p>
-// </div>
-// <div className="p-4 bg-white rounded-lg shadow border text-center">
-//   <p className="text-gray-600">Tiền chi tiêu thêm</p>
-//   <p className="text-red-500 font-bold">-4,299.00 €</p>
-// </div>
-// <div className="p-4 bg-white rounded-lg shadow border text-center">
-//   <p className="text-gray-600">Bạn có thể chi tiêu</p>
-//   <p className="text-gray-700 font-bold">0,00 EUR/Ngày</p>
-// </div>
-// </div>

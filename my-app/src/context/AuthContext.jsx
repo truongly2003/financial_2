@@ -2,7 +2,6 @@ import { createContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 const AuthContext = createContext();
-
 export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(
     localStorage.getItem("accessToken") || null

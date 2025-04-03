@@ -50,7 +50,7 @@ public class TransactionController {
         try {
             boolean create = transactionService.addTransaction(request);
             if (create) {
-                return ResponseEntity.ok(new ApiResponse<>(201, "Thêm giao dịch thành công", true));
+                return ResponseEntity.ok(new ApiResponse<>(200, "Thêm giao dịch thành công", true));
             } else {
                 return ResponseEntity.ok(new ApiResponse<>(201, "Thêm giao dịch thất bại", false));
             }
@@ -65,9 +65,9 @@ public class TransactionController {
         try {
             boolean create = transactionService.updateTransaction(transactionId, request);
             if (create) {
-                return ResponseEntity.ok(new ApiResponse<>(201, "Cập nhật giao dịch thành công ", true));
+                return ResponseEntity.ok(new ApiResponse<>(200, "Cập nhật giao dịch thành công ", true));
             } else {
-                return ResponseEntity.ok(new ApiResponse<>(201, "Cập nhật giao dịch thành công ", true));
+                return ResponseEntity.ok(new ApiResponse<>(201, "Cập nhật giao dịch thất bại ", true));
             }
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -79,11 +79,11 @@ public class TransactionController {
     public ResponseEntity<ApiResponse<Boolean>> deleteTransactionById(@RequestParam Integer transactionId) {
         try {
             boolean delete = transactionService.deleteTransaction(transactionId);
-            if (delete) {
-                return ResponseEntity.ok(new ApiResponse<>(201, "Xóa giao dịch thành công ", true));
+            if (!delete) {
+                return ResponseEntity.ok(new ApiResponse<>(200, "Xóa giao dịch thành công ", true));
 
             } else {
-                return ResponseEntity.ok(new ApiResponse<>(201, "Xóa giao dịch thành công ", true));
+                return ResponseEntity.ok(new ApiResponse<>(201, "Xóa giao dịch thất bại ", true));
 
             }
         } catch (Exception e) {

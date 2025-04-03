@@ -1,18 +1,28 @@
 // import { useState } from "react";
+import useAuth from "@/context/useAuth";
+import useNotification from "@/context/useNotification";
+import { useNavigate } from "react-router-dom";
+
 import {
   addBudget,
   deleteBudget,
   updateBudget,
 } from "@/services/BudgetService";
+import { getAllCategory } from "@/services/CategoryService";
 import { CircleX } from "lucide-react";
 import PropTypes from "prop-types";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import MoneyInput from "../ui/MoneyInput";
 
 export default function BudgetForm({ onClose, onSuccess, initialBudget }) {
+  const { userId } = useAuth();
+  const {notify}=useNotification()
+  const navigate = useNavigate();
+
   const [budget, setBudget] = useState(
     initialBudget || {
-      userId: 1,
-      categoryId: "1",
+      userId: userId,
+      categoryId: "",
       budgetName: "",
       amountLimit: "",
       startDate: "",
@@ -20,12 +30,34 @@ export default function BudgetForm({ onClose, onSuccess, initialBudget }) {
       status: "1",
     }
   );
+  
+  const [category, setCategory] = useState([]);
+  useEffect(() => {
+    const fetch = async () => {
+      const res = await getAllCategory(userId);
+      if (res) {
+        const expense = res.data.filter(
+          (item) => item.categoryType === "expense"
+        );
+        setCategory(expense);
+      }
+    };
+    fetch();
+  }, [userId]);
+
   const handleChangeBudget = (e) => {
     setBudget({
       ...budget,
       [e.target.name]: e.target.value,
     });
   };
+  const handleCategoryChange = (e) => {
+    setBudget({
+      ...budget,
+      categoryId: e.target.value,
+    });
+  };
+
   const handleSubmit = async () => {
     try {
       let response;
@@ -34,7 +66,7 @@ export default function BudgetForm({ onClose, onSuccess, initialBudget }) {
       } else {
         response = await addBudget(budget);
       }
-      alert(response.message);
+      notify(response.message, response.code === 200 ? "success" : "error");
       onClose();
       onSuccess();
     } catch (error) {
@@ -45,9 +77,10 @@ export default function BudgetForm({ onClose, onSuccess, initialBudget }) {
     if (!confirm("Bạn có chắc chắn xóa ngân sách  này không")) return;
     try {
       const response = await deleteBudget(budget.id);
-      alert(response.message);
+      notify(response.message, response.code === 200 ? "success" : "error");
       onClose();
       onSuccess();
+      navigate("/budget")
     } catch (error) {
       console.log(error);
     }
@@ -69,10 +102,15 @@ export default function BudgetForm({ onClose, onSuccess, initialBudget }) {
               />
             </div>
             <div className="flex-1">
-              <label className="text-sm text-gray-600">Số lượng</label>
-              <input
+             
+              {/* <input
                 type="number"
                 className="w-full p-2 border rounded-md"
+                name="amountLimit"
+                value={budget.amountLimit}
+                onChange={handleChangeBudget}
+              /> */}
+              <MoneyInput
                 name="amountLimit"
                 value={budget.amountLimit}
                 onChange={handleChangeBudget}
@@ -87,8 +125,21 @@ export default function BudgetForm({ onClose, onSuccess, initialBudget }) {
           <div className="flex gap-2 ">
             <div className="flex-1">
               <label className="text-sm text-gray-600">Chọn danh mục</label>
-              <select className="w-full p-2 border rounded-md">
-                <option>Tất cả các danh mục</option>
+              <select
+                className="w-full p-2 border rounded-md"
+                value={budget.categoryId}
+                onChange={handleCategoryChange}
+              >
+                <option>danh mục</option>
+                {category.length > 0 ? (
+                  category.map((item) => (
+                    <option key={item.id} value={item.id}>
+                      {item.categoryName}
+                    </option>
+                  ))
+                ) : (
+                  <option value="">Không có danh mục</option>
+                )}
               </select>
             </div>
             <div className="flex-1"></div>
@@ -102,7 +153,6 @@ export default function BudgetForm({ onClose, onSuccess, initialBudget }) {
               <input
                 type="date"
                 className="w-full p-2 border rounded-md"
-              
                 name="startDate"
                 value={budget.startDate}
                 onChange={handleChangeBudget}
@@ -113,7 +163,6 @@ export default function BudgetForm({ onClose, onSuccess, initialBudget }) {
               <input
                 type="date"
                 className="w-full p-2 border rounded-md"
-              
                 name="endDate"
                 value={budget.endDate}
                 onChange={handleChangeBudget}
@@ -138,7 +187,7 @@ export default function BudgetForm({ onClose, onSuccess, initialBudget }) {
               Xóa ngân sách
             </button>
           )}
-        
+
           <button
             className="bg-gray-500 text-white px-4 py-2 rounded"
             onClick={onClose}

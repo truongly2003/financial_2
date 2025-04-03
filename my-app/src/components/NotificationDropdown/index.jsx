@@ -3,7 +3,6 @@ export default function NotificationDropdown() {
     { id: 1, message: "Bạn đã nhận được 500.000đ từ tài khoản ACB" },
     { id: 2, message: "Hóa đơn điện nước đến hạn thanh toán" },
     { id: 3, message: "Mục tiêu tiết kiệm 'Mua MacBook' còn 2.000.000đ nữa!" },
- 
   ];
 
   return (
@@ -11,7 +10,7 @@ export default function NotificationDropdown() {
       {/* Dropdown */}
       <div className="absolute right-0 z-50 w-64 bg-white rounded-md shadow-lg overflow-hidden transition-opacity duration-300">
         <div className="p-2 font-semibold text-gray-700 text-center bg-gray-100">
-          Thông báo
+          <span> Thông báo</span>
         </div>
         <ul className="max-h-60 overflow-y-auto">
           {notifications.length > 0 ? (
