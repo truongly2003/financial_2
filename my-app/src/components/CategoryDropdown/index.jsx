@@ -3,25 +3,28 @@ import PropTypes from "prop-types";
 import { ChevronDown } from "lucide-react";
 import { getAllCategory } from "@/services/CategoryService";
 import ICONS from "../Icons";
+import useAuth from "@/context/useAuth";
 export default function CategoryDropdown({
   onSelectCategory,
   initialCategoryId,
 }) {
+  const {userId}=useAuth()
   const [isOpen, setIsOpen] = useState(false);
   const [selectedType, setSelectedType] = useState("expense");
   const [categories, setCategories] = useState({ expense: [], income: [] });
   const [selectedCategory, setSelectedCategory] = useState(null);
-  const userId = "2";
-
+  
+  // console.log(categories)
   useEffect(() => {
     async function fetchCategories() {
       try {
         const result = await getAllCategory(userId);
-        if (result.data) {
-          const expenseCategories = result.data.filter(
+        console.log(result)
+        if (result) {
+          const expenseCategories = result.filter(
             (cat) => cat.categoryType === "expense"
           );
-          const incomeCategories = result.data.filter(
+          const incomeCategories = result.filter(
             (cat) => cat.categoryType === "income"
           );
           setCategories({
@@ -39,7 +42,7 @@ export default function CategoryDropdown({
       }
     }
     fetchCategories();
-  }, [userId,initialCategoryId]);
+  }, [initialCategoryId,userId]);
 
   const toggleDropdown = () => setIsOpen(!isOpen);
 

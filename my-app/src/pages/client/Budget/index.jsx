@@ -84,6 +84,9 @@ export default function Budget() {
               >
                 <div className="space-y-2">
                   <div>
+                  <p className="text-gray-500 text-xl font-bold">
+                        {budget.budgetName}
+                      </p>
                     <p className="text-gray-500 text-sm">{budget.walletName}</p>
                     <p className="text-xl font-bold text-red-500">
                       Đã chi tiêu: {budget.totalSpent.toLocaleString()} đ

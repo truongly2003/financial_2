@@ -39,7 +39,7 @@ public class GoalController {
             if (create) {
                 return ResponseEntity.ok(new ApiResponse<>(200, "Thêm mục tiêu thành công", true));
             } else {
-                return ResponseEntity.ok(new ApiResponse<>(200, "Thêm mục tiêu thất bại", false));
+                return ResponseEntity.ok(new ApiResponse<>(201, "Thêm mục tiêu thất bại", false));
             }
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -55,7 +55,7 @@ public class GoalController {
                 return ResponseEntity.ok(new ApiResponse<>(200, "Cập nhật mục tiêu thành công", true));
 
             } else {
-                return ResponseEntity.ok(new ApiResponse<>(200, "Cập nhật mục tiêu thất bại", false));
+                return ResponseEntity.ok(new ApiResponse<>(201, "Cập nhật mục tiêu thất bại", false));
             }
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -68,7 +68,7 @@ public class GoalController {
         try {
             boolean delete = goalService.deleteGoal(goalId);
             if (delete) {
-                return ResponseEntity.ok(new ApiResponse<>(201, "Xóa mục tiêu thành công ", true));
+                return ResponseEntity.ok(new ApiResponse<>(200, "Xóa mục tiêu thành công ", true));
 
             } else {
                 return ResponseEntity.ok(new ApiResponse<>(201, "Xóa mục tiêu thất bại ", false));

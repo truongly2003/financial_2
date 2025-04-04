@@ -7,9 +7,9 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface ITransactionService {
-    List<TransactionResponse> getAllTransactionByUserIdAndPeriod(String id, String filterType);
+    List<TransactionResponse> getAllTransactionByUserIdAndPeriod(String id, String filterType,Integer walletId);
 
-    List<TransactionResponse> getTransactionsByUserIdAndFilterRange(String userId, LocalDate startDate, LocalDate endDate);
+    List<TransactionResponse> getTransactionsByUserIdAndFilterRange(String userId, LocalDate startDate, LocalDate endDate,Integer walletId);
 
     List<TransactionResponse> getAllTransactionByUserIdAndBudgetId(String userId, Integer budgetId);
 

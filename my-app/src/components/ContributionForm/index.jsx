@@ -1,16 +1,24 @@
 import { useState } from "react";
 import { CircleX } from "lucide-react";
 import PropTypes from "prop-types";
+import { useParams } from "react-router-dom";
 import {
   addContribute,
   deleteContribute,
   updateContribute,
 } from "@/services/Goal-Contribute";
+import MoneyInput from "../ui/MoneyInput";
+import useAuth from "@/context/useAuth";
+import useNotification from "@/context/useNotification";
+
 const ContributionForm = ({ onClose, onSuccess, initialContribute }) => {
+  const {userId}=useAuth()
+  const { notify}=useNotification()
+  const { id } = useParams();
   const [contribute, setContribute] = useState(
     initialContribute || {
-      goalId: 1,
-      userId: 1,
+      goalId: id,
+      userId: userId,
       amount: "",
       contributionDate: new Date().toISOString().split("T")[0],
       description: "",
@@ -30,7 +38,7 @@ const ContributionForm = ({ onClose, onSuccess, initialContribute }) => {
       } else {
         response = await addContribute(contribute);
       }
-      alert(response.message);
+      notify(response.message, response.code === 200 ? "success" : "error");
       onClose();
       onSuccess();
     } catch (error) {
@@ -42,7 +50,7 @@ const ContributionForm = ({ onClose, onSuccess, initialContribute }) => {
     if (!confirm("Bạn có chắc chắn xóa ngân sách  này không")) return;
     try {
       const response = await deleteContribute(contribute.id);
-      alert(response.message);
+      notify(response.message, response.code === 200 ? "success" : "error");
       onClose();
       onSuccess();
     } catch (error) {
@@ -56,14 +64,17 @@ const ContributionForm = ({ onClose, onSuccess, initialContribute }) => {
         <div className="">
           <div className="flex gap-2 mt-2">
             <div className="flex-1">
-              <label className="text-sm text-gray-600">Số tiền</label>
+              {/* <label className="text-sm text-gray-600">Số tiền</label>
               <input
                 type="number"
                 className="w-full p-2 border rounded-md"
                 name="amount"
                 value={contribute.amount}
                 onChange={handChangeContribute}
-              />
+              /> */}
+              <MoneyInput  name="amount"
+                value={contribute.amount}
+                onChange={handChangeContribute}/>
             </div>
             <div className="flex-1">
               <label className="text-sm text-gray-600">Ngày</label>

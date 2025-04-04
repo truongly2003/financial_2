@@ -11,6 +11,7 @@ import useAuth from "@/context/useAuth";
 import useWallet from "@/context/useWallet";
 import MoneyInput from "../ui/MoneyInput";
 import useNotification from "@/context/useNotification";
+import useBalance from "@/context/useBalance";
 
 export default function TransactionForm({
   onClose,
@@ -18,8 +19,9 @@ export default function TransactionForm({
   onSuccess,
 }) {
   const { userId } = useAuth();
-  const { selectedWalletId, fetchWallets } = useWallet();
+  const { walletId, fetchWallets } = useWallet();
   const { notify } = useNotification();
+  const {refreshBalance} =useBalance()
   const [transaction, setTransactions] = useState(
     initialTransaction || {
       userId: userId,
@@ -27,7 +29,7 @@ export default function TransactionForm({
       description: "",
       transactionDate: new Date().toISOString().split("T")[0],
       categoryId: "",
-      walletId: selectedWalletId,
+      walletId: walletId,
       paymentMethod: "Card",
       transactionStatus: "complete",
     }
@@ -50,6 +52,7 @@ export default function TransactionForm({
 
       notify(response.message, response.code === 200 ? "success" : "error");
       fetchWallets();
+      refreshBalance()
       onClose();
       onSuccess();
     } catch (error) {
@@ -64,6 +67,7 @@ export default function TransactionForm({
       onClose();
       onSuccess();
       fetchWallets();
+      refreshBalance()
     } catch (error) {
       console.log(error);
     }

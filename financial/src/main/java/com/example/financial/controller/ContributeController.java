@@ -37,9 +37,9 @@ public class ContributeController {
         try {
             boolean create = goalContribution.addContribute(contributeRequest);
             if (create) {
-                return ResponseEntity.ok(new ApiResponse<>(200, "Thêm đóng góp công", true));
+                return ResponseEntity.ok(new ApiResponse<>(200, "Thêm đóng góp thành công", true));
             } else {
-                return ResponseEntity.ok(new ApiResponse<>(200, "Thêm đóng góp thất bại", false));
+                return ResponseEntity.ok(new ApiResponse<>(201, "Thêm đóng góp thất bại", false));
             }
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -55,7 +55,7 @@ public class ContributeController {
                 return ResponseEntity.ok(new ApiResponse<>(200, "Cập nhật đóng góp thành công", true));
 
             } else {
-                return ResponseEntity.ok(new ApiResponse<>(200, "Cập nhật đóng góp thất bại", false));
+                return ResponseEntity.ok(new ApiResponse<>(201, "Cập nhật đóng góp thất bại", false));
             }
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -68,7 +68,7 @@ public class ContributeController {
         try {
             boolean delete = goalContribution.deleteContribute(contributeId);
             if (delete) {
-                return ResponseEntity.ok(new ApiResponse<>(201, "Xóa đóng góp thành công ", true));
+                return ResponseEntity.ok(new ApiResponse<>(200, "Xóa đóng góp thành công ", true));
 
             } else {
                 return ResponseEntity.ok(new ApiResponse<>(201, "Xóa đóng góp thất bại ", false));

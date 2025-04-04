@@ -1,5 +1,6 @@
 package com.example.financial.repository;
 
+import com.example.financial.entity.Budget;
 import com.example.financial.entity.Wallet;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -7,7 +8,6 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -24,4 +24,6 @@ public interface WalletRepository extends JpaRepository<Wallet, Integer> {
     @Transactional
     @Query("UPDATE Wallet w SET w.balance = w.balance + :amount WHERE w.id = :walletId")
     void updateBalance(@Param("walletId") Integer walletId, @Param("amount") BigDecimal amount);
+
+    Wallet getWalletById(Integer id);
 }

@@ -15,7 +15,7 @@ function Login() {
   const { login } = useAuth();
   const { notify } = useNotification();
   const [data, setData] = useState({
-    email: "ly@gmail.com",
+    email: "truong@gmail.com",
     password: "12345",
   });
   const navigate = useNavigate();

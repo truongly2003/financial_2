@@ -12,8 +12,17 @@ import java.util.List;
 
 @Repository
 public interface TransactionRepository extends JpaRepository<Transaction, Integer> {
-    @Query("select t from Transaction t where t.user.userId = :userId and t.transactionDate between :startDate and :endDate")
-    List<Transaction> getTransactionsByUserIdAndPeriod(@Param("userId") String userId, @Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
+    @Query("""
+            select t from Transaction t
+            where t.user.userId = :userId
+            and t.transactionDate
+            between :startDate and :endDate
+            and t.wallet.id = :walletId
+            """)
+    List<Transaction> getTransactionsByUserIdAndPeriod(@Param("userId") String userId,
+                                                       @Param("startDate") LocalDate startDate,
+                                                       @Param("endDate") LocalDate endDate,
+                                                       @Param("walletId") Integer walletId);
 
     Transaction getTransactionById(Integer id);
 

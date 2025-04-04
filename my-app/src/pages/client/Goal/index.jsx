@@ -11,6 +11,7 @@ function Goal() {
   const [showFormGoal, setShowFormGoal] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
+  
   const filteredGoals = goal.filter((g) => {
     return (
       g.goalName.toLowerCase().includes(searchTerm.toLowerCase()) &&
@@ -55,8 +56,11 @@ function Goal() {
           </div>
           <div className="col-span-1 ">
             <label className="text-sm text-gray-600">Trạng thái</label>
-            <select className=" border rounded p-2 w-full "   value={statusFilter}
-              onChange={(e) => setStatusFilter(e.target.value)}>
+            <select
+              className=" border rounded p-2 w-full "
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value)}
+            >
               <option value="incomplete">Chưa hoàn thành</option>
               <option value="completed">Hoàn thành</option>
             </select>
@@ -69,12 +73,8 @@ function Goal() {
         <div className="bg-white shadow-md rounded-lg mt-4 p-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-4">
             {filteredGoals.map((goal, index) => {
-              const progress = Math.max(
-                (goal.currentAmount / goal.targetAmount) * 100,
-                1
-              );
+             const progress = Math.round((goal.currentAmount / goal.targetAmount) * 100);
 
-              console.log(progress);
               const progressColor =
                 goal.targetAmount >= goal.currentAmount
                   ? "bg-red-500"
@@ -91,7 +91,7 @@ function Goal() {
                       <p className="text-gray-500 text-xl font-bold">
                         {goal.goalName}
                       </p>
-                      <p className="text-sm font-bold text-red-500">
+                      <p className="text-xl font-bold text-red-500">
                         Đã đạt được: {goal.currentAmount.toLocaleString()} đ
                       </p>
                       <p className="text-sm text-gray-900">
@@ -101,6 +101,7 @@ function Goal() {
                     {/* progress */}
                     <ProgressBar
                       progress={progress}
+
                       progressColor={progressColor}
                       startDate={goal.deadline}
                       endDate={goal.deadline}

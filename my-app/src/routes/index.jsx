@@ -12,14 +12,14 @@ import Goal from "@/pages/client/Goal";
 // authentication
 import Login from "@client/Authentication/Login";
 import SignUp from "@client/Authentication/SignUp";
-import Profile from "@/pages/client/setting/Profile";
-import Wallet from "@/pages/client/setting/Wallet";
+import Profile from "@/pages/client/Profile";
+import WalletPage from "@/pages/client/WalletPage";
 import BudgetDetail from "@/pages/client/BudgetDetail";
 import GoalDetail from "@/pages/client/GoalDetail";
 // import LoginPage from "@/pages/client/Authentication/LoginPage";
 import AuthCallback from "@/pages/client/Authentication/AuthCallback";
-import HomePage from "@/pages/client/Authentication/HomePage";
-import RedirectPage from "@/pages/client/Authentication/RedirectPage";
+// import HomePage from "@/pages/client/Authentication/HomePage";
+// import RedirectPage from "@/pages/client/Authentication/RedirectPage";
 import Home from "@/pages/client/Home";
 import TransactionLayout from "@/layouts/TransactionLayout";
 export const publicRoutes = [
@@ -29,8 +29,8 @@ export const publicRoutes = [
   { path: routes.SignUp, component: SignUp, layout: null },
   // { path: routes.LoginPage, component: LoginPage, layout: null },
   { path: routes.Auth, component: AuthCallback, layout: null },
-  { path: routes.HomePage, component: HomePage, layout: null },
-  { path: routes.Redirect, component: RedirectPage, layout: null },
+  // { path: routes.HomePage, component: HomePage, layout: null },
+  // { path: routes.Redirect, component: RedirectPage, layout: null },
 ];
 
 // Private Routes (cần đăng nhập)
@@ -43,6 +43,6 @@ export const privateRoutes = [
   { path: routes.Goal, component: Goal, layout: TransactionLayout },
   { path: routes.GoalDetail, component: GoalDetail, layout: TransactionLayout },
   { path: routes.Profile, component: Profile, layout: ProfileLayout },
-  { path: routes.Wallet, component: Wallet, layout: TransactionLayout },
+  { path: routes.Wallet, component: WalletPage, layout: ProfileLayout },
 ];
 

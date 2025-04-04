@@ -18,11 +18,11 @@ export const getTransactionById = async (id) => {
 };
 export const getAllTransactionByUserIdAndPeriod = async (
   userId,
-  filterType
+  filterType,walletId
 ) => {
   try {
     const response = await httpRequest.get(
-      `/transaction/filter?userId=${userId}&filterType=${filterType}`
+      `/transaction/filter?userId=${userId}&filterType=${filterType}&walletId=${walletId}`
     );
     return response.data;
   } catch (error) {
@@ -34,11 +34,11 @@ export const getAllTransactionByUserIdAndPeriod = async (
 export const getAllTransactionsByUserIdAndFilterRange = async (
   userId,
   startDate,
-  endDate
+  endDate,walletId
 ) => {
   try {
     const response = await httpRequest.get(
-      `/transaction/filter-range?userId=${userId}&startDate=${startDate}&endDate=${endDate}`
+      `/transaction/filter-range?userId=${userId}&startDate=${startDate}&endDate=${endDate}&walletId=${walletId}`
     );
     return response.data;
   } catch (error) {

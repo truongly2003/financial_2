@@ -11,10 +11,11 @@ function ProgressBar({
       <div className="w-full bg-gray-200 rounded-full h-6 mt-2">
         <div
           className={`${progressColor} h-full rounded-full text-white text-xs flex items-center justify-center`}
-          style={{ width: `${Math.min(progress, 100)}%` }}
+          style={{ width: `${Math.max(progress, 3)}%`, minWidth: "12px", }}
         >
-          {progress.toFixed(2)}%
+          {progress.toFixed(0)}%
         </div>
+        
       </div>
 
       {(startDate || endDate) && (

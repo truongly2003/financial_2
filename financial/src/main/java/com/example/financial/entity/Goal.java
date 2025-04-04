@@ -50,11 +50,11 @@ public class Goal {
     private String status;
 
     @ColumnDefault("current_timestamp()")
-    @Column(name = "created_at", nullable = false)
+    @Column(name = "created_at", nullable = true)
     private Instant createdAt;
 
     @ColumnDefault("current_timestamp()")
-    @Column(name = "updated_at", nullable = false)
+    @Column(name = "updated_at", nullable = true)
     private Instant updatedAt;
 
     @Lob

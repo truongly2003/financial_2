@@ -21,7 +21,7 @@ public class Category {
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id", nullable = true)
     private User user;
 
     @Column(name = "category_name", nullable = false)
@@ -36,11 +36,11 @@ public class Category {
     private String description;
 
     @ColumnDefault("current_timestamp()")
-    @Column(name = "created_at", nullable = false)
+    @Column(name = "created_at", nullable = true)
     private Instant createdAt;
 
     @Lob
-    @Column(name = "icon")
+    @Column(name = "icon", nullable = true)
     private String icon;
 
 }

@@ -3,6 +3,7 @@ import Header from "../DefaultLayout/Header";
 import { AlignJustify, BarChart2, DollarSign, PieChart, Target } from "lucide-react"; 
 import { NavLink } from "react-router-dom"; 
 import WalletCard from "@/components/Wallet";
+import BalanceCard from "@/components/BalanceCard";
 
 function TransactionLayout({ children }) {
   return (
@@ -14,6 +15,7 @@ function TransactionLayout({ children }) {
       <div className="flex w-full p-2 gap-4 max-w-7xl mx-auto">
         {/* Sidebar */}
         <div className="w-[20%] flex flex-col gap-4">
+          <BalanceCard/>
           <WalletCard />
           <nav className="flex flex-col gap-2 p-4 bg-white border-2 shadow-sm rounded-lg">
             <NavLink

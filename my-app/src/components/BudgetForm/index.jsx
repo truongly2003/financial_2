@@ -16,7 +16,7 @@ import MoneyInput from "../ui/MoneyInput";
 
 export default function BudgetForm({ onClose, onSuccess, initialBudget }) {
   const { userId } = useAuth();
-  const {notify}=useNotification()
+  const { notify } = useNotification();
   const navigate = useNavigate();
 
   const [budget, setBudget] = useState(
@@ -30,13 +30,15 @@ export default function BudgetForm({ onClose, onSuccess, initialBudget }) {
       status: "1",
     }
   );
-  
+
   const [category, setCategory] = useState([]);
+  
   useEffect(() => {
     const fetch = async () => {
       const res = await getAllCategory(userId);
       if (res) {
-        const expense = res.data.filter(
+        console.log(res)
+        const expense = res.filter(
           (item) => item.categoryType === "expense"
         );
         setCategory(expense);
@@ -52,9 +54,14 @@ export default function BudgetForm({ onClose, onSuccess, initialBudget }) {
     });
   };
   const handleCategoryChange = (e) => {
+    const selectedCategory = category.find(
+      (item) => item.id === Number(e.target.value)
+    );
+
     setBudget({
       ...budget,
       categoryId: e.target.value,
+      budgetName: selectedCategory ? selectedCategory.categoryName : "",
     });
   };
 
@@ -80,7 +87,7 @@ export default function BudgetForm({ onClose, onSuccess, initialBudget }) {
       notify(response.message, response.code === 200 ? "success" : "error");
       onClose();
       onSuccess();
-      navigate("/budget")
+      navigate("/budget");
     } catch (error) {
       console.log(error);
     }
@@ -89,38 +96,7 @@ export default function BudgetForm({ onClose, onSuccess, initialBudget }) {
     <div className="fixed inset-0   flex items-center justify-center bg-gray-900 bg-opacity-50  z-[50]">
       <div className="bg-white p-6 rounded-lg shadow-lg w-200 relative">
         {/* Thông tin chung */}
-        <div className="">
-          <div className="flex gap-2 mt-2">
-            <div className="flex-1">
-              <label className=" text-sm text-gray-600 ">Tên Ngân sách</label>
-              <input
-                type="text"
-                className="w-full p-2 border rounded-md"
-                name="budgetName"
-                value={budget.budgetName}
-                onChange={handleChangeBudget}
-              />
-            </div>
-            <div className="flex-1">
-             
-              {/* <input
-                type="number"
-                className="w-full p-2 border rounded-md"
-                name="amountLimit"
-                value={budget.amountLimit}
-                onChange={handleChangeBudget}
-              /> */}
-              <MoneyInput
-                name="amountLimit"
-                value={budget.amountLimit}
-                onChange={handleChangeBudget}
-              />
-            </div>
-          </div>
-          <div className="flex gap-2 mt-2"></div>
-        </div>
 
-        {/* Lọc ngân sách */}
         <div className="">
           <div className="flex gap-2 ">
             <div className="flex-1">
@@ -142,7 +118,13 @@ export default function BudgetForm({ onClose, onSuccess, initialBudget }) {
                 )}
               </select>
             </div>
-            <div className="flex-1"></div>
+            <div className="flex-1">
+              <MoneyInput
+                name="amountLimit"
+                value={budget.amountLimit}
+                onChange={handleChangeBudget}
+              />
+            </div>
           </div>
         </div>
         {/* ngày */}

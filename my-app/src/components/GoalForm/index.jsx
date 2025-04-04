@@ -2,15 +2,25 @@ import PropTypes from "prop-types";
 import { CircleX } from "lucide-react";
 import { useState } from "react";
 import { addGoal, deleteGoal, updateGoal } from "@/services/GoalService";
+import { useNavigate } from "react-router-dom";
+import useNotification from "@/context/useNotification";
+import useWallet from "@/context/useWallet";
+import useAuth from "@/context/useAuth";
+import MoneyInput from "../ui/MoneyInput";
+
 // onSuccess,initialGoal
 export default function GoalForm({ onClose,initialGoal,onSuccess }) {
+const { notify } = useNotification();
+const {userId}=useAuth()
+const { walletId } = useWallet();
+const navigate = useNavigate();
   const [goal, setGoal] = useState( initialGoal ||{
-    userId: 1,
+    userId: userId,
     goalName: "",
     targetAmount: "",
     currentAmount: 0,
     deadline: "",
-    walletId: 1,
+    walletId: walletId,
     status: "success",
     description: "",
   });
@@ -28,7 +38,7 @@ export default function GoalForm({ onClose,initialGoal,onSuccess }) {
       }else{
         response=await addGoal(goal)
       }
-      alert(response.message);
+      notify(response.message, response.code === 200 ? "success" : "error");
       onClose();
       onSuccess();
     } catch (error) {
@@ -36,10 +46,11 @@ export default function GoalForm({ onClose,initialGoal,onSuccess }) {
     }
   };
  const handleDelete = async () => {
-     if (!confirm("Bạn có chắc chắn xóa ngân sách  này không")) return;
+     if (!confirm("Bạn có chắc chắn xóa mục tiêu  này không")) return;
      try {
        const response = await deleteGoal(goal.id);
-       alert(response.message);
+       notify(response.message, response.code === 200 ? "success" : "error");
+       navigate("/goal")
        onClose();
        onSuccess();
      } catch (error) {
@@ -89,14 +100,17 @@ export default function GoalForm({ onClose,initialGoal,onSuccess }) {
               />
             </div>
             <div className="flex-1">
-              <label className="text-sm text-gray-600">Số tiền mục tiêu</label>
+              {/* <label className="text-sm text-gray-600">Số tiền mục tiêu</label>
               <input
                 type="number"
                 className="w-full p-2 border rounded-md"
                 name="targetAmount"
                 value={goal.targetAmount}
                 onChange={handleChangeGoal}
-              />
+              /> */}
+              <MoneyInput     name="targetAmount"
+                value={goal.targetAmount}
+                onChange={handleChangeGoal}/>
             </div>
           </div>
         </div>

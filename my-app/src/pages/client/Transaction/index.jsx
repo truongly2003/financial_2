@@ -10,8 +10,11 @@ import { Input } from "@/components/ui/input";
 import TransactionForm from "@/components/TransactionForm";
 import TransactionList from "@/components/TransactionList";
 import useAuth from "@/context/useAuth";
+import useWallet from "@/context/useWallet";
 
 function Transaction() {
+  const { userId } = useAuth();
+  const {walletId}=useWallet()
   const [transaction, setTransactions] = useState([]);
   const [showFormTransaction, setShowFormTransaction] = useState(false);
   const [editingTransaction, setEditingTransaction] = useState(null);
@@ -19,7 +22,7 @@ function Transaction() {
   const [searchItem, setSearchItem] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
-  const { userId } = useAuth();
+
   const fetchTransactions = useCallback(async () => {
     try {
       let response;
@@ -27,16 +30,16 @@ function Transaction() {
         response = await getAllTransactionsByUserIdAndFilterRange(
           userId,
           startDate,
-          endDate
+          endDate,walletId
         );
       } else {
-        response = await getAllTransactionByUserIdAndPeriod(userId, filter);
+        response = await getAllTransactionByUserIdAndPeriod(userId, filter,walletId);
       }
       setTransactions(response.data);
     } catch (error) {
       console.error("Error fetching transactions:", error);
     }
-  }, [filter, startDate, endDate, userId]);
+  }, [filter, startDate, endDate, userId,walletId]);
 
   useEffect(() => {
     fetchTransactions();

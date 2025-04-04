@@ -10,4 +10,5 @@ import java.util.List;
 public interface BudgetRepository extends JpaRepository<Budget, Integer> {
     List<Budget> getBudgetsByUserUserId(String userId);
     Budget getBudgetById(Integer id);
+
 }

@@ -3,27 +3,26 @@ import { deleteCategory, getAllCategory } from "@/services/CategoryService";
 import ICONS from "../Icons";
 import { PlusCircle, Trash2 } from "lucide-react";
 import PropTypes from "prop-types";
-import AddCategory from "../AddCategory";
+import AddCategory from "../CategoryForm";
 function CategorySelector({ onSelectCategory, selectedCategoryId }) {
   const [activeTab, setActiveTab] = useState("income");
   const [categories, setCategories] = useState([]);
   const [isModalAddCategory, setIsModalAddCategory] = useState(false);
   const [contextMenu, setContextMenu] = useState(null);
-
+  console.log(categories);
   useEffect(() => {
     fetchCategories();
   }, []);
 
   const fetchCategories = async () => {
-    const response = await getAllCategory(1);
+    const response = await getAllCategory();
     setCategories(response.data);
   };
-  
 
   const handleRightClick = (e, category) => {
     e.preventDefault();
-    const menuWidth = 150; 
-    const menuHeight = 50; 
+    const menuWidth = 150;
+    const menuHeight = 50;
     const screenWidth = window.innerWidth;
     const screenHeight = window.innerHeight;
 
@@ -42,10 +41,10 @@ function CategorySelector({ onSelectCategory, selectedCategoryId }) {
         !event.target.closest(".context-menu") &&
         !event.target.closest(".delete-category-button")
       ) {
-        setContextMenu(null); 
+        setContextMenu(null);
       }
     };
-  
+
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
@@ -60,7 +59,7 @@ function CategorySelector({ onSelectCategory, selectedCategoryId }) {
         `Bạn có chắc chắn muốn xóa "${contextMenu.category.categoryName}"?`
       )
     ) {
-       await deleteCategory(contextMenu.category.id);
+      await deleteCategory(contextMenu.category.id);
       fetchCategories();
       setContextMenu(null);
     }
@@ -163,7 +162,10 @@ function CategorySelector({ onSelectCategory, selectedCategoryId }) {
         </div>
       )}
       {isModalAddCategory && (
-        <AddCategory onClose={() => setIsModalAddCategory(false)}  onSuccess={fetchCategories} />
+        <AddCategory
+          onClose={() => setIsModalAddCategory(false)}
+          onSuccess={fetchCategories}
+        />
       )}
     </div>
   );

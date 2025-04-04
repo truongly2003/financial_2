@@ -30,7 +30,7 @@ public class TransactionService implements ITransactionService {
     private final UserRepository userRepository;
 
     @Override
-    public List<TransactionResponse> getAllTransactionByUserIdAndPeriod(String userId, String filterType) {
+    public List<TransactionResponse> getAllTransactionByUserIdAndPeriod(String userId, String filterType,Integer walletId) {
         LocalDate startDate;
         LocalDate endDate = LocalDate.now();
         startDate = switch (filterType) {
@@ -40,12 +40,12 @@ public class TransactionService implements ITransactionService {
             case "year" -> endDate.withDayOfYear(1);
             default -> throw new IllegalArgumentException("Invalid filter type");
         };
-        List<Transaction> transactions = transactionRepository.getTransactionsByUserIdAndPeriod(userId, startDate, endDate);
+        List<Transaction> transactions = transactionRepository.getTransactionsByUserIdAndPeriod(userId, startDate, endDate,walletId);
         return transactions.stream().map(transactionMapper::toTransactionResponse).toList();
     }
 
-    public List<TransactionResponse> getTransactionsByUserIdAndFilterRange(String userId, LocalDate startDate, LocalDate endDate) {
-        List<Transaction> transactions = transactionRepository.getTransactionsByUserIdAndPeriod(userId, startDate, endDate);
+    public List<TransactionResponse> getTransactionsByUserIdAndFilterRange(String userId, LocalDate startDate, LocalDate endDate,Integer walletId) {
+        List<Transaction> transactions = transactionRepository.getTransactionsByUserIdAndPeriod(userId, startDate, endDate,walletId);
         return transactions.stream().map(transactionMapper::toTransactionResponse).toList();
     }
 

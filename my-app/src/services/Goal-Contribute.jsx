@@ -39,7 +39,7 @@ export const updateContribute = async (id, data) => {
 };
 export const deleteContribute = async (id) => {
   try {
-    const response = await httpRequest.delete(`/goal?contributeId=${id}`);
+    const response = await httpRequest.delete(`/contribute?contributeId=${id}`);
     return response.data;
   } catch (error) {
     console.error(error);

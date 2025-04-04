@@ -21,22 +21,24 @@ public class TransactionController {
     public TransactionController(ITransactionService transactionService) {
         this.transactionService = transactionService;
     }
-
+//    lấy danh sách giao dịch user id và walletid
     @GetMapping("/filter")
     public ResponseEntity<ApiResponse<List<TransactionResponse>>> getTransactionByUserIdAnd(
             @RequestParam String userId,
-            @RequestParam String filterType) {
-        List<TransactionResponse> transactionResponses = transactionService.getAllTransactionByUserIdAndPeriod(userId, filterType);
+            @RequestParam String filterType,
+     @RequestParam Integer walletId ){
+        List<TransactionResponse> transactionResponses = transactionService.getAllTransactionByUserIdAndPeriod(userId, filterType,walletId);
         return ResponseEntity.ok(new ApiResponse<>(200, "lấy danh sách giao dịch thành công", transactionResponses));
     }
-
+    //    lấy danh sách giao dịch user id và walletid lấy theo ngày
     @GetMapping("/filter-range")
     public ResponseEntity<ApiResponse<List<TransactionResponse>>> getTransactionsByCustomRange(
             @RequestParam String userId,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
+            @RequestParam Integer walletId) {
 
-        List<TransactionResponse> transactions = transactionService.getTransactionsByUserIdAndFilterRange(userId, startDate, endDate);
+        List<TransactionResponse> transactions = transactionService.getTransactionsByUserIdAndFilterRange(userId, startDate, endDate,walletId);
         return ResponseEntity.ok(new ApiResponse<>(200, "lấy danh sách giao dịch thành công", transactions));
     }
 

@@ -94,7 +94,7 @@ function BudgetDetail() {
 
           {/* Nút thay đổi ngân sách */}
           <button
-            className="bg-green-100 text-green-600 font-semibold py-2 px-3 rounded-lg hover:bg-green-200"
+            className="bg-green-500 text-black font-semibold py-2 px-3 rounded-lg "
             onClick={() => {
               setShowFormBudget(true);
               setEditingBudget(budget);
@@ -104,7 +104,7 @@ function BudgetDetail() {
           </button>
         </div>
 
-        <div className="flex space-x-2 mt-4 justify-center">
+        <div className="flex space-x-1 mt-4 justify-center">
           <div className="p-4 bg-white rounded-2xl shadow border text-center min-w-[225px]">
             <p className="text-gray-600 font-semibold">Ngân sách ban đầu</p>
             <p className="text-green-500 font-bold text-xl">
