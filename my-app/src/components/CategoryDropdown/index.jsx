@@ -13,13 +13,12 @@ export default function CategoryDropdown({
   const [selectedType, setSelectedType] = useState("expense");
   const [categories, setCategories] = useState({ expense: [], income: [] });
   const [selectedCategory, setSelectedCategory] = useState(null);
-  
-  // console.log(categories)
+ 
   useEffect(() => {
     async function fetchCategories() {
       try {
         const result = await getAllCategory(userId);
-        console.log(result)
+        
         if (result) {
           const expenseCategories = result.filter(
             (cat) => cat.categoryType === "expense"
@@ -71,10 +70,9 @@ export default function CategoryDropdown({
         )}
       </button>
 
-      {/* Dropdown danh mục */}
       {isOpen && (
         <div className="absolute w-full bg-white border rounded-lg shadow-lg mt-2">
-          {/* Tabs Chi phí / Thu nhập */}
+        
           <div className="flex">
             <button
               className={`flex-1 px-4 py-2 ${

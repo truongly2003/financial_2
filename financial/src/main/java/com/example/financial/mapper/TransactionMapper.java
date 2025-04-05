@@ -14,6 +14,7 @@ public interface TransactionMapper {
     @Mapping(source = "wallet.id", target = "walletId")
     TransactionResponse toTransactionResponse(Transaction transaction);
 
-    @Mapping(target = "category", ignore = true)
+//    @Mapping(target = "category", ignore = true)
+//    @Mapping(target = "category")
     Transaction toTransaction(TransactionRequest request);
 }

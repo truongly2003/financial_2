@@ -17,8 +17,10 @@ import com.example.financial.service.IWalletService;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.NonFinal;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
@@ -48,7 +50,8 @@ public class AuthService implements IAuthService {
     @Value("${spring.security.oauth2.client.registration.google.client-secret}")
     protected String GOOGLE_CLIENT_SECRET;
 
-
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
 
     @Override
     public UserResponse processOAuth2User(OAuth2User oAuth2User) {
@@ -75,7 +78,7 @@ public class AuthService implements IAuthService {
         Optional<User> emailExist = userRepository.findByEmail(request.getEmail());
         if (emailExist.isPresent()) {
             User user = emailExist.get();
-            if (request.getPassword().equals(emailExist.get().getPassword())) {
+            if (passwordEncoder.matches(request.getPassword(), user.getPassword())) {
                 String accessToken = jwtUtil.generateAccessToken(user.getEmail(), user.getEmail());
                 String refreshToken = jwtUtil.generateRefreshToken(user.getEmail(), user.getEmail());
                 if (!walletRepository.existsByUserUserId(user.getUserId())) {
@@ -126,7 +129,7 @@ public class AuthService implements IAuthService {
     public UserResponse getUser(String userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-        return new UserResponse(user.getUserId(), user.getUserName(), user.getPassword(), user.getEmail(), user.getPhoneNumber(), user.getAccountType());
+        return new UserResponse(user.getUserId(), user.getUserName(), user.getEmail(), user.getPhoneNumber(), user.getAccountType(),user.getCreatedAt());
     }
 
     private UserRequest getUserInfoFromGoogle(String accessToken) throws Exception {

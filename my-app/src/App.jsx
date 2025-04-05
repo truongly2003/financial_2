@@ -15,7 +15,7 @@ function App() {
         <NotificationProvider>
           <BalanceProvider>
             <WalletProvider>
-              <div className="App bg-[#f9e4d4]">
+              <div className="App bg-[#f9e4d4] font-sans">
                 <Routes>
                   {publicRoutes.map((route, index) => {
                     const Page = route.component;

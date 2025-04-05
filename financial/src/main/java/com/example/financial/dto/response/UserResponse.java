@@ -3,6 +3,8 @@ package com.example.financial.dto.response;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.time.Instant;
+
 @Data
 @Builder
 @AllArgsConstructor
@@ -11,8 +13,9 @@ import lombok.experimental.FieldDefaults;
 public class UserResponse {
     String id;
     String userName;
-    String password;
     String email;
     String phoneNumber;
     String accountType;
+     Instant createdAt;
+
 }

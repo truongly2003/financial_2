@@ -10,7 +10,7 @@ public interface ITransactionService {
     List<TransactionResponse> getAllTransactionByUserIdAndPeriod(String id, String filterType,Integer walletId);
 
     List<TransactionResponse> getTransactionsByUserIdAndFilterRange(String userId, LocalDate startDate, LocalDate endDate,Integer walletId);
-
+    // danh sách giao dịch trong ngân sách
     List<TransactionResponse> getAllTransactionByUserIdAndBudgetId(String userId, Integer budgetId);
 
 

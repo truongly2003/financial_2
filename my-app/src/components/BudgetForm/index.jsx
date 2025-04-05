@@ -37,7 +37,7 @@ export default function BudgetForm({ onClose, onSuccess, initialBudget }) {
     const fetch = async () => {
       const res = await getAllCategory(userId);
       if (res) {
-        console.log(res)
+       
         const expense = res.filter(
           (item) => item.categoryType === "expense"
         );

@@ -4,7 +4,7 @@ import react from "@vitejs/plugin-react";
 import path from "path";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
-
+import defaultTheme from 'tailwindcss/defaultTheme'
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
@@ -29,5 +29,12 @@ export default defineConfig({
   },
   optimizeDeps: {
     include: ["react-number-format"]
-  }
+  },
+  theme: {
+    extend: {
+      fontFamily: {
+        sans: ['"Inter"', ...defaultTheme.fontFamily.sans], 
+      },
+    },
+  },
 });

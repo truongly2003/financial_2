@@ -1,4 +1,3 @@
-
 import { Bar, Pie } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -21,9 +20,8 @@ ChartJS.register(
   Legend,
   CategoryScale,
   LinearScale,
-  BarElement,
+  BarElement
 );
-
 
 const Card = ({ children }) => {
   return (
@@ -36,18 +34,18 @@ const Card = ({ children }) => {
         marginBottom: "20px",
       }}
     >
-     
       {children}
     </div>
   );
 };
 import PropTypes from "prop-types";
+import useWallet from "@/context/useWallet";
 Card.propTypes = {
-
   children: PropTypes.node.isRequired,
 };
 const Overview = () => {
   const { userId } = useAuth();
+  const {walletId} =useWallet()
   const [balance, setBalance] = useState({
     totalBalance: 0,
     totalIncome: 0,
@@ -57,7 +55,7 @@ const Overview = () => {
   const [filter, setFilter] = useState("month");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
-
+  console.log(transactions);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -98,15 +96,15 @@ const Overview = () => {
           }
         }
 
-        const transactionResponse =
-          await getAllTransactionsByUserIdAndFilterRange(userId, start, end);
+        const transactionResponse = await getAllTransactionsByUserIdAndFilterRange(userId, start, end,walletId);
+        console.log(transactionResponse)
         setTransactions(transactionResponse.data || []);
       } catch (error) {
         console.error(error);
       }
     };
     fetchData();
-  }, [userId, filter, startDate, endDate]);
+  }, [userId, filter, startDate, endDate,walletId]);
 
   const getChartData = () => {
     let groupByKey;
@@ -236,7 +234,7 @@ const Overview = () => {
         <div className="bg-[#ff6f61] shadow-md rounded-lg p-4 w-64 text-center">
           <p className="text-white">Tổng chi tiêu</p>
           <p className="text-yellow-300 text-xl font-semibold">
-           - {balance.totalExpense.toLocaleString()}đ
+            - {balance.totalExpense.toLocaleString()}đ
           </p>
         </div>
         <div className="bg-[#ff6f61] shadow-md rounded-lg p-4 w-64 text-center">
@@ -289,7 +287,7 @@ const Overview = () => {
       </div>
 
       <Card title="Thống Kê Thu & Chi">
-      <h2 className="text-2xl font-bold text-gray-800">
+        <h2 className="text-2xl font-bold text-gray-800">
           Thu nhập và chi tiêu
         </h2>
         <div className="p-4">
@@ -390,7 +388,6 @@ const Overview = () => {
           </div>
         </div>
       </Card>
-        
     </div>
   );
 };

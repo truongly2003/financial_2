@@ -15,4 +15,5 @@ public class CategoryResponse {
     String categoryType;
     String description;
     String icon;
+    boolean defaultCategory;
 }

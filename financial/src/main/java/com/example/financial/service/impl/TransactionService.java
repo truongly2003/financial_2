@@ -13,6 +13,7 @@ import com.example.financial.repository.UserRepository;
 import com.example.financial.repository.WalletRepository;
 import com.example.financial.service.ITransactionService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -20,6 +21,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class TransactionService implements ITransactionService {
@@ -48,7 +50,7 @@ public class TransactionService implements ITransactionService {
         List<Transaction> transactions = transactionRepository.getTransactionsByUserIdAndPeriod(userId, startDate, endDate,walletId);
         return transactions.stream().map(transactionMapper::toTransactionResponse).toList();
     }
-
+    // get transaction của budget
     @Override
     public List<TransactionResponse> getAllTransactionByUserIdAndBudgetId(String userId, Integer budgetId) {
         List<Transaction> transactions = transactionRepository.getTransactionsByUserIdAndBudgetId(userId, budgetId);
@@ -73,6 +75,7 @@ public class TransactionService implements ITransactionService {
     }
     @Override
     public boolean addTransaction(TransactionRequest request) {
+
         Category category = categoryRepository.findById(request.getCategoryId()).orElse(null);
         Wallet wallet = walletRepository.findById(request.getWalletId()).orElse(null);
         User user = userRepository.findById(request.getUserId()).orElse(null);

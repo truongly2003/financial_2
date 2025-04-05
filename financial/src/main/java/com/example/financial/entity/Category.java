@@ -21,7 +21,7 @@ public class Category {
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name = "user_id", nullable = true)
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @Column(name = "category_name", nullable = false)
@@ -42,5 +42,9 @@ public class Category {
     @Lob
     @Column(name = "icon", nullable = true)
     private String icon;
+
+    @Lob
+    @Column(name = "default_category", nullable = true)
+    private boolean defaultCategory=false;
 
 }

@@ -30,9 +30,8 @@ function Catalog() {
 
   return (
     <div className="min-h-screen">
-       <h1>Danh mục tài chính</h1>
+      <h1>Danh mục tài chính</h1>
       <div className="bg-gray-100 shadow-md  mx-4 mt-4 p-4">
-
         {/* Tab Navigation */}
         <div className="flex border-b mb-4 justify-between">
           <div>
@@ -58,7 +57,7 @@ function Catalog() {
             </button>
           </div>
           <button
-            className="bg-green-500 text-black font-semibold py-2 px-3 rounded-lg "
+            className="bg-white text-black font-semibold py-2 px-3 rounded-sm "
             onClick={() => {
               setShowFormCategory(true);
               setEditingCategory(null);
@@ -103,20 +102,10 @@ function Catalog() {
                       <h3 className="text-lg font-semibold">
                         {category.categoryName}
                       </h3>
+
                       <p className="text-sm text-gray-600">
                         {category.description}
                       </p>
-                      <span
-                        className={`text-xs px-2 py-1 rounded-full mt-2 inline-block ${
-                          category.categoryType === "income"
-                            ? "bg-green-100 text-green-800"
-                            : "bg-red-100 text-red-800"
-                        }`}
-                      >
-                        {category.categoryType === "income"
-                          ? "Thu nhập"
-                          : "Chi tiêu"}
-                      </span>
                     </div>
                     <div>
                       <button
@@ -130,6 +119,30 @@ function Catalog() {
                       </button>
                     </div>
                   </div>
+                  <div className="flex justify-center content-center mt-2 space-x-2">
+                    <span
+                      className={`text-xs px-2 py-1 rounded-full inline-block ${
+                        category.categoryType === "income"
+                          ? "bg-green-100 text-green-800"
+                          : "bg-red-100 text-red-800"
+                      }`}
+                    >
+                      {category.categoryType === "income"
+                        ? "Thu nhập"
+                        : "Chi tiêu"}
+                    </span>
+                    <span
+                      className={`text-xs px-2 py-1 rounded-full  inline-block
+                        ${
+                          category.defaultCategory === true
+                            ? "bg-blue-100 text-blue-800 font-medium"
+                            : ""
+                        }
+                      `}
+                    >
+                      {category.defaultCategory === true ? "Mặc định" : ""}
+                    </span>
+                  </div>
                 </div>
               );
             })}
@@ -138,7 +151,7 @@ function Catalog() {
       </div>
       {showFormCategory && (
         <CategoryForm
-        initialCategory={editingCategory}
+          initialCategory={editingCategory}
           onClose={() => setShowFormCategory(false)}
           onSuccess={fetchCategories}
         />

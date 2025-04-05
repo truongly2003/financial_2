@@ -8,9 +8,11 @@ import { useEffect, useState, useCallback } from "react";
 import { Link, useParams } from "react-router-dom";
 import TransactionForm from "@/components/TransactionForm";
 import BudgetForm from "@/components/BudgetForm";
+import useAuth from "@/context/useAuth";
 
 function BudgetDetail() {
   const { id } = useParams();
+  const {userId}=useAuth()
   const [transactions, setTransactions] = useState([]);
   const [budget, setBudget] = useState(null);
   //
@@ -20,16 +22,19 @@ function BudgetDetail() {
   const [showFormBudget, setShowFormBudget] = useState(false);
   const [editingBudget, setEditingBudget] = useState(null);
 
+
+  
   const fetchTransactions = useCallback(async () => {
     try {
-      const response = await getAllTransactionByUserIdAndBudgetId(2, id);
+      const response = await getAllTransactionByUserIdAndBudgetId(userId, id);
       if (response.data) {
         setTransactions(response.data);
       }
+     
     } catch (error) {
       console.error("Error fetching transactions:", error);
     }
-  }, [id]);
+  }, [id,userId]);
   const fetchBudgets = useCallback(async () => {
     const response = await getBudgetById(id);
     if (response.data) {

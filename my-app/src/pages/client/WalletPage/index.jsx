@@ -34,7 +34,7 @@ function WalletPage() {
             </div>
           </div>
           <button
-            className="w-[100px] bg-white text-black font-semibold py-2 px-3 rounded-lg"
+            className="w-[100px] bg-white text-black font-semibold py-2 px-3 rounded-sm"
             onClick={() => {
               setShowFormWallet(true);
               setEditingWallet(null);

@@ -30,7 +30,7 @@ public class JwtFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
             return;
         }
-        logger.info(token);
+
         token = token.substring(7);
         try{
                 if (jwtUtil.validateToken(token)) {
@@ -48,7 +48,7 @@ public class JwtFilter extends OncePerRequestFilter {
             response.getWriter().write("Invalid JWT Token");
             return;
         }
-        logger.info("token:" + token);
+
         filterChain.doFilter(request, response);
     }
 }

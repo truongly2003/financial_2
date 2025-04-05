@@ -25,7 +25,7 @@ public class CategoryService implements ICategoryService {
 
     @Override
     public List<CategoryResponse> getAllCategories(String userId) {
-        List<Category> categories = categoryRepository.getAllCategory(userId);
+        List<Category> categories = categoryRepository.getAllCategory(userId,"1");
         return categories.stream().map(categoryMapper::toCategoryResponse).toList();
     }
 

@@ -16,7 +16,7 @@ function Login() {
   const { notify } = useNotification();
   const [data, setData] = useState({
     email: "truong@gmail.com",
-    password: "12345",
+    password: "123",
   });
   const navigate = useNavigate();
   const handleLogin = async (e) => {
@@ -29,7 +29,7 @@ function Login() {
         localStorage.setItem("accessToken", response.accessToken);
         localStorage.setItem("refreshToken", response.refreshToken);
         localStorage.setItem("userId", response.userId);
-        
+
         navigate("/");
       } else {
         notify("email hoặc mật khẩu không đúng 🎉", "error");
