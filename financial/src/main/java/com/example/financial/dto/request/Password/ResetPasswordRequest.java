@@ -1,4 +1,4 @@
-package com.example.financial.email;
+package com.example.financial.dto.request.Password;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -8,8 +8,7 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Email {
-    String toEmail;
-    String subject;
-    String body;
+public class ResetPasswordRequest {
+     String token;
+     String password;
 }

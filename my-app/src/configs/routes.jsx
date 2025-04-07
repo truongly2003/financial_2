@@ -20,6 +20,13 @@ const routes={
     // settings
     Profile:'/profile',
     Wallet:'/wallet',
+    
+    Checkemail:'/check-email',
+    VerifyEmail:'/verify-email-token',
+
+    ForgetPassword:'/forgot-password',
+    ResetPassword:'/reset-password',
+
 
 }
 export default routes

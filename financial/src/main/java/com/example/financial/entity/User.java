@@ -46,6 +46,15 @@ public class User {
     @Column(name = "updated_at", nullable = true)
     private Instant updatedAt;
 
+
+    @Lob
+    @Column(name = "is_active", nullable = true)
+    private boolean isActive=false;
+
+    @Lob
+    @Column(name = "reset_password_token", nullable = true)
+    private String resetPasswordToken;
+
     @PrePersist
     public void generateUUID() {
         if (this.userId == null) {

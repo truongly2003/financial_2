@@ -22,6 +22,10 @@ import AuthCallback from "@/pages/client/Authentication/AuthCallback";
 // import RedirectPage from "@/pages/client/Authentication/RedirectPage";
 import Home from "@/pages/client/Home";
 import TransactionLayout from "@/layouts/TransactionLayout";
+import CheckEmail from "@/pages/client/Authentication/CheckEmail";
+import VerifyEmail from "@/pages/client/Authentication/VerifyEmail";
+import ForgotPassword from "@/pages/client/Password/ForgotPassword";
+import ResetPassword from "@/pages/client/Password/ResetPassword";
 export const publicRoutes = [
   { path: routes.Home, component: Home,layout: DefaultLayout }, 
   { path: routes.Transaction, component: Transaction, layout: TransactionLayout }, 
@@ -29,6 +33,13 @@ export const publicRoutes = [
   { path: routes.SignUp, component: SignUp, layout: null },
   // { path: routes.LoginPage, component: LoginPage, layout: null },
   { path: routes.Auth, component: AuthCallback, layout: null },
+  { path: routes.Checkemail, component: CheckEmail, layout: null },
+  { path: routes.VerifyEmail, component: VerifyEmail, layout: null },
+  { path: routes.ForgetPassword, component: ForgotPassword, layout: null },
+  { path: routes.ResetPassword, component: ResetPassword, layout: null },
+
+
+
   // { path: routes.HomePage, component: HomePage, layout: null },
   // { path: routes.Redirect, component: RedirectPage, layout: null },
 ];

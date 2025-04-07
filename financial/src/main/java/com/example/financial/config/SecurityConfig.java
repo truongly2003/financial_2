@@ -23,7 +23,11 @@ public class SecurityConfig  {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/callback", "/oauth2/**", "/api/auth/login","/api/auth/refresh","/api/user/register").permitAll()
+                        .requestMatchers("/api/auth/callback", "/oauth2/**",
+                                "/api/auth/login","/api/auth/refresh",
+                                "/api/user/register","/api/email/verify-email",
+                                "/api/user/forgot-password","/api/user/reset-password")
+                        .permitAll()
                         .anyRequest().authenticated()
                 )
                 .oauth2Login(Customizer.withDefaults())
