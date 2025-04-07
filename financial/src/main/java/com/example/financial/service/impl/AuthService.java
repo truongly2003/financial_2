@@ -42,6 +42,7 @@ public class AuthService implements IAuthService {
     private final WalletRepository walletRepository;
     private final JwtUtil jwtUtil;
     private final IWalletService walletService;
+
     @NonFinal
     @Value("${spring.security.oauth2.client.registration.google.client-id}")
     protected String GOOGLE_CLIENT_ID;
@@ -70,7 +71,9 @@ public class AuthService implements IAuthService {
     public User addUser(UserRequest request) {
         User user = new User();
         user.setEmail(request.getEmail());
+        user.setLoginType("google");
         return userRepository.save(user);
+
     }
 
     @Override
@@ -84,12 +87,12 @@ public class AuthService implements IAuthService {
                 if (!walletRepository.existsByUserUserId(user.getUserId())) {
                     walletService.createDefaultWalletForUser(user.getUserId());
                 }
-                return new AuthResponse(true, accessToken, refreshToken,emailExist.get().getUserId());
+                return new AuthResponse(true, accessToken, refreshToken, emailExist.get().getUserId());
             }
 
         }
 
-        return new AuthResponse(false, "", "","");
+        return new AuthResponse(false, "", "", "");
     }
 
     @Override
@@ -101,6 +104,7 @@ public class AuthService implements IAuthService {
                 String newAccessToken = jwtUtil.generateAccessToken(email, email);
                 return new RefreshTokenResponse("true", newAccessToken, refreshTokenValue);
             }
+
         }
         return new RefreshTokenResponse("false", "", "");
     }
@@ -115,9 +119,15 @@ public class AuthService implements IAuthService {
 
             String accessToken = jwtUtil.generateAccessToken(user.getEmail(), user.getEmail());
             String refreshToken = jwtUtil.generateRefreshToken(user.getEmail(), user.getEmail());
+            if (!walletRepository.existsByUserUserId(user.getUserId())) {
+                walletService.createDefaultWalletForUser(user.getUserId());
+            }
+
             return AuthResponse.builder()
+                    .status(true)
                     .accessToken(accessToken)
                     .refreshToken(refreshToken)
+                    .userId(user.getUserId())
                     .build();
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -129,7 +139,7 @@ public class AuthService implements IAuthService {
     public UserResponse getUser(String userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-        return new UserResponse(user.getUserId(), user.getUserName(), user.getEmail(), user.getPhoneNumber(), user.getAccountType(),user.getCreatedAt());
+        return new UserResponse(user.getUserId(), user.getUserName(), user.getEmail(), user.getPhoneNumber(), user.getAccountType(), user.getCreatedAt());
     }
 
     private UserRequest getUserInfoFromGoogle(String accessToken) throws Exception {

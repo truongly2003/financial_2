@@ -55,6 +55,9 @@ public class User {
     @Column(name = "reset_password_token", nullable = true)
     private String resetPasswordToken;
 
+    @Column(name = "login_type", nullable = true)
+    private String loginType; // "local" hoặc "google"
+
     @PrePersist
     public void generateUUID() {
         if (this.userId == null) {

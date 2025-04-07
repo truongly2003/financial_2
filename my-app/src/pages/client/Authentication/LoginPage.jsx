@@ -58,84 +58,84 @@
 //     </div>
 //   );
 // }
-import { useState } from 'react';
-import axios from 'axios';
+// // import { useState } from 'react';
+// // import axios from 'axios';
 
-function LoginPage() {
-  const [credentials, setCredentials] = useState({
-    email: '',
-    password: ''
-  });
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
+// // function LoginPage() {
+// //   const [credentials, setCredentials] = useState({
+// //     email: '',
+// //     password: ''
+// //   });
+// //   const [isLoading, setIsLoading] = useState(false);
+// //   const [error, setError] = useState(null);
 
-  // Handle input changes
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setCredentials(prev => ({
-      ...prev,
-      [name]: value
-    }));
-  };
+// //   // Handle input changes
+// //   const handleInputChange = (e) => {
+// //     const { name, value } = e.target;
+// //     setCredentials(prev => ({
+// //       ...prev,
+// //       [name]: value
+// //     }));
+// //   };
 
-  // Handle login submission with Axios
-  const handleLogin = async () => {
-    setIsLoading(true);
-    setError(null);
+// //   // Handle login submission with Axios
+// //   const handleLogin = async () => {
+// //     setIsLoading(true);
+// //     setError(null);
 
-    try {
-      const response = await axios.post('YOUR_API_ENDPOINT/login', credentials, {
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      });
+// //     try {
+// //       const response = await axios.post('YOUR_API_ENDPOINT/login', credentials, {
+// //         headers: {
+// //           'Content-Type': 'application/json'
+// //         }
+// //       });
 
-      console.log('Login successful:', response.data);
-      // Handle successful login (e.g., store token, redirect, etc.)
+// //       console.log('Login successful:', response.data);
+// //       // Handle successful login (e.g., store token, redirect, etc.)
 
-    } catch (error) {
-      console.error('Error during login:', error.response?.data || error.message);
-      setError(error.response?.data?.message || 'Login failed');
-    } finally {
-      setIsLoading(false);
-    }
-  };
+// //     } catch (error) {
+// //       console.error('Error during login:', error.response?.data || error.message);
+// //       setError(error.response?.data?.message || 'Login failed');
+// //     } finally {
+// //       setIsLoading(false);
+// //     }
+// //   };
 
-  return (
-    <div style={{ textAlign: "center", marginTop: "50px" }}>
-      <div>
-        {error && <p style={{ color: 'red' }}>{error}</p>}
-        <div className="mb-3">
-          <div className="flex items-center border border-gray-300 rounded p-2">
-            <input
-              type="email"
-              className="ml-2 w-full outline-none"
-              placeholder="Email"
-              name="email"
-              value={credentials.email}
-              onChange={handleInputChange}
-            />
-          </div>
-        </div>
+// //   return (
+// //     <div style={{ textAlign: "center", marginTop: "50px" }}>
+// //       <div>
+// //         {error && <p style={{ color: 'red' }}>{error}</p>}
+// //         <div className="mb-3">
+// //           <div className="flex items-center border border-gray-300 rounded p-2">
+// //             <input
+// //               type="email"
+// //               className="ml-2 w-full outline-none"
+// //               placeholder="Email"
+// //               name="email"
+// //               value={credentials.email}
+// //               onChange={handleInputChange}
+// //             />
+// //           </div>
+// //         </div>
 
-        <div className="mb-3">
-          <div className="flex items-center border border-gray-300 rounded p-2">
-            <input
-              type="password"
-              className="ml-2 w-full outline-none"
-              placeholder="Mật khẩu"
-              name="password"
-              value={credentials.password}
-              onChange={handleInputChange}
-            />
-          </div>
-        </div>
-        <button onClick={handleLogin} disabled={isLoading}>
-          {isLoading ? 'Logging in...' : 'Login'}
-        </button>
-      </div>
-    </div>
-  );
-}
+// //         <div className="mb-3">
+// //           <div className="flex items-center border border-gray-300 rounded p-2">
+// //             <input
+// //               type="password"
+// //               className="ml-2 w-full outline-none"
+// //               placeholder="Mật khẩu"
+// //               name="password"
+// //               value={credentials.password}
+// //               onChange={handleInputChange}
+// //             />
+// //           </div>
+// //         </div>
+// //         <button onClick={handleLogin} disabled={isLoading}>
+// //           {isLoading ? 'Logging in...' : 'Login'}
+// //         </button>
+// //       </div>
+// //     </div>
+// //   );
+// // }
 
-export default LoginPage;
+// // export default LoginPage;

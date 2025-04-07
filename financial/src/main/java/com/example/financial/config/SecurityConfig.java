@@ -26,7 +26,8 @@ public class SecurityConfig  {
                         .requestMatchers("/api/auth/callback", "/oauth2/**",
                                 "/api/auth/login","/api/auth/refresh",
                                 "/api/user/register","/api/email/verify-email",
-                                "/api/user/forgot-password","/api/user/reset-password")
+                                "/api/user/forgot-password","/api/user/reset-password",
+                                "/api/google/getlogin")
                         .permitAll()
                         .anyRequest().authenticated()
                 )

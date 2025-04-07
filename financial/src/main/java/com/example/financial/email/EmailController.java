@@ -26,7 +26,7 @@ public class EmailController {
     public ResponseEntity<Map<String, Object>> verifyEmail(@RequestParam String token) {
         Map<String, Object> response = new HashMap<>();
         try {
-            userService.verifyToken(token);
+            userService.verifyTokenEmail(token);
             response.put("status", true);
             response.put("message", "Xác thực email thành công!");
             return ResponseEntity.ok(response);

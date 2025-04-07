@@ -1,9 +1,10 @@
-// export const googleConfig = {
-//   clientId:
-//     "353415826195-uce060j45p429f20puffnlnloh0jr909.apps.googleusercontent.com",
-//   authUri: "https://accounts.google.com/o/oauth2/v2/auth",
-// };
-// export const facebookConfig = {
-//   appId: "1695819107932744",
-//   callbackUrl: "http://localhost:3000/oauth2/callback/facebook",
-// };
+export const googleConfig = {
+    clientId: import.meta.env.VITE_GOOGLE_CLIENT_ID,
+    authUri: import.meta.env.VITE_GOOGLE_AUTH_URI,
+  };
+  
+  export const facebookConfig = {
+    appId: import.meta.env.VITE_FACEBOOK_APP_ID,
+    callbackUrl: import.meta.env.VITE_FACEBOOK_CALLBACK_URL,
+  };
+  

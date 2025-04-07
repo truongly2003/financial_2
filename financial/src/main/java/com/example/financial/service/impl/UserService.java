@@ -66,7 +66,7 @@ public class UserService implements IUserService {
 
     // token của email
     @Transactional
-    public void verifyToken(String token) {
+    public void verifyTokenEmail(String token) {
         EmailVerificationToken verificationToken = emailVerificationTokenRepository.findByToken(token)
                 .orElseThrow(() -> new RuntimeException("Token không hợp lệ hoặc đã bị xóa."));
         if (verificationToken.getExpiryDate().isBefore(LocalDateTime.now())) {

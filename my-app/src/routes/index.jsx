@@ -19,7 +19,7 @@ import GoalDetail from "@/pages/client/GoalDetail";
 // import LoginPage from "@/pages/client/Authentication/LoginPage";
 import AuthCallback from "@/pages/client/Authentication/AuthCallback";
 // import HomePage from "@/pages/client/Authentication/HomePage";
-// import RedirectPage from "@/pages/client/Authentication/RedirectPage";
+import RedirectPage from "@/pages/client/Authentication/RedirectPage";
 import Home from "@/pages/client/Home";
 import TransactionLayout from "@/layouts/TransactionLayout";
 import CheckEmail from "@/pages/client/Authentication/CheckEmail";
@@ -41,7 +41,7 @@ export const publicRoutes = [
 
 
   // { path: routes.HomePage, component: HomePage, layout: null },
-  // { path: routes.Redirect, component: RedirectPage, layout: null },
+  { path: routes.Redirect, component: RedirectPage, layout: null },
 ];
 
 // Private Routes (cần đăng nhập)

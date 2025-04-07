@@ -1,47 +1,53 @@
-// import { useEffect } from "react";
-// import { useNavigate, useSearchParams } from "react-router-dom";
-// import axios from "axios";
+import { useEffect } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
+// import LoadingModal from "@/components/LoadingModal";
+import useNotification from "@/context/useNotification";
+import { loginWithGoogle } from "@/services/AuthService";
+import useAuth from "@/context/useAuth";
 
-// function RedirectPage() {
-//   const [searchParams] = useSearchParams();
-//   const navigate = useNavigate();
-  
-//   useEffect(() => {
-//     const handleGoogleCallback = async () => {
-//       const code = searchParams.get("code");
-//       console.log(code)
-//       if (code) {
-//         try {
-//           // Gửi code đến backend để lấy token
-//           const response = await axios.post(
-//             "http://localhost:8080/api/auth/callback",
-//             { code },
-//             { headers: { "Content-Type": "application/json" } }
-//           );
-//           console.log(response.data)
-//           // Lưu token vào localStorage hoặc context/redux
-//           console.log(response)
-//           // const { token, user } = response.data;
-//           // localStorage.setItem("token", token);
-//           // localStorage.setItem("user", JSON.stringify(user));
+function RedirectPage() {
+  const [searchParams] = useSearchParams();
+  const { notify } = useNotification();
+  const { login } = useAuth();
+  const navigate = useNavigate();
+  // const [isProcessing, setIsProcessing] = useState(true);
 
-//           // Chuyển hướng đến trang chính
-//           navigate("/dashboard");
-//         } catch (error) {
-//           console.error("Error during Google login:", error);
-//           navigate("/loginPage", { state: { error: "Đăng nhập thất bại" } });
-//         }
-//       }
-//     };
-//     handleGoogleCallback();
-//   }, [searchParams, navigate]);
+  useEffect(() => {
+    const code = searchParams.get("code");
 
-//   return <div>Đang xử lý đăng nhập...</div>;
-// }
+    // ✅ Tránh gọi lại nếu đã xử lý code trước đó
+    if (!code || sessionStorage.getItem("google_oauth_handled") === "true") {
+      return;
+    }
 
-// export default RedirectPage;
-// // {
-// //   "accessToken": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0cnVvbmdseWtob25nMjAwM0BnbWFpbC5jb20iLCJyb2xlIjoidHJ1b25nbHlraG9uZzIwMDNAZ21haWwuY29tIiwiaWF0IjoxNzQzMTQ0MTEzLCJleHAiOjE3NDMxNDc3MTN9.Zn5_bCQmt2Mnpw5erpAHPnCym-xVpRN4or3QYBQClCI",
-// //   "refreshToken": "cc2c8891-4e6a-44a6-9cbd-b8dc192ea907"
-// // }
+    const handleGoogleCallback = async () => {
+      try {
+        const response = await loginWithGoogle(code);
+        if (response) {
+          notify("Login thành công", "success");
 
+          login(response.accessToken);
+          localStorage.setItem("accessToken", response.accessToken);
+          localStorage.setItem("refreshToken", response.refreshToken);
+          localStorage.setItem("userId", response.userId);
+
+          // ✅ Ghi nhận là đã xử lý callback để không gọi lại
+          sessionStorage.setItem("google_oauth_handled", "true");
+          navigate("/");
+        }
+      } catch (error) {
+        console.error("Error during Google login:", error);
+        navigate("/login", { state: { error: "Đăng nhập thất bại" } });
+      } finally {
+        // setIsProcessing(false);
+      }
+    };
+
+    handleGoogleCallback();
+  }, [navigate, notify, searchParams, login]);
+
+  // return <LoadingModal isProcessing={isProcessing} />;
+  return <div>Đang xử lý đăng nhập...</div>;
+}
+
+export default RedirectPage;
