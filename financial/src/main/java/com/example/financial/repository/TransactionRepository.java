@@ -69,4 +69,12 @@ public interface TransactionRepository extends JpaRepository<Transaction, Intege
             WHERE t.user.userId = :userId AND c.categoryType = 'expense'
             """)
     BigDecimal getTotalExpense(@Param("userId") String userId);
+
+    // tính tổng số tiền thuộc 1 loại trong ngân sách
+    @Query("SELECT SUM(t.amount) FROM Transaction t WHERE t.user.userId = :userId AND t.category.id = :categoryId AND t.transactionDate BETWEEN :start AND :end")
+    BigDecimal sumAmountByUserIdAndCategoryIdAndTransactionDateBetween(
+            @Param("userId") String userId,
+            @Param("categoryId") Integer categoryId,
+            @Param("start") LocalDate start,
+            @Param("end") LocalDate end);
 }

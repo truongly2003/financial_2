@@ -22,8 +22,8 @@ export default function Budget() {
       console.error(error);
     }
   }, [userId]);
-  const filteredBudgets=budgets.filter((budget)=>{
-    const currentDate = new Date(); 
+  const filteredBudgets = budgets.filter((budget) => {
+    const currentDate = new Date();
     const endDate = new Date(budget.endDate);
     const isActive = endDate > currentDate;
     const isExpired = endDate < currentDate;
@@ -32,7 +32,7 @@ export default function Budget() {
     if (statusFilter === "expired") return isExpired;
     if (statusFilter === "overlimit") return isOverlimit;
     return true;
-  })
+  });
   useEffect(() => {
     fetchBudgets();
   }, [fetchBudgets]);
@@ -67,46 +67,57 @@ export default function Budget() {
           <div className="col-span-1"></div>
         </div>
       </div>
-      <div className="mt-2">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-4">
-          {filteredBudgets.map((budget, index) => {
-            const progress = (budget.totalSpent / budget.amountLimit) * 100;
-            const progressColor =
-              budget.totalSpent >= budget.amountLimit
-                ? "bg-red-500"
-                : "bg-green-500";
+      <div className="mt-6">
+        <h3 className=" font-normal text-gray-700 mb-4">
+          Ngân sách
+        </h3>
+        {filteredBudgets.length === 0 ? (
+          <div className="text-center py-8 bg-gray-50 rounded-xl mt-2">
+            <p className="text-gray-500">Chưa có ngân sách nào</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-4">
+            {filteredBudgets.map((budget, index) => {
+              const progress = (budget.totalSpent / budget.amountLimit) * 100;
+              const progressColor =
+                budget.totalSpent >= budget.amountLimit
+                  ? "bg-red-500"
+                  : "bg-green-500";
 
-            return (
-              <Link
-                key={index}
-                className="bg-white shadow-md rounded-lg p-4 cursor-pointer"
-                to={`/budget/budget-detail/${budget.id}`}
-              >
-                <div className="space-y-2">
-                  <div>
-                  <p className="text-gray-500 text-xl font-bold">
+              return (
+                <Link
+                  key={index}
+                  className="bg-[#f9e4d4] shadow-md rounded-lg p-4 cursor-pointer"
+                  to={`/budget/budget-detail/${budget.id}`}
+                >
+                  <div className="space-y-2">
+                    <div>
+                      <p className="text-gray-500 text-xl font-bold">
                         {budget.budgetName}
                       </p>
-                    <p className="text-gray-500 text-sm">{budget.walletName}</p>
-                    <p className="text-xl font-bold text-red-500">
-                      Đã chi tiêu: {budget.totalSpent.toLocaleString()} đ
-                    </p>
-                    <p className="text-sm text-gray-900">
-                      Từ {budget.amountLimit.toLocaleString()} đ
-                    </p>
+                      <p className="text-gray-500 text-sm">
+                        {budget.walletName}
+                      </p>
+                      <p className="text-xl font-bold text-red-500">
+                        Đã chi tiêu: {budget.totalSpent.toLocaleString()} đ
+                      </p>
+                      <p className="text-sm text-gray-900">
+                        Từ {budget.amountLimit.toLocaleString()} đ
+                      </p>
+                    </div>
+                    {/* progress */}
+                    <ProgressBar
+                      progress={progress}
+                      progressColor={progressColor}
+                      startDate={budget.startDate}
+                      endDate={budget.endDate}
+                    />
                   </div>
-                  {/* progress */}
-                  <ProgressBar
-                    progress={progress}
-                    progressColor={progressColor}
-                    startDate={budget.startDate}
-                    endDate={budget.endDate}
-                  />
-                </div>
-              </Link>
-            );
-          })}
-        </div>
+                </Link>
+              );
+            })}
+          </div>
+        )}
       </div>
 
       {showFormBudget && (

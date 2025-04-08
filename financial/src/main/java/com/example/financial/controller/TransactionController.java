@@ -50,6 +50,9 @@ public class TransactionController {
     @PostMapping
     public ResponseEntity<ApiResponse<Boolean>> addTransaction(@RequestBody TransactionRequest request) {
         try {
+            if (transactionService.isExceedBudget(request)) {
+                return ResponseEntity.ok(new ApiResponse<>(202, "Giao dịch vượt quá ngân sách", false));
+            }
             boolean create = transactionService.addTransaction(request);
             if (create) {
                 return ResponseEntity.ok(new ApiResponse<>(200, "Thêm giao dịch thành công", true));
@@ -65,6 +68,9 @@ public class TransactionController {
     @PutMapping("/{transactionId}")
     public ResponseEntity<ApiResponse<Boolean>> updateTransaction(@PathVariable Integer transactionId, @RequestBody TransactionRequest request) {
         try {
+            if (transactionService.isExceedBudget(request)) {
+                return ResponseEntity.ok(new ApiResponse<>(202, "Giao dịch vượt quá ngân sách", false));
+            }
             boolean create = transactionService.updateTransaction(transactionId, request);
             if (create) {
                 return ResponseEntity.ok(new ApiResponse<>(200, "Cập nhật giao dịch thành công ", true));

@@ -54,11 +54,11 @@ function Profile() {
     phoneNumber: "",
     createdAt: "",
   });
-
+ 
   useEffect(() => {
     const fetchUser = async () => {
       const res = await getUserById(userId);
-      console.log(res)
+     
       setUser({
         userName: res.userName || "",
         email: res.email || "",

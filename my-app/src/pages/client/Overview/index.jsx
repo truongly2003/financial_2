@@ -55,7 +55,7 @@ const Overview = () => {
   const [filter, setFilter] = useState("month");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
-  console.log(transactions);
+ 
   useEffect(() => {
     const fetchData = async () => {
       try {

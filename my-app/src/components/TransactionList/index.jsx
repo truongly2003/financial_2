@@ -6,11 +6,14 @@ const TransactionList = ({
   ICONS,
 }) => {
   return (
-    <div className="mt-4">
-      <div className="space-y-6 h-vh">
+    <div className="mt-6">
+      <div className="space-y-2 h-vh">
+        <h3 className="font-normal text-gray-700  mb-4 ">
+          Danh sách giao dịch 
+        </h3>
         {Object.keys(transactionsToRender).length === 0 ? (
-          <div className="mb-6 bg-white rounded-lg">
-            <p className="p-2">Không có giao dịch nào</p>
+          <div className="text-center py-8 bg-gray-50 rounded-xl mt-4">
+            <p className="text-gray-500">Chưa có giao dịch nào</p>
           </div>
         ) : (
           Object.entries(transactionsToRender).map(([date, data], index) => (

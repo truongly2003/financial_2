@@ -20,8 +20,7 @@ function WalletForm({ initialWallet, onClose, onSuccess }) {
       balance: "",
     }
   );
-  console.log("initialWallet")
-  console.log(wallet)
+
   const handleChangeWallet = (e) => {
     setWallet({
       ...wallet,

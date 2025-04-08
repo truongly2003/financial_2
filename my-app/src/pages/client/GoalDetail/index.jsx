@@ -134,7 +134,7 @@ export default function GoalDetail() {
             </div>
           </div>
           <div className="mt-6">
-            <h3 className="text-lg font-semibold text-gray-700 mb-4">
+            <h3 className="font-normal text-gray-700  mb-4">
               Danh sách giao dịch đã đóng góp
             </h3>
 

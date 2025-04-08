@@ -8,17 +8,17 @@ export default function CategoryDropdown({
   onSelectCategory,
   initialCategoryId,
 }) {
-  const {userId}=useAuth()
+  const { userId } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const [selectedType, setSelectedType] = useState("expense");
   const [categories, setCategories] = useState({ expense: [], income: [] });
   const [selectedCategory, setSelectedCategory] = useState(null);
- 
+
   useEffect(() => {
     async function fetchCategories() {
       try {
         const result = await getAllCategory(userId);
-        
+        console.log(result);
         if (result) {
           const expenseCategories = result.filter(
             (cat) => cat.categoryType === "expense"
@@ -31,9 +31,10 @@ export default function CategoryDropdown({
             income: incomeCategories,
           });
           // gán cateogry ID
-          const foundCategory = result.data.find(
+          const foundCategory = result.find(
             (cat) => cat.id === initialCategoryId
           );
+
           if (foundCategory) setSelectedCategory(foundCategory);
         }
       } catch (error) {
@@ -41,7 +42,7 @@ export default function CategoryDropdown({
       }
     }
     fetchCategories();
-  }, [initialCategoryId,userId]);
+  }, [initialCategoryId, userId]);
 
   const toggleDropdown = () => setIsOpen(!isOpen);
 
@@ -62,17 +63,18 @@ export default function CategoryDropdown({
         className="w-full flex justify-between items-center px-4 py-2 border rounded-lg bg-white"
         onClick={toggleDropdown}
       >
-       
         {selectedCategory ? (
           <span>{selectedCategory.categoryName}</span>
         ) : (
-         <span className="flex items-center"> Chọn danh mục <ChevronDown /></span> 
+          <span className="flex items-center">
+            {" "}
+            Chọn danh mục <ChevronDown />
+          </span>
         )}
       </button>
 
       {isOpen && (
         <div className="absolute w-full bg-white border rounded-lg shadow-lg mt-2">
-        
           <div className="flex">
             <button
               className={`flex-1 px-4 py-2 ${
@@ -104,13 +106,26 @@ export default function CategoryDropdown({
                 color: "bg-gray-400",
               };
               return (
-                <div
-                  key={category.id}
-                  className="flex items-center px-4 py-2 hover:bg-gray-100 cursor-pointer"
-                  onClick={() => handleSelectCategory(category)}
-                >
-                  <span className="mr-2">{iconData.icon}</span>{" "}
-                  {category.categoryName}
+                <div key={category.id} className="">
+                 
+                  <div className=" mt-4">
+                  <div
+                    className="flex items-center px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                    onClick={() => handleSelectCategory(category)}
+                  >
+                    <span className="mr-2">{iconData.icon}</span>{" "}
+                    {category.categoryName}
+                    {/* Hiển thị ngân sách nếu có */}
+                  </div>
+                  <div>
+                    {category.budgetLimit && category.budgetSpent && category.budgetRemaining
+                    
+                    && (
+                      <span className="px-4">Bạn có thể chi tiêu: {category.budgetRemaining.toLocaleString("vi-VN")} đ</span>
+                    )
+                    }
+                  </div>
+                  </div>
                 </div>
               );
             })}
@@ -124,5 +139,14 @@ export default function CategoryDropdown({
 CategoryDropdown.propTypes = {
   // userId: PropTypes.string.isRequired,
   onSelectCategory: PropTypes.func.isRequired,
-  initialCategoryId : PropTypes.number,
+  initialCategoryId: PropTypes.number,
 };
+
+// {category.budgetLimit && (
+//   <div className="flex flex-col ml-6 text-xs text-gray-500 leading-tight space-y-0.5">
+//   <div>Ngân sách: {category.budgetLimit}</div>
+//   <div>Đã dùng: {category.budgetSpent}</div>
+//   <div>Còn lại: {category.budgetRemaining}</div>
+// </div>
+
+// )}

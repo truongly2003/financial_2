@@ -2,15 +2,9 @@ package com.example.financial.service.impl;
 
 import com.example.financial.dto.request.TransactionRequest;
 import com.example.financial.dto.response.TransactionResponse;
-import com.example.financial.entity.Category;
-import com.example.financial.entity.Transaction;
-import com.example.financial.entity.User;
-import com.example.financial.entity.Wallet;
+import com.example.financial.entity.*;
 import com.example.financial.mapper.TransactionMapper;
-import com.example.financial.repository.CategoryRepository;
-import com.example.financial.repository.TransactionRepository;
-import com.example.financial.repository.UserRepository;
-import com.example.financial.repository.WalletRepository;
+import com.example.financial.repository.*;
 import com.example.financial.service.ITransactionService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +24,7 @@ public class TransactionService implements ITransactionService {
     private final CategoryRepository categoryRepository;
     private final WalletRepository walletRepository;
     private final UserRepository userRepository;
+    private final BudgetRepository budgetRepository;
 
     @Override
     public List<TransactionResponse> getAllTransactionByUserIdAndPeriod(String userId, String filterType,Integer walletId) {
@@ -73,9 +68,33 @@ public class TransactionService implements ITransactionService {
         }
         walletRepository.updateBalance(transaction.getWallet().getId(), adjAmount);
     }
+
+    // kiểm tra coi có đủ ngân sách không
+    @Override
+    public boolean isExceedBudget(TransactionRequest request) {
+        Category category = categoryRepository.findById(request.getCategoryId()).orElse(null);
+        if(category==null || !"expense".equalsIgnoreCase(category.getCategoryType())){
+            return false;
+        }
+        LocalDate today = request.getTransactionDate();
+
+        // Tìm budget phù hợp theo user, category, và ngày trong khoảng ngân sách
+        Optional<Budget> budget = budgetRepository.findByUserUserIdAndCategoryIdAndStartDateLessThanEqualAndEndDateGreaterThanEqual(
+                request.getUserId(), request.getCategoryId(), today, today);
+        if(budget!=null && budget.isPresent()){
+            Budget budget1 = budget.get();
+            // tính tổng số tiền chi tiêu trong ngân sách
+            BigDecimal totalExpense=transactionRepository.sumAmountByUserIdAndCategoryIdAndTransactionDateBetween(
+                    request.getUserId(), request.getCategoryId(), budget1.getStartDate(), budget1.getEndDate()
+            );
+            totalExpense = totalExpense !=null ? totalExpense : BigDecimal.ZERO;
+            BigDecimal newTotal=totalExpense.add(request.getAmount());
+            return  newTotal.compareTo(budget1.getAmountLimit())>0;
+        }
+        return false;
+    }
     @Override
     public boolean addTransaction(TransactionRequest request) {
-
         Category category = categoryRepository.findById(request.getCategoryId()).orElse(null);
         Wallet wallet = walletRepository.findById(request.getWalletId()).orElse(null);
         User user = userRepository.findById(request.getUserId()).orElse(null);
@@ -117,4 +136,6 @@ public class TransactionService implements ITransactionService {
         }
         return false;
     }
+
+
 }

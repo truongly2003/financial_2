@@ -21,4 +21,6 @@ public interface ITransactionService {
     boolean updateTransaction(Integer transactionId, TransactionRequest request);
 
     boolean deleteTransaction(Integer transactionId);
+
+    boolean isExceedBudget(TransactionRequest request);
 }

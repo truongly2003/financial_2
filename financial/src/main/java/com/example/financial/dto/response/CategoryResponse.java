@@ -3,6 +3,8 @@ package com.example.financial.dto.response;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.math.BigDecimal;
+
 @Data
 @Builder
 @AllArgsConstructor
@@ -16,4 +18,8 @@ public class CategoryResponse {
     String description;
     String icon;
     boolean defaultCategory;
+
+    private BigDecimal budgetLimit;
+    private BigDecimal budgetSpent;
+    private BigDecimal budgetRemaining;
 }

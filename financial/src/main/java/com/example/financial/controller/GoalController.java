@@ -23,13 +23,13 @@ public class GoalController {
     @GetMapping("/filter")
     public ResponseEntity<ApiResponse<List<GoalResponse>>> getAllBudgetByUserId(@RequestParam String userId) {
         List<GoalResponse> goalResponses = goalService.getAllGoalByUserId(userId);
-        return ResponseEntity.ok(new ApiResponse<>(200, "lấy danh sách ngân sách thành công", goalResponses));
+        return ResponseEntity.ok(new ApiResponse<>(200, "lấy danh sách mục tiêu thành công", goalResponses));
     }
 
     @GetMapping
     public ResponseEntity<ApiResponse<GoalResponse>> getBudgetById(@RequestParam Integer goalId) {
         GoalResponse goalResponse = goalService.getGoalById(goalId);
-        return ResponseEntity.ok(new ApiResponse<>(200, "lấy ngân sách theo id", goalResponse));
+        return ResponseEntity.ok(new ApiResponse<>(200, "lấy mục tiêu theo id", goalResponse));
     }
 
     @PostMapping

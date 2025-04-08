@@ -50,3 +50,11 @@ export const deleteWallet = async (id) => {
     console.error(error);
   }
 };
+export const transferWallet = async (data) => {
+  try {
+    const response = await httpRequest.post("/wallet/transfer", data);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+};

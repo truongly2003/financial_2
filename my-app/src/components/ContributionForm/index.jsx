@@ -10,8 +10,12 @@ import {
 import MoneyInput from "../ui/MoneyInput";
 import useAuth from "@/context/useAuth";
 import useNotification from "@/context/useNotification";
-
+import useWallet from "@/context/useWallet";
+import useBalance from "@/context/useBalance"
 const ContributionForm = ({ onClose, onSuccess, initialContribute }) => {
+  const { refreshBalance } = useBalance();
+  const {  fetchWallets } = useWallet();
+  // walletId
   const {userId}=useAuth()
   const { notify}=useNotification()
   const { id } = useParams();
@@ -41,6 +45,8 @@ const ContributionForm = ({ onClose, onSuccess, initialContribute }) => {
       notify(response.message, response.code === 200 ? "success" : "error");
       onClose();
       onSuccess();
+      fetchWallets();
+      refreshBalance();
     } catch (error) {
       console.log(error);
     }
@@ -53,6 +59,8 @@ const ContributionForm = ({ onClose, onSuccess, initialContribute }) => {
       notify(response.message, response.code === 200 ? "success" : "error");
       onClose();
       onSuccess();
+      fetchWallets();
+      refreshBalance();
     } catch (error) {
       console.log(error);
     }

@@ -4,18 +4,14 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class GoalContributionRequest {
-    Integer goalId;
-    String userId;
-    BigDecimal amount;
-    LocalDate contributionDate;
-    String description;
-    Integer walletId;
+public class WalletTransferRequest {
+    private Integer fromWalletId;
+    private Integer toWalletId;
+    private BigDecimal amount;
 }

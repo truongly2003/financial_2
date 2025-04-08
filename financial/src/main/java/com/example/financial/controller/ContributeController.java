@@ -35,6 +35,9 @@ public class ContributeController {
     @PostMapping
     ResponseEntity<ApiResponse<Boolean>> addContribute(@RequestBody GoalContributionRequest contributeRequest) {
         try {
+            if(!goalContribution.hasBalance(contributeRequest.getGoalId(), contributeRequest.getUserId(),contributeRequest.getAmount())){
+                return ResponseEntity.ok(new ApiResponse<>(202, "Số dư trong ví không đủ", false));
+            }
             boolean create = goalContribution.addContribute(contributeRequest);
             if (create) {
                 return ResponseEntity.ok(new ApiResponse<>(200, "Thêm đóng góp thành công", true));
@@ -50,6 +53,9 @@ public class ContributeController {
     @PutMapping
     ResponseEntity<ApiResponse<Boolean>> updateContribute(@RequestParam Integer contributeId, @RequestBody GoalContributionRequest contributeRequest) {
         try {
+            if(!goalContribution.hasBalance(contributeRequest.getGoalId(), contributeRequest.getUserId(),contributeRequest.getAmount())){
+                return ResponseEntity.ok(new ApiResponse<>(202, "Số dư trong ví không đủ", false));
+            }
             boolean update = goalContribution.updateContribute(contributeId, contributeRequest);
             if (update) {
                 return ResponseEntity.ok(new ApiResponse<>(200, "Cập nhật đóng góp thành công", true));

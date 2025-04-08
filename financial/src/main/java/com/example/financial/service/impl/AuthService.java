@@ -52,7 +52,7 @@ public class AuthService implements IAuthService {
     @NonFinal
     @Value("${spring.security.oauth2.client.registration.google.client-secret}")
     protected String GOOGLE_CLIENT_SECRET;
-    
+
     @NonFinal
     @Value("${spring.security.oauth2.client.registration.facebook.client-id}")
     protected String FACEBOOK_CLIENT_ID;

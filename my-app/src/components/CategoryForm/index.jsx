@@ -24,7 +24,7 @@ export default function CategoryForm({ onClose, onSuccess, initialCategory }) {
       icon: "",
     }
   );
-  console.log(categories)
+  
   const [selectedIcon, setSelectedIcon] = useState("");
   const handleChangeCategory = (e) => {
     setCategories({

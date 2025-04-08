@@ -6,6 +6,7 @@ import com.example.financial.dto.response.BudgetResponse;
 import com.example.financial.dto.response.WalletResponse;
 import com.example.financial.entity.Wallet;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public interface IWalletService {
@@ -22,4 +23,7 @@ public interface IWalletService {
     boolean updateWallet(Integer walletId, WalletRequest request);
 
     boolean deleteWallet(Integer budgetId);
+
+    void transfer(Integer fromWalletId, Integer toWalletId, BigDecimal amount);
+
 }

@@ -19,7 +19,7 @@ function Catalog() {
       console.error("Error fetching categories:", error);
     }
   }, [userId]);
-
+  // console.log(categories)
   useEffect(() => {
     fetchCategories();
   }, [fetchCategories]);

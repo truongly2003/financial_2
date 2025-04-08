@@ -21,7 +21,7 @@ export default function TransactionForm({
   const { userId } = useAuth();
   const { walletId, fetchWallets } = useWallet();
   const { notify } = useNotification();
-  const {refreshBalance} =useBalance()
+  const { refreshBalance } = useBalance();
   const [transaction, setTransactions] = useState(
     initialTransaction || {
       userId: userId,
@@ -52,7 +52,7 @@ export default function TransactionForm({
 
       notify(response.message, response.code === 200 ? "success" : "error");
       fetchWallets();
-      refreshBalance()
+      refreshBalance();
       onClose();
       onSuccess();
     } catch (error) {
@@ -63,11 +63,18 @@ export default function TransactionForm({
     if (!confirm("Bạn có chắc chắn xóa giao dịch này không")) return;
     try {
       const response = await deleteTransaction(transaction.id);
+      // if (response.code === 200) {
+      //   notify(response.message, "success");
+      // } else if (response.code === 201) {
+      //   notify(response.message, "error");
+      // } else {
+      //   notify(response.message, "error");
+      // }
       notify(response.message, response.code === 200 ? "success" : "error");
       onClose();
       onSuccess();
       fetchWallets();
-      refreshBalance()
+      refreshBalance();
     } catch (error) {
       console.log(error);
     }
@@ -82,15 +89,6 @@ export default function TransactionForm({
     <div className="fixed inset-0 flex items-center justify-center bg-gray-700 bg-opacity-50">
       <div className="bg-white p-4 rounded-lg shadow-lg w-[1200px] relative">
         <div className="grid grid-cols-6 gap-4 mt-3 ">
-          {/* Loại */}
-          <div className="col-span-1 ">
-            <label className="text-sm text-gray-600">Danh mục</label>
-            <CategoryDropdown
-              onSelectCategory={handleSelectCategory}
-              initialCategoryId={Number(transaction.categoryId)}
-            />
-          </div>
-
           {/* Ngày */}
           <div className="col-span-1">
             <label className="text-sm text-gray-600">Ngày</label>
@@ -102,25 +100,27 @@ export default function TransactionForm({
               onChange={handleChangeTransaction}
             />
           </div>
-
-          {/* Số tiền */}
-          <div className="col-span-2">
-            {/* <label className="text-sm text-gray-600">Số tiền</label>
-            <input
-              type="number"
-              className="border rounded p-2 w-full text-red-500"
-              name="amount"
-              value={transaction.amount}
-              onChange={handleChangeTransaction}
-            /> */}
+           {/* Số tiền */}
+           <div className="col-span-2">
             <MoneyInput
               name="amount"
               value={transaction.amount}
               onChange={handleChangeTransaction}
             />
           </div>
+          {/* Loại */}
+          <div className="col-span-3 ">
+            <label className="text-sm text-gray-600">Danh mục</label>
+            <CategoryDropdown
+              onSelectCategory={handleSelectCategory}
+              initialCategoryId={Number(transaction.categoryId)}
+            />
+          </div>
+        </div>
+        <div className="grid grid-cols-6 gap-4 mt-3">
+        
           {/* Lưu ý */}
-          <div className="col-span-2">
+          <div className="col-span-3">
             <label className="text-sm text-gray-600 h-[100px]">
               Lưu ý (tùy chọn)
             </label>
@@ -134,7 +134,6 @@ export default function TransactionForm({
             />
           </div>
         </div>
-
         {/* Buttons */}
         <div className="flex justify-end mt-4 gap-2">
           <button className="flex items-center bg-gray-200 p-2 rounded">

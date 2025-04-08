@@ -11,7 +11,7 @@ function Goal() {
   const [showFormGoal, setShowFormGoal] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
-  
+
   const filteredGoals = goal.filter((g) => {
     return (
       g.goalName.toLowerCase().includes(searchTerm.toLowerCase()) &&
@@ -69,48 +69,56 @@ function Goal() {
           <div className="col-span-1"></div>
         </div>
       </div>
-      <div className=" ">
-        <div className="bg-white shadow-md rounded-lg mt-4 p-4">
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-4">
-            {filteredGoals.map((goal, index) => {
-             const progress = Math.round((goal.currentAmount / goal.targetAmount) * 100);
+      <div className="mt-6 ">
+        <h3 className=" font-normal text-gray-700 mb-4">Mục tiêu</h3>
+        <div className=" ">
+          {filteredGoals.length === 0 ? (
+            <div className="text-center py-8 bg-gray-50 rounded-xl mt-2">
+              <p className="text-gray-500">Chưa có mục tiêu nào</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-4">
+              {filteredGoals.map((goal, index) => {
+                const progress = Math.round(
+                  (goal.currentAmount / goal.targetAmount) * 100
+                );
 
-              const progressColor =
-                goal.targetAmount >= goal.currentAmount
-                  ? "bg-red-500"
-                  : "bg-green-500";
+                const progressColor =
+                  goal.targetAmount >= goal.currentAmount
+                    ? "bg-red-500"
+                    : "bg-green-500";
 
-              return (
-                <Link
-                  key={index}
-                  className="bg-white shadow-md rounded-lg p-4 cursor-pointer"
-                  to={`/goal/goal-detail/${goal.id}`}
-                >
-                  <div className="space-y-2">
-                    <div>
-                      <p className="text-gray-500 text-xl font-bold">
-                        {goal.goalName}
-                      </p>
-                      <p className="text-xl font-bold text-red-500">
-                        Đã đạt được: {goal.currentAmount.toLocaleString()} đ
-                      </p>
-                      <p className="text-sm text-gray-900">
-                        Mục tiêu: {goal.targetAmount.toLocaleString()} đ
-                      </p>
+                return (
+                  <Link
+                    key={index}
+                    className="bg-[#f9e4d4] shadow-md rounded-lg p-4 cursor-pointer"
+                    to={`/goal/goal-detail/${goal.id}`}
+                  >
+                    <div className="space-y-2">
+                      <div>
+                        <p className="text-gray-500 text-xl font-bold">
+                          {goal.goalName}
+                        </p>
+                        <p className="text-xl font-bold text-red-500">
+                          Đã đạt được: {goal.currentAmount.toLocaleString()} đ
+                        </p>
+                        <p className="text-sm text-gray-900">
+                          Mục tiêu: {goal.targetAmount.toLocaleString()} đ
+                        </p>
+                      </div>
+                      {/* progress */}
+                      <ProgressBar
+                        progress={progress}
+                        progressColor={progressColor}
+                        startDate={goal.deadline}
+                        endDate={goal.deadline}
+                      />
                     </div>
-                    {/* progress */}
-                    <ProgressBar
-                      progress={progress}
-
-                      progressColor={progressColor}
-                      startDate={goal.deadline}
-                      endDate={goal.deadline}
-                    />
-                  </div>
-                </Link>
-              );
-            })}
-          </div>
+                  </Link>
+                );
+              })}
+            </div>
+          )}
         </div>
       </div>
       {/* showFormGoal */}

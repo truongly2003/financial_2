@@ -36,7 +36,6 @@ const AuthCallback = ({ provider }) => {
           localStorage.setItem("accessToken", response.accessToken);
           localStorage.setItem("refreshToken", response.refreshToken);
           localStorage.setItem("userId", response.userId);
-
           navigate("/");
         }
       } catch (error) {

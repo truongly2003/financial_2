@@ -2,6 +2,7 @@ package com.example.financial.controller;
 
 import com.example.financial.dto.request.SetDefaultWalletRequest;
 import com.example.financial.dto.request.WalletRequest;
+import com.example.financial.dto.request.WalletTransferRequest;
 import com.example.financial.dto.response.ApiResponse;
 import com.example.financial.dto.response.WalletResponse;
 import com.example.financial.entity.Wallet;
@@ -86,6 +87,20 @@ public class WalletController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new ApiResponse<>(500, "Lỗi hệ thống: " + e.getMessage(), false));
+        }
+    }
+
+    @PostMapping("/transfer")
+    public ResponseEntity<String> transferBetweenWallets(@RequestBody WalletTransferRequest request) {
+        try {
+            walletService.transfer(
+                    request.getFromWalletId(),
+                    request.getToWalletId(),
+                    request.getAmount()
+            );
+            return ResponseEntity.ok("Chuyển tiền thành công!");
+        } catch (Exception ex) {
+            return ResponseEntity.badRequest().body(ex.getMessage());
         }
     }
 }

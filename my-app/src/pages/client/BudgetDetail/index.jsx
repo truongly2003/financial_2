@@ -166,7 +166,7 @@ function BudgetDetail() {
             </div>
           </div>
           <div className="mt-4">
-            <span className="text-gray-600 ">Danh sách giao dịch</span>
+           
             <TransactionList
               transactionsToRender={groupedTransactions}
               setShowFormTransaction={setShowFormTransaction}

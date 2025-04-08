@@ -12,7 +12,9 @@ import com.example.financial.repository.UserRepository;
 import com.example.financial.repository.WalletRepository;
 import com.example.financial.service.IWalletService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -104,5 +106,20 @@ public class WalletService implements IWalletService {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public void transfer(Integer fromWalletId, Integer toWalletId, BigDecimal amount) {
+        Wallet fromWallet = walletRepository.findById(fromWalletId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Không tìm thấy ví nguồn"));
+        Wallet toWallet = walletRepository.findById(toWalletId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Không tìm thấy ví đích"));
+        if(fromWallet.getBalance().compareTo(toWallet.getBalance()) < 0) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Số dư trong ví không đủ");
+        }
+        fromWallet.setBalance(fromWallet.getBalance().subtract(amount));
+        toWallet.setBalance(toWallet.getBalance().add(amount));
+        walletRepository.save(fromWallet);
+        walletRepository.save(toWallet);
     }
 }
