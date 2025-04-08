@@ -14,4 +14,5 @@ public class UserRequest {
     String email;
     String phoneNumber;
     String accountType;
+    private String loginType;
 }

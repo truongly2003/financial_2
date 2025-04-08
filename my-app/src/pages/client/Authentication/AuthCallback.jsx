@@ -1,48 +1,59 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import LoadingModal from "@/components/LoadingModal";
+import useNotification from "@/context/useNotification";
+import useAuth from "@/context/useAuth";
+import { loginWithGoogle, loginWithFacebook } from "@/services/AuthService";
+import PropTypes from "prop-types";
 
-const AuthCallback = () => {
+const AuthCallback = ({ provider }) => {
+  const [searchParams] = useSearchParams();
+  const { notify } = useNotification();
+  const { login } = useAuth();
   const navigate = useNavigate();
-  const location = useLocation();
-  const [error, setError] = useState(null);
+  const [isProcessing, setIsProcessing] = useState(true);
 
   useEffect(() => {
-    const params = new URLSearchParams(location.search);
-    const accessToken = params.get("accessToken");
-    const refreshToken = params.get("refreshToken");
-
-    if (accessToken && refreshToken) {
-      // Lưu token vào localStorage
-      localStorage.setItem("accessToken", accessToken);
-      localStorage.setItem("refreshToken", refreshToken);
-      // Chuyển hướng tới dashboard
-      navigate("/dashboard");
-    } else {
-      setError("Không thể đăng nhập. Vui lòng thử lại.");
-      setTimeout(() => {
-        navigate("/");
-      }, 3000); // Redirect về login sau 3 giây
+    const code = searchParams.get("code");
+    const handledKey = `${provider}_oauth_handled`;
+    if (!code || sessionStorage.getItem(handledKey) === "true") {
+      return;
     }
-  }, [navigate, location]);
 
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full text-center">
-        {error ? (
-          <>
-            <h2 className="text-2xl font-bold text-red-600 mb-4">Lỗi đăng nhập</h2>
-            <p className="text-gray-600">{error}</p>
-            <p className="text-gray-500 mt-2">Đang chuyển hướng về trang đăng nhập...</p>
-          </>
-        ) : (
-          <>
-            <h2 className="text-2xl font-bold text-gray-800 mb-4">Đang xử lý...</h2>
-            <p className="text-gray-600">Vui lòng chờ trong giây lát.</p>
-          </>
-        )}
-      </div>
-    </div>
-  );
+    sessionStorage.setItem(handledKey, "true");
+    const handleOAuth = async () => {
+      setIsProcessing(true);
+      try {
+        let response;
+        if (provider === "google") {
+          response = await loginWithGoogle(code);
+        } else if (provider === "facebook") {
+          response = await loginWithFacebook(code);
+        }
+        if (response) {
+          notify("Đăng nhập thành công", "success");
+          login(response.accessToken);
+          localStorage.setItem("accessToken", response.accessToken);
+          localStorage.setItem("refreshToken", response.refreshToken);
+          localStorage.setItem("userId", response.userId);
+
+          navigate("/");
+        }
+      } catch (error) {
+        console.error(`${provider} OAuth error:`, error);
+        navigate("/login", { state: { error: "Đăng nhập thất bại" } });
+      } finally {
+        setIsProcessing(false);
+      }
+    };
+
+    handleOAuth();
+  }, [searchParams, provider, notify, login, navigate]);
+
+  return <LoadingModal isProcessing={isProcessing} />;
+};
+AuthCallback.propTypes = {
+  provider: PropTypes.oneOf(["google", "facebook"]),
 };
 
 export default AuthCallback;

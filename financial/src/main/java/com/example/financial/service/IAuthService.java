@@ -24,4 +24,6 @@ public interface IAuthService {
     RefreshTokenResponse refreshAccessToken(RefreshTokenRequest refreshToken);
 
     UserResponse getUser(String userId);
+    AuthResponse handleFacebookCallback(String code);
+
 }

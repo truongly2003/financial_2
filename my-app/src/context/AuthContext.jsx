@@ -20,6 +20,8 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem("accessToken");
     localStorage.removeItem("refreshToken");
     localStorage.removeItem("userId");
+    sessionStorage.removeItem("google_oauth_handled");
+    sessionStorage.removeItem("facebook_oauth_handled");
     navigate("/login");
   };
   const isAuthenticated = () => !!token;

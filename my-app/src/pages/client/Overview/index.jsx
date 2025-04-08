@@ -97,7 +97,7 @@ const Overview = () => {
         }
 
         const transactionResponse = await getAllTransactionsByUserIdAndFilterRange(userId, start, end,walletId);
-        console.log(transactionResponse)
+      
         setTransactions(transactionResponse.data || []);
       } catch (error) {
         console.error(error);

@@ -27,12 +27,17 @@ public class AuthController {
     public ResponseEntity<UserResponse> getUser(@RequestParam String userId) {
         return ResponseEntity.ok(authService.getUser(userId));
     }
-    @PostMapping("/callback")
+    @PostMapping("/callback/google")
     public ResponseEntity<?> callback(@RequestBody AuthCallbackRequest request){
         return ResponseEntity.ok(authService.handleGoogleCallback(request.getCode()));
     }
     @PostMapping("/refresh")
     public ResponseEntity<?> refreshToken(@RequestBody RefreshTokenRequest request) {
        return ResponseEntity.ok(authService.refreshAccessToken(request));
+    }
+
+    @PostMapping("/callback/facebook")
+    public ResponseEntity<?> callbackFacebook(@RequestBody AuthCallbackRequest request){
+        return ResponseEntity.ok(authService.handleFacebookCallback(request.getCode()));
     }
 }

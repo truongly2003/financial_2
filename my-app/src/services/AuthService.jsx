@@ -64,7 +64,21 @@ export const loginWithEmail = async (data) => {
 export const loginWithGoogle = async (code) => {
   try {
     const response = await httpRequest.post(
-      "/auth/callback",
+      "/auth/callback/google",
+      { code },
+      {
+        headers: { "Content-Type": "application/json" },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+export const loginWithFacebook = async (code) => {
+  try {
+    const response = await httpRequest.post(
+      "/auth/callback/facebook",
       { code },
       {
         headers: { "Content-Type": "application/json" },

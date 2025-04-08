@@ -15,8 +15,9 @@ const routes={
     SignUp: "/signup",
     LoginPage: "/loginPage",
     HomePage: "/homePage",
-    Redirect:"oauth2/redirect",
-    Auth: "/auth/callback",
+    // oauth
+    AuthCallBackGoogle: "/oauth2/callback/google",
+    AuthCallBackFacebook: "/oauth2/callback/facebook",    
     // settings
     Profile:'/profile',
     Wallet:'/wallet',

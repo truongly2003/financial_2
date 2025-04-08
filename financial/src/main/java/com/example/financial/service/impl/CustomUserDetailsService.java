@@ -27,7 +27,15 @@ public class CustomUserDetailsService implements UserDetailsService {
                     "",
                     new ArrayList<>()
             );
-        } else {
+        } else if ("facebook".equalsIgnoreCase(user.getLoginType())) {
+            return new org.springframework.security.core.userdetails.User(
+                    user.getEmail(),
+                    "",
+                    new ArrayList<>()
+            );
+        }
+
+        else {
             return new org.springframework.security.core.userdetails.User(
                     user.getEmail(),
                     user.getPassword(),

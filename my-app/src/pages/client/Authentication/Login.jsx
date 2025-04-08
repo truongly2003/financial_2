@@ -12,11 +12,11 @@ import { loginWithEmail } from "@/services/AuthService";
 import useAuth from "@/context/useAuth";
 import useNotification from "@/context/useNotification";
 
-import { googleConfig } from "@/configs/loginConfig";
+// import { googleConfig } from "@/configs/loginConfig";
 import axios from "axios";
 
 function Login() {
-  const { clientId } = googleConfig;
+  // const { clientId } = googleConfig;
   // authUri
   const { login } = useAuth();
   const { notify } = useNotification();
@@ -24,7 +24,7 @@ function Login() {
     email: "",
     password: "",
   });
- 
+
   const navigate = useNavigate();
   const handleChange = (e) => {
     setData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -48,31 +48,31 @@ function Login() {
     }
   };
   // login google
-  const handleLoginWithGoogle = async() => {
-    // const REDIRECT_URI = "http://localhost:5173/oauth2/redirect";
-    // const SCOPE = "email profile";
-    // const googleAuthUrl =
-    //   `https://accounts.google.com/o/oauth2/v2/auth?` +
-    //   `client_id=${clientId}` +
-    //   `&redirect_uri=${encodeURIComponent(REDIRECT_URI)}` +
-    //   `&response_type=code` +
-    //   `&scope=${encodeURIComponent(SCOPE)}` +
-    //   `&access_type=offline` +
-    //   `&prompt=select_account`;
-    // console.log("Generated Google Auth URL:", googleAuthUrl);
+  const handleLoginWithGoogle = async () => {
     try {
-      // Gọi backend của bạn để lấy URL Google OAuth2
-      const response = await axios.get("http://localhost:8080/api/google/getlogin");
-      console.log(response)
-
-      // Chuyển hướng người dùng đến URL OAuth2 của Google
+      const response = await axios.get(
+        "http://localhost:8080/api/oauth/google"
+      );
+      
       window.location.href = response.data.authUrl;
-  } catch (error) {
+    } catch (error) {
       console.error("Lỗi khi gọi backend để đăng nhập với Google", error);
-  }
-    // window.location.href = googleAuthUrl;
+    }
   };
-  // login facebook
+  // // login facebook
+  const handleLoginWithFacebook = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:8080/api/oauth/facebook"
+      );
+
+      const { authUrl } = response.data;
+      window.location.href = authUrl;
+    } catch (error) {
+      console.error("Lỗi khi gọi backend để đăng nhập với Facebook", error);
+    }
+  };
+
   return (
     <div className="flex h-screen items-center justify-center bg-[#f9e4d4]">
       <div className="w-full max-w-md bg-[#ff6f61] p-6 rounded-lg shadow-md">
@@ -132,7 +132,10 @@ function Login() {
               >
                 <Google />
               </button>
-              <button className="p-2 bg-white text-[#ff6f61] rounded hover:bg-[#f9e4d4]">
+              <button
+                className="p-2 bg-white text-[#ff6f61] rounded hover:bg-[#f9e4d4]"
+                onClick={handleLoginWithFacebook}
+              >
                 <Facebook />
               </button>
               <button className="p-2 bg-white text-[#ff6f61] rounded hover:bg-[#f9e4d4]">
