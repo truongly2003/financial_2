@@ -11,7 +11,9 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class NotificationEvent {
     private String userId;
+    private String title;
     private String message;
     private String type;
     private String link;
+
 }

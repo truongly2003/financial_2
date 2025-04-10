@@ -27,8 +27,12 @@ public class Notification {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+
     @Lob
-    @Column(name = "message", nullable = false)
+    @Column(name = "title", nullable = true)
+    private String title;
+    @Lob
+    @Column(name = "message", nullable = true)
     private String message;
 
     @ColumnDefault("0")
@@ -36,7 +40,7 @@ public class Notification {
     private Boolean readStatus;
 
     @Lob
-    @Column(name = "type", nullable = false)
+    @Column(name = "type", nullable = true)
     private String type;
 
     @Lob
@@ -47,7 +51,7 @@ public class Notification {
     @Column(name = "created_at", nullable = true)
     private LocalDateTime createdAt;
 
-  
+
 
 
 }

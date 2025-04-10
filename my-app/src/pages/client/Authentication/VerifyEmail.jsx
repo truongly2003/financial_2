@@ -30,7 +30,7 @@ function VerifyEmail() {
         setIsCheck(false)
         setMessage(response.data.message);
         notify(response.data.message, "success");
-        setTimeout(() => navigate("/login"), 4000);
+         navigate("/login")
       }
     } catch (error) {
       setIsError(true);

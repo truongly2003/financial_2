@@ -88,6 +88,12 @@ function Profile() {
          notify(response.message, response.code === 200 ? "success" : "error");
          setIsDeleteModalOpen(false);
          navigate("/login");
+         
+         localStorage.removeItem("accessToken");
+         localStorage.removeItem("refreshToken");
+         localStorage.removeItem("userId");
+         sessionStorage.removeItem("google_oauth_handled");
+         sessionStorage.removeItem("facebook_oauth_handled");
        } catch (error) {
          console.log(error);
        }

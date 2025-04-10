@@ -8,10 +8,10 @@ import {
 import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
-export default function NotificationDropdown({onClose}) {
+export default function NotificationDropdown({ onClose }) {
   const { userId } = useAuth();
   const [notifications, setNotifications] = useState([]);
-  const [read,setRead]=useState(false)
+  const [read, setRead] = useState(false);
   const navigate = useNavigate();
   const fetchNotifications = useCallback(async () => {
     const res = await getAllNotificationByUserId(userId);
@@ -61,25 +61,24 @@ export default function NotificationDropdown({onClose}) {
   const handleMarkRead = async () => {
     try {
       await markReadNotification(userId);
-      setRead(true)
-      fetchNotifications()
+      setRead(true);
+      fetchNotifications();
     } catch (error) {
       console.error(error);
     }
   };
-  
-  const handleNotificationClick=(notifiaction)=>{
-    if(notifiaction.link){
-      navigate(`/${notifiaction.link}`)
+
+  const handleNotificationClick = (notifiaction) => {
+    if (notifiaction.link) {
+      navigate(`/${notifiaction.link}`);
     }
-    onClose()
+    onClose();
     try {
-      markReadNotificationDetail(notifiaction.id)
+      markReadNotificationDetail(notifiaction.id);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  
-  }
+  };
   return (
     <div className="relative">
       {/* Dropdown */}
@@ -87,7 +86,10 @@ export default function NotificationDropdown({onClose}) {
         <div>
           <div className="p-3 font-semibold text-gray-700 flex justify-between bg-gray-100 border-b border-gray-200">
             <span>Thông báo</span>
-            <button className="ml-2 text-sm text-blue-600 hover:underline" onClick={handleMarkRead}>
+            <button
+              className="ml-2 text-sm text-blue-600 hover:underline"
+              onClick={handleMarkRead}
+            >
               {read ? "Đã xem" : "Đánh dấu đã xem"}
             </button>
           </div>
@@ -97,7 +99,7 @@ export default function NotificationDropdown({onClose}) {
                 <li
                   key={index}
                   className="flex items-start px-4 py-3 text-gray-800 hover:bg-gray-100 cursor-pointer border-b border-gray-100 last:border-b-0"
-                  onClick={()=>handleNotificationClick(notif)}
+                  onClick={() => handleNotificationClick(notif)}
                 >
                   <div className="flex items-center w-full">
                     {/* Icon bo tròn với màu động */}
@@ -123,6 +125,7 @@ export default function NotificationDropdown({onClose}) {
                     </div>
                     {/* Nội dung thông báo */}
                     <div className="flex-1">
+                      <p className="text-sm text-orange-400">{notif.title}</p>
                       <p className="text-sm text-gray-800">{notif.message}</p>
                       <p className="text-xs text-gray-500 mt-1">
                         {/* {new Date(notif.createdAt).toLocaleString("vi-VN")} */}
@@ -143,6 +146,6 @@ export default function NotificationDropdown({onClose}) {
     </div>
   );
 }
-NotificationDropdown.propTypes={
-  onClose: PropTypes.func
-}
+NotificationDropdown.propTypes = {
+  onClose: PropTypes.func,
+};

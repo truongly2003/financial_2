@@ -64,6 +64,9 @@ httpRequest.interceptors.response.use(
         localStorage.removeItem("accessToken");
         localStorage.removeItem("refreshToken");
         localStorage.removeItem("userId");
+
+        sessionStorage.removeItem("google_oauth_handled");
+        sessionStorage.removeItem("facebook_oauth_handled");
         if (typeof window !== "undefined") window.location.href = "/login";
         return Promise.reject(refreshError);
       } finally {

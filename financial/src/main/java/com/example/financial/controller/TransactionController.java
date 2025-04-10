@@ -3,6 +3,8 @@ package com.example.financial.controller;
 import com.example.financial.dto.request.TransactionRequest;
 import com.example.financial.dto.response.ApiResponse;
 import com.example.financial.dto.response.TransactionResponse;
+import com.example.financial.repository.TransactionRepository;
+import com.example.financial.repository.UserRepository;
 import com.example.financial.service.ITransactionService;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
@@ -17,9 +19,11 @@ import java.util.List;
 
 public class TransactionController {
     private final ITransactionService transactionService;
-
-    public TransactionController(ITransactionService transactionService) {
+    private final UserRepository userRepository;
+    public TransactionController(ITransactionService transactionService, UserRepository userRepository) {
         this.transactionService = transactionService;
+
+        this.userRepository = userRepository;
     }
 //    lấy danh sách giao dịch user id và walletid
     @GetMapping("/filter")
@@ -107,5 +111,13 @@ public class TransactionController {
         List<TransactionResponse> transactions = transactionService.getAllTransactionByUserIdAndBudgetId(userId, budgetId);
         return ResponseEntity.ok(new ApiResponse<>(200, "success", transactions));
     }
+
+
+    @GetMapping("/test")
+    public ResponseEntity<ApiResponse<List<String>>> test() {
+        List<String> userIds = userRepository.findDistinctUserIds();
+        return ResponseEntity.ok(new ApiResponse<>(200, "success", userIds));
+    }
+
 
 }

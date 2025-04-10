@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 public class NotifyResponse {
     Integer id;
     String userId;
+    String title;
     String message;
     String readStatus;
     String type;

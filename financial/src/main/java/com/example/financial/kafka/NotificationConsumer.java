@@ -27,6 +27,7 @@ public class NotificationConsumer {
                 .orElseThrow(() -> new RuntimeException("User not found"));
         Notification n = Notification.builder()
                 .user(user)
+                .title(event.getTitle())
                 .message(event.getMessage())
                 .type(event.getType())
                 .link(event.getLink())
