@@ -4,7 +4,7 @@ import useBalance from "@/context/useBalance";
 
 function BalanceCard() {
   const { balance } = useBalance();
-  const [isVisible, setIsVisible] = useState(true);
+  const [isVisible, setIsVisible] = useState(false);
   return (
     <div className="flex justify-between items-center p-4 border-2  bg-white rounded-lg max-w-sm">
       <div>

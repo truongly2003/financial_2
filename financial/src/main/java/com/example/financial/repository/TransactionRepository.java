@@ -77,4 +77,11 @@ public interface TransactionRepository extends JpaRepository<Transaction, Intege
             @Param("categoryId") Integer categoryId,
             @Param("start") LocalDate start,
             @Param("end") LocalDate end);
+
+
+    @Query("SELECT DISTINCT t.user.userId FROM Transaction t")
+    List<String> findDistinctUserIds();
+
+    // kiểm tra giao dịch hôm nay
+    boolean existsByUserUserIdAndTransactionDate(String userId, LocalDate date);
 }

@@ -1,17 +1,20 @@
 package com.example.financial.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
 
+@Entity
 @Getter
 @Setter
-@Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Table(name = "notifications")
 public class Notification {
     @Id
@@ -32,8 +35,19 @@ public class Notification {
     @Column(name = "read_status")
     private Boolean readStatus;
 
-    @ColumnDefault("current_timestamp()")
-    @Column(name = "created_at", nullable = false)
-    private Instant createdAt;
+    @Lob
+    @Column(name = "type", nullable = false)
+    private String type;
+
+    @Lob
+    @Column(name = "link", nullable = true)
+    private String link;
+
+    @Lob
+    @Column(name = "created_at", nullable = true)
+    private LocalDateTime createdAt;
+
+  
+
 
 }

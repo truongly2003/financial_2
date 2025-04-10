@@ -24,4 +24,7 @@ public interface BudgetRepository extends JpaRepository<Budget, Integer> {
             String userId, Integer categoryId, LocalDate startDate, LocalDate endDate);
 
 
+    List<Budget> findByUserUserId(String userId);
+
+    List<Budget> findByUserUserIdAndEndDateBetween(String userId, LocalDate now, LocalDate localDate);
 }

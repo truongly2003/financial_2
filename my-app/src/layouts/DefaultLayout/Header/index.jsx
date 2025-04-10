@@ -10,6 +10,7 @@ const Header = () => {
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
+
   };
   const { isAuthenticated, logout } = useAuth();
   return (
@@ -59,7 +60,7 @@ const Header = () => {
                 </button>
                 {isShowNotifications && (
                   <div className="absolute right-0  w-64 bg-white  rounded-md shadow-lg transition-all duration-200">
-                    <NotificationDropdown />
+                    <NotificationDropdown onClose={() => setIsShowNotifications(false)}/>
                   </div>
                 )}
               </div>

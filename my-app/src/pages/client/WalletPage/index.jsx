@@ -20,7 +20,7 @@ function WalletPage() {
     setOpenMenuId(null);
   };
   const [transferWalletId, setTransferWalletId] = useState(null);
-  const [isVisible, setIsVisible] = useState(true);
+  const [isVisible, setIsVisible] = useState(false);
   return (
     <div className="min-h-screen ">
       <h1>Danh sách ví </h1>
