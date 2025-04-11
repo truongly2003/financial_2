@@ -43,7 +43,7 @@ export default function CategoryDropdown({
     }
     fetchCategories();
   }, [initialCategoryId, userId]);
-
+  console.log(categories)
   const toggleDropdown = () => setIsOpen(!isOpen);
 
   const handleSelectType = (type) => {
@@ -118,7 +118,7 @@ export default function CategoryDropdown({
                     {/* Hiển thị ngân sách nếu có */}
                   </div>
                   <div>
-                    {category.budgetLimit && category.budgetSpent && category.budgetRemaining
+                    {category.budgetLimit  && category.budgetRemaining
                     
                     && (
                       <span className="px-4">Bạn có thể chi tiêu: {category.budgetRemaining.toLocaleString("vi-VN")} đ</span>

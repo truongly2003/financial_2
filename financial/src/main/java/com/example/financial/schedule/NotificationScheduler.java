@@ -31,12 +31,12 @@ public class NotificationScheduler {
     private final KafkaTemplate<String, String> kafkaTemplate;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    // lặp qua từng người dùng
-    @Scheduled(cron = "0 0 8 * * *") // 8h sáng
+
+//    @Scheduled(cron = "0 0 8 * * *") // 8h sáng
 //    @Scheduled(cron = "*/30 * * * * *")
 //    @Scheduled(cron = "0 0/30 * * * *")
 //    @Scheduled(cron = "0 * * * * *")  //1 phút
-
+    // lặp qua từng người dùng
     public void processNotifications() throws JsonProcessingException {
         List<String> userIds = userRepository.findDistinctUserIds();
         log.info(userIds.toString());
