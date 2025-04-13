@@ -54,13 +54,55 @@
   - Mục tiêu sắp đến hạn kết thúc.
 
 
-
+# Hướng dẫn cài đặt
+## 1. Cài đặt Frontend
+1. Mở terminal.
+2. Clone dự án từ GitHub:
+    ```bash
+    git clone https://github.com/truongly2003/financial_2.git
+    ```
+3. Chuyển vào thư mục frontend:
+    ```bash
+    cd my-app
+    ```
+4. Cài đặt các thư viện cần thiết:
+    ```bash
+    npm install
+    ```
+5. Chạy chương trình:
+    ```bash
+    npm run dev
+    ```
+## 2. Cài đặt Backend
+1. Mở XAMPP và bật MySQL.
+2. Tạo cơ sở dữ liệu MySQL cho backend.
+3. Mở terminal trong thư mục `source` của backend.
+4. Tải và cài đặt IntelliJ IDEA.
+5. Chuyển vào thư mục backend:
+    ```bash
+    cd financial
+    ```
+6. Mở IntelliJ IDEA:
+    ```bash
+    idea .
+    ```
+7. Tạo các biến môi trường:
+   - **Email password**: ``
+   - **Email username**: ``
+   - **Google client id**: `
+   - **Google client secret**: 
+   - **Secret**: ``
+   - **Facebook client id**: ``
+   - **Facebook client secret**: ``
+8. Mở terminal trong IntelliJ IDEA và chạy lệnh:
+    ```bash
+    mvn spring-boot:run
 ## Giao diện người dùng
 
 ## 🛠️ Công nghệ sử dụng
 
-- **Frontend**: ReactJS, Tailwind CSS  
-- **Backend**: Spring Boot  
+- **Frontend**: ReactJS, Tailwind CSS, Axios
+- **Backend**: Spring Boot, Spring Security, Spring Data Jpa, Spring kafka  
 - **Database**: MySQL   
 - **Authentication**: JWT, OAuth2  
 - **Tool**: Postman, IntelliJ IDEA, VS Code
