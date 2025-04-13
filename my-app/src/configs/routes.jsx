@@ -27,8 +27,6 @@ const routes={
 
     ForgetPassword:'/forgot-password',
     ResetPassword:'/reset-password',
-
-
 }
 export default routes
 

@@ -35,7 +35,8 @@ public class NotificationScheduler {
 //    @Scheduled(cron = "0 0 8 * * *") // 8h sáng
 //    @Scheduled(cron = "*/30 * * * * *")
 //    @Scheduled(cron = "0 0/30 * * * *")
-//    @Scheduled(cron = "0 * * * * *")  //1 phút
+@Scheduled(fixedRate = 30000)
+//1 phút
     // lặp qua từng người dùng
     public void processNotifications() throws JsonProcessingException {
         List<String> userIds = userRepository.findDistinctUserIds();
@@ -71,7 +72,7 @@ public class NotificationScheduler {
         for (Budget b : budgets) {
             BigDecimal spent = transactionRepository.sumAmountByUserIdAndCategoryIdAndTransactionDateBetween(b.getUser().getUserId(),b.getCategory().getId(),b.getStartDate(),b.getEndDate());
             if (spent.compareTo(b.getAmountLimit().multiply(BigDecimal.valueOf(0.9))) >= 0) {
-                send(userId, "Ngân sách","Ngân sách \"" +b.getBudgetName() + "\" đã dùng hơn 90%", "budget",  "budget/budget-detail" + b.getId());
+                send(userId, "Ngân sách","Ngân sách \"" +b.getBudgetName() + "\" đã dùng hơn 90%", "budget",  "budget/budget-detail/" + b.getId());
             }
         }
     }
@@ -79,7 +80,7 @@ public class NotificationScheduler {
     private void checkExpiringBudgets(String userId) throws JsonProcessingException {
         List<Budget> expiring = budgetRepository.findByUserUserIdAndEndDateBetween(userId, LocalDate.now(), LocalDate.now().plusDays(3));
         for (Budget b : expiring) {
-            send(userId, "Ngân sách","Ngân sách \""+b.getBudgetName() + "\" sắp hết hạn",  "budget",  "budget/budget-detail" + b.getId());
+            send(userId, "Ngân sách","Ngân sách \""+b.getBudgetName() + "\" sắp hết hạn",  "budget",  "budget/budget-detail/" + b.getId());
         }
     }
 }

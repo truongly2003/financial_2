@@ -9,17 +9,14 @@ import Catalog from "@client/Catalog";
 import Budget from "@client/Budget";
 
 import Goal from "@/pages/client/Goal";
-// authentication
+
 import Login from "@client/Authentication/Login";
 import SignUp from "@client/Authentication/SignUp";
 import Profile from "@/pages/client/Profile";
 import WalletPage from "@/pages/client/WalletPage";
 import BudgetDetail from "@/pages/client/BudgetDetail";
 import GoalDetail from "@/pages/client/GoalDetail";
-// import LoginPage from "@/pages/client/Authentication/LoginPage";
-// import AuthCallback from "@/pages/client/Authentication/AuthCallback";
-// import HomePage from "@/pages/client/Authentication/HomePage";
-// import RedirectPage from "@/pages/client/Authentication/RedirectPage";
+
 import AuthCallback from "@/pages/client/Authentication/AuthCallback";
 import Home from "@/pages/client/Home";
 import TransactionLayout from "@/layouts/TransactionLayout";
@@ -52,14 +49,8 @@ export const publicRoutes = [
     component: () => <AuthCallback provider="facebook" />,
     layout: null,
   },
-
-  // { path: routes.AuthCallBackFacebook, component: AuthCallback, layout: null },
-
-  // // { path: routes.HomePage, component: HomePage, layout: null },
-  // { path: routes.Redirect, component: RedirectPage, layout: null },
 ];
 
-// Private Routes (cần đăng nhập)
 export const privateRoutes = [
   // { path: routes.Transaction, component: Transaction, layout: DefaultLayout },
   { path: routes.Overview, component: Overview, layout: TransactionLayout },
