@@ -31,7 +31,7 @@ const AuthCallback = ({ provider }) => {
           response = await loginWithFacebook(code);
         }
         if (response) {
-          notify("Đăng nhập thành công", "success");
+          notify("Login successfully", "success");
           login(response.accessToken);
           localStorage.setItem("accessToken", response.accessToken);
           localStorage.setItem("refreshToken", response.refreshToken);

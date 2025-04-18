@@ -8,12 +8,12 @@ const TransactionList = ({
   return (
     <div className="mt-6">
       <div className="space-y-2 h-vh">
-        <h3 className="font-normal text-gray-700  mb-4 ">
-          Danh sách giao dịch 
+        <h3 className="text-lg font-semibold text-purple-500 mb-4 ">
+        Transaction list
         </h3>
         {Object.keys(transactionsToRender).length === 0 ? (
           <div className="text-center py-8 bg-gray-50 rounded-xl mt-4">
-            <p className="text-gray-500">Chưa có giao dịch nào</p>
+            <p className="text-gray-500">No transactions yet</p>
           </div>
         ) : (
           Object.entries(transactionsToRender).map(([date, data], index) => (
@@ -22,10 +22,10 @@ const TransactionList = ({
                 <p className="text-gray-600 font-bold">{date}</p>
                 <div className="text-sm text-gray-500 flex gap-4">
                   <span className="font-bold text-red-500">
-                    Chi tiêu: - {data.totalExpense.toLocaleString()} đ
+                    Expense: - {data.totalExpense.toLocaleString()} đ
                   </span>
-                  <span className="font-bold text-green-500">
-                    Thu nhập: + {data.totalIncome.toLocaleString()} đ
+                  <span className="font-bold text-purple-500">
+                    Income: + {data.totalIncome.toLocaleString()} đ
                   </span>
                 </div>
               </div>

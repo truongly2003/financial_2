@@ -1,19 +1,16 @@
 import routes from "@configs/routes";
 // layout
 import DefaultLayout from "@layouts/DefaultLayout";
-import ProfileLayout from "@/layouts/ProfileLayout";
 // client
 import Transaction from "@client/Transaction";
 import Overview from "@client/Overview";
-import Catalog from "@client/Catalog";
 import Budget from "@client/Budget";
 
 import Goal from "@/pages/client/Goal";
 
 import Login from "@client/Authentication/Login";
 import SignUp from "@client/Authentication/SignUp";
-import Profile from "@/pages/client/Profile";
-import WalletPage from "@/pages/client/WalletPage";
+
 import BudgetDetail from "@/pages/client/BudgetDetail";
 import GoalDetail from "@/pages/client/GoalDetail";
 
@@ -24,6 +21,9 @@ import CheckEmail from "@/pages/client/Authentication/CheckEmail";
 import VerifyEmail from "@/pages/client/Authentication/VerifyEmail";
 import ForgotPassword from "@/pages/client/Password/ForgotPassword";
 import ResetPassword from "@/pages/client/Password/ResetPassword";
+import Groups from "@/pages/client/Groups";
+import GroupDetail from "@/pages/client/GroupDetail";
+import Setting from "@/pages/client/Setting";
 export const publicRoutes = [
   { path: routes.Home, component: Home, layout: DefaultLayout },
   {
@@ -54,8 +54,13 @@ export const publicRoutes = [
 export const privateRoutes = [
   // { path: routes.Transaction, component: Transaction, layout: DefaultLayout },
   { path: routes.Overview, component: Overview, layout: TransactionLayout },
-  { path: routes.Catalog, component: Catalog, layout: ProfileLayout },
+  { path: routes.Setting, component: Setting, layout: TransactionLayout },
+
+  { path: routes.GroupDetail, component: GroupDetail, layout: TransactionLayout },
+
   { path: routes.Budget, component: Budget, layout: TransactionLayout },
+  { path: routes.Groups, component: Groups, layout: TransactionLayout },
+
   {
     path: routes.BudgetDetail,
     component: BudgetDetail,
@@ -63,6 +68,6 @@ export const privateRoutes = [
   },
   { path: routes.Goal, component: Goal, layout: TransactionLayout },
   { path: routes.GoalDetail, component: GoalDetail, layout: TransactionLayout },
-  { path: routes.Profile, component: Profile, layout: ProfileLayout },
-  { path: routes.Wallet, component: WalletPage, layout: ProfileLayout },
+  
+
 ];

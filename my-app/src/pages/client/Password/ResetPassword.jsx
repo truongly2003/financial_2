@@ -13,7 +13,7 @@ function ResetPassword() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const handleSubmit = async () => {
     if (password !== confirmPassword) {
-      notify("Mật khẩu không khớp", "error");
+      notify("Passwords do not match", "error");
       return;
     }
     try {
@@ -27,17 +27,17 @@ function ResetPassword() {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen bg-[#f9e4d4]">
+    <div className="flex justify-center items-center h-screen bg-gray-100">
       <div className="w-full max-w-md bg-white p-6 rounded-lg shadow-md">
         <h2 className="text-center text-xl font-semibold mb-4">
-          Đặt lại mật khẩu
+        Reset password
         </h2>
         <div>
           <div className="mb-3">
             <input
               type="password"
               className="w-full p-2 border rounded"
-              placeholder="Nhập mật khẩu mới"
+              placeholder="Enter new password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
@@ -46,16 +46,16 @@ function ResetPassword() {
             <input
               type="password"
               className="w-full p-2 border rounded"
-              placeholder="Xác nhận mật khẩu"
+              placeholder="Confirm password"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
             />
           </div>
           <button
             onClick={handleSubmit}
-            className="w-full py-2 bg-[#ff6f61] text-white rounded hover:bg-[#ff4a38]"
+            className="mt-4 w-full bg-purple-500 text-black py-2 rounded font-semibold "
           >
-            Đặt lại mật khẩu
+            Reset password
           </button>
         </div>
       </div>

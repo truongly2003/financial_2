@@ -14,7 +14,7 @@ function ForgotPassword() {
   const handleSubmit = async () => {
    
     if (!email) {
-      notify("Vui lòng nhập email", "error");
+      notify("Please enter email", "error");
       return;
     }
     setIsProcessing(true);
@@ -23,33 +23,33 @@ function ForgotPassword() {
       notify(response.message, response.code === 200 ? "success" : "error");
     } catch (error) {
       console.log(error);
-      notify("Có lỗi xảy ra, vui lòng thử lại.", "error");
+      notify("An error occurred, please try again..", "error");
     } finally {
       setIsProcessing(false);
     }
   };
 
   return (
-    <div className="flex justify-center items-center h-screen bg-[#f9e4d4]">
+    <div className="flex justify-center items-center h-screen bg-gray-100">
       <div className="w-full max-w-md bg-white p-6 rounded-lg shadow-md">
         <h2 className="text-center text-xl font-semibold mb-4">
-          Quên mật khẩu
+          Forget password
         </h2>
         <div>
           <div className="mb-3">
             <input
               type="email"
               className="w-full p-2 border rounded"
-              placeholder="Nhập email của bạn"
+              placeholder="Enter email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
           </div>
           <button
             onClick={ handleSubmit}
-            className="w-full py-2 bg-[#ff6f61] text-white rounded hover:bg-[#ff4a38]"
+          className="mt-4 w-full bg-purple-500 text-black py-2 rounded font-semibold "
           >
-            Gửi yêu cầu
+          Send request
           </button>
         </div>
       </div>

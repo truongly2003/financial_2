@@ -1,4 +1,3 @@
-import { Wallet } from "lucide-react";
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import useWallet from "@/context/useWallet";
@@ -23,13 +22,12 @@ function WalletPage() {
   const [isVisible, setIsVisible] = useState(false);
   return (
     <div className="min-h-screen ">
-      <h1>Danh sách ví </h1>
-      <div className="bg-gray-100 shadow-md  mx-4 mt-4 p-4">
-        <div className="max-w-4xl mx-auto">
+      <div className="  mt-4">
+        <div className="">
           {/* Tiêu đề và tổng số dư */}
-          <div className="mb-6">
-            <div className="bg-white p-4 rounded-lg shadow">
-              <p className="text-gray-600">Tổng số dư</p>
+          <div className="mb-6 ">
+            <div className="bg-white p-4 rounded-lg shadow border">
+              <p className="text-purple-600">Total Balance</p>
               <div className="flex justify-between">
                 <p className="text-3xl font-semibold">
                   {/* {balance.toLocaleString("vi-VN")} VND */}
@@ -43,39 +41,51 @@ function WalletPage() {
               </div>
             </div>
           </div>
-          <button
-            className="w-[100px] bg-white text-black font-semibold py-2 px-3 rounded-sm"
-            onClick={() => {
-              setShowFormWallet(true);
-              setEditingWallet(null);
-            }}
-          >
-            Thêm ví
-          </button>
+
+          <div className="flex justify-between items-center mb-6">
+            <h2 className="text-xl font-semibold text-purple-600">
+              My Wallets
+            </h2>
+            <button
+              className="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700"
+              onClick={() => {
+                setShowFormWallet(true);
+                setEditingWallet(null);
+              }}
+            >
+              Create New Wallet
+            </button>
+          </div>
           {/* Danh sách ví */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
             {wallets.map((wallet) => (
               <div
                 key={wallet.id}
-                className="bg-white p-4 rounded-lg gap-3 shadow hover:shadow-md transition-shadow relative flex items-center"
+                className="bg-white p-4 rounded-lg gap-3 border shadow hover:shadow-md transition-shadow relative flex items-center"
               >
-                <div className="bg-[#e3dac9] p-3 rounded-lg">
-                  <Wallet size={26} color="#8b5e3c" />
-                </div>
+                   <div className="bg-purple-300 p-2 rounded-full">
+            <svg
+              className="w-8 h-8 text-blue-600"
+              fill="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path d="M2 7c0-1.1.9-2 2-2h16a2 2 0 0 1 2 2v2H2V7zm0 4h20v6a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-6zm14 2a1 1 0 1 0 0 2h2a1 1 0 1 0 0-2h-2z" />
+            </svg>
+          </div>
                 <div className="flex-1">
                   <p
                     className={`text-sm ${
-                      walletId === wallet.id ? "text-gray-500" : "text-gray-300"
+                      walletId === wallet.id ? "text-purple-500" : "text-gray-300"
                     }`}
                   >
                     {wallet.walletName}
                     {walletId === wallet.id && (
                       <span className="ml-2 text-green-500 text-xs">
-                        [Mặc định]
+                        [Default]
                       </span>
                     )}
                   </p>
-                  <p className="text-gray-600">
+                  <p className="text-purple-500 text-xl">
                     {wallet.balance.toLocaleString("vi-VN")} {wallet.currency}
                   </p>
                 </div>
@@ -87,7 +97,7 @@ function WalletPage() {
                     ⋮
                   </button>
                   {openMenuId === wallet.id && (
-                    <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10">
+                    <div className="absolute right-0 mt-2 w-48 bg-white border rounded-md shadow-lg z-10">
                       <button
                         className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                         onClick={() => handleSetDefaultWallet(wallet.id)}

@@ -6,6 +6,7 @@ const routes={
     Budget: '/budget',
     BudgetDetail: '/budget/budget-detail/:id',
     Goal: '/goal',
+    Groups: '/groups',
     GoalDetail: '/goal/goal-detail/:id',
     Catalog: '/catalog',
     Report: '/report',
@@ -19,9 +20,10 @@ const routes={
     AuthCallBackGoogle: "/oauth2/callback/google",
     AuthCallBackFacebook: "/oauth2/callback/facebook",    
     // settings
+    Setting:'/Setting',
     Profile:'/profile',
     Wallet:'/wallet',
-    
+    GroupDetail: '/group-detail/:id',
     Checkemail:'/check-email',
     VerifyEmail:'/verify-email-token',
 

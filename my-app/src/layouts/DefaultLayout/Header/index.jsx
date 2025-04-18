@@ -1,4 +1,4 @@
-import { ChevronDown, ChevronUp, BellRing  } from "lucide-react";
+import { ChevronDown, ChevronUp, BellRing } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import useAuth from "@/context/useAuth";
@@ -10,41 +10,18 @@ const Header = () => {
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
-
   };
   const { isAuthenticated, logout } = useAuth();
   return (
-    <header className="flex justify-between items-center p-4  bg-[#ff6f61]">
+    <header className="flex justify-between items-center p-4  bg-white shadow">
       <div className=" font-bold">
-        <Link to="/" className="text-3xl">
-          $<span className="text-3xl text-[#16a085]">martmoney</span>
+        <Link to="/">
+          <h1 className="text-2xl font-bold text-purple-600">
+            $PhiPho Finance
+          </h1>
         </Link>
       </div>
       <nav className="flex items-center gap-8">
-        <Link
-          to="/"
-          className="text-base text-[#333] hover:text-[#f7d794] transition-colors"
-        >
-          Trang chủ
-        </Link>
-        <Link
-          to="/overview"
-          className="text-base text-[#333] hover:text-[#f7d794] transition-colors"
-        >
-          Giao dịch
-        </Link>
-        <Link
-          to=""
-          className="text-base text-[#333] hover:text-[#f7d794] transition-colors"
-        >
-          Giới thiệu
-        </Link>
-        <Link
-          to=""
-          className="text-base text-[#333] hover:text-[#f7d794] transition-colors"
-        >
-          Kết nối
-        </Link>
         {isAuthenticated() ? (
           <div>
             <div className="flex items-center space-x-4 cursor-pointer">
@@ -54,13 +31,14 @@ const Header = () => {
                 onMouseEnter={() => setIsShowNotifications(true)}
                 onMouseLeave={() => setIsShowNotifications(false)}
               >
-                <button className="relative  rounded-md text-[#333] mt-[10px] ">
-                  <BellRing  size={22} />
-                 
+                <button className="relative  rounded-md text-purple-500 mt-[10px] ">
+                  <BellRing size={22} />
                 </button>
                 {isShowNotifications && (
                   <div className="absolute right-0  w-64 bg-white  rounded-md shadow-lg transition-all duration-200">
-                    <NotificationDropdown onClose={() => setIsShowNotifications(false)}/>
+                    <NotificationDropdown
+                      onClose={() => setIsShowNotifications(false)}
+                    />
                   </div>
                 )}
               </div>
@@ -75,25 +53,21 @@ const Header = () => {
                     alt="Avatar"
                     className="w-8 h-8 rounded-full border"
                   />
-                  <span className="text-gray-800 font-medium">Xin chao</span>
-                  <span className="text-gray-500 text-sm">
+                  <span className="text-purple-500 font-medium">Hello</span>
+                  <span className="text-purple-500 text-sm">
                     {isDropdownOpen ? <ChevronUp /> : <ChevronDown />}
                   </span>
                 </div>
                 {isDropdownOpen && (
                   <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg border border-gray-200 z-50">
                     <ul className="py-2">
-                      <Link to="/profile">
-                        <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
-                          Cài đặt
-                        </li>
-                      </Link>
+                    
 
                       <li
                         className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
                         onClick={logout}
                       >
-                        Đăng xuất
+                        Log out
                       </li>
                     </ul>
                   </div>

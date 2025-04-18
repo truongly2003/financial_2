@@ -15,12 +15,12 @@ function VerifyEmail() {
   const [isProcessing, setIsProcessing] = useState(false);
   const handleVerifyEmail = async () => {
     if (!token) {
-      setMessage("Link xác nhận không hợp lệ");
+      setMessage("Invalid confirmation link");
       setIsError(true);
       return;
     }
 
-    setMessage("Đang xác nhận email...");
+    setMessage("Confirming email...");
     try {
       const response = await axios.get(
         `http://localhost:8080/api/email/verify-email?token=${token}`
@@ -47,21 +47,21 @@ function VerifyEmail() {
     <div className="min-h-screen flex items-center justify-center ">
       <div className="bg-white p-8 rounded-lg shadow-lg w-full sm:max-w-md">
         <h2 className="text-2xl font-semibold text-center text-gray-800 mb-4">
-          Xác Nhận Email
+        Confirm email
         </h2>
         <p
           className={`text-center text-lg ${
             isError ? "text-red-500" : "text-green-500"
           } mb-4`}
         >
-          {message || "Vui lòng nhấn nút dưới đây để xác nhận email của bạn."}
+          {message || "Please click the button below to confirm your email."}
         </p>
         {isCheck && (
           <button
             onClick={handleVerifyEmail}
             className="w-full py-2 bg-[#ff6f61] text-white rounded hover:bg-[#ff4a38] mb-4"
           >
-            Xác nhận email
+          Confirm email
           </button>
         )}
 
@@ -70,7 +70,7 @@ function VerifyEmail() {
             onClick={() => navigate("/signup")}
             className="w-full py-2 bg-[#ff6f61] text-white rounded hover:bg-[#ff4a38]"
           >
-            Quay lại đăng ký
+          Return to registration
           </button>
         )}
       </div>

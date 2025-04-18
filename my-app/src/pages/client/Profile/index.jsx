@@ -12,25 +12,25 @@ function DeleteAccountModal({ isOpen, onClose, onConfirm }) {
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div className="bg-white rounded-lg p-6 w-full max-w-md shadow-lg">
         <h2 className="text-xl font-bold text-gray-800 mb-4">
-          Xác nhận xóa tài khoản
+        Confirm account deletion
         </h2>
-        <p className="text-gray-600 mb-4">
-          Bạn có chắc chắn muốn xóa tài khoản không? Nếu xóa, toàn bộ dữ liệu
-          của bạn (bao gồm thông tin cá nhân, lịch sử hoạt động, v.v.) sẽ bị mất
-          hoàn toàn và không thể khôi phục.
+        <p className="text-gray-400 mb-4">
+        Are you sure you want to delete your account? If you do,
+         all of your data (including personal information, activity history, etc.)
+         will be lost and cannot be recovered.
         </p>
         <div className="flex justify-end gap-4">
           <button
             className="bg-gray-300 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-400 transition"
             onClick={onClose}
           >
-            Hủy
+           Cancel
           </button>
           <button
             className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition"
             onClick={onConfirm}
           >
-            Xóa tài khoản
+          Delete account
           </button>
         </div>
       </div>
@@ -45,7 +45,7 @@ DeleteAccountModal.propTypes = {
 function Profile() {
   const { userId } = useAuth();
   const { notify } = useNotification();
-  const navigate=useNavigate()
+  const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [user, setUser] = useState({
@@ -54,11 +54,11 @@ function Profile() {
     phoneNumber: "",
     createdAt: "",
   });
- 
+
   useEffect(() => {
     const fetchUser = async () => {
       const res = await getUserById(userId);
-     
+
       setUser({
         userName: res.userName || "",
         email: res.email || "",
@@ -82,105 +82,111 @@ function Profile() {
     }
   };
 
-  const confirmDeleteAccount = async() => {
+  const confirmDeleteAccount = async () => {
     try {
-         const response = await deleteUser(userId);
-         notify(response.message, response.code === 200 ? "success" : "error");
-         setIsDeleteModalOpen(false);
-         navigate("/login");
-         
-         localStorage.removeItem("accessToken");
-         localStorage.removeItem("refreshToken");
-         localStorage.removeItem("userId");
-         sessionStorage.removeItem("google_oauth_handled");
-         sessionStorage.removeItem("facebook_oauth_handled");
-       } catch (error) {
-         console.log(error);
-       }
+      const response = await deleteUser(userId);
+      notify(response.message, response.code === 200 ? "success" : "error");
+      setIsDeleteModalOpen(false);
+      navigate("/login");
+
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("refreshToken");
+      localStorage.removeItem("userId");
+      sessionStorage.removeItem("google_oauth_handled");
+      sessionStorage.removeItem("facebook_oauth_handled");
+    } catch (error) {
+      console.log(error);
+    }
   };
-  
 
   return (
-    <div className="min-h-screen p-6 bg-gray-50">
-      <h1 className="text-2xl font-bold text-gray-800 mb-6">
-        Thông tin người dùng
-      </h1>
+    <div className="">
+      <div className=" ">
+        <div>
+          <label className="block text-sm  text-gray-400 mb-1">
+            {" "}
+            Name
+          </label>
+          <input
+            type="text"
+            name="userName"
+            value={user.userName}
+            onChange={handleChange}
+            className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:border-purple-600"
+          />
+        </div>
+        <div className="mt-2">
+          <label className="block text-sm  text-gray-400 mb-1">
+            Email Address
+          </label>
+          <input
+            type="email"
+            name="email"
+            value={user.email}
+            onChange={handleChange}
+            className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:border-purple-600"
+          />
+        </div>
+        <div className="mt-2">
+          <label className="block text-sm  text-gray-400 mb-1">
+            Phone Number
+          </label>
+          <input
+            type="tel"
+            name="phoneNumber"
+            value={user.phoneNumber}
+            onChange={handleChange}
+            className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:border-purple-600"
+          />
+        </div>
+        <div className="mt-2">
+          <label className="block text-sm  text-gray-400 mb-1">
+            Create at
+          </label>
+          <input
+            type="tel"
+            value={new Date(user.createdAt).toLocaleDateString("vi-VN")}
+            disabled
+            onChange={handleChange}
+            className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:border-purple-600"
+          />
+        </div>
 
-      <div className="max-w-2xl mx-auto bg-white shadow-md rounded-lg p-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div>
-            <label className="block text-sm font-medium text-gray-600">
-              Tên người dùng
-            </label>
-            <input
-              type="text"
-              name="userName"
-              value={user.userName}
-              onChange={handleChange}
-              className="w-full p-2 mt-1 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-600">
-              Email
-            </label>
-            <input
-              type="email"
-              name="email"
-              value={user.email}
-              onChange={handleChange}
-              className="w-full p-2 mt-1 border rounded-lg bg-gray-100 cursor-not-allowed"
-              disabled
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-600">
-              Số điện thoại
-            </label>
-            <input
-              type="text"
-              name="phoneNumber"
-              value={user.phoneNumber}
-              onChange={handleChange}
-              className="w-full p-2 mt-1 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-600">
-              Ngày tạo
-            </label>
-            <input
-              type="text"
-              value={new Date(user.createdAt).toLocaleDateString("vi-VN")}
-              disabled
-              className="w-full p-2 mt-1 border rounded-lg bg-gray-100 cursor-not-allowed"
-            />
-          </div>
+        <div className="mt-2">
+          <label className="block text-sm  text-gray-400 mb-1">
+            Language
+          </label>
+          <select
+            name="language"
+            // value={user.language}
+            // onChange={handleChange}
+            className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:border-purple-600"
+          >
+            <option value="English">English</option>
+            <option value="Vietnamese">Vietnamese</option>
+          </select>
         </div>
 
         <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-between">
           <div className="flex gap-4">
             <button
-              className="bg-green-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-green-600 transition"
+              className="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700"
               onClick={handleSubmit}
             >
-              Lưu
+              Save Change
             </button>
             <button
-              className="bg-blue-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-blue-600 transition"
+              className="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700"
               onClick={() => setIsModalOpen(true)}
             >
-              Đổi mật khẩu
+              Change PassWord
             </button>
           </div>
           <button
             className="bg-red-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-red-600 transition"
-            onClick={()=>setIsDeleteModalOpen(true)}
+            onClick={() => setIsDeleteModalOpen(true)}
           >
-            Xóa tài khoản
+            Delete Account
           </button>
         </div>
       </div>
@@ -188,7 +194,6 @@ function Profile() {
       <PasswordModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-       
       />
 
       <DeleteAccountModal

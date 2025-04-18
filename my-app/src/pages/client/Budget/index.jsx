@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { PlusCircle } from "lucide-react";
-// import BudgetForm from "@/components/BudgetForm";
+
 import { getAllBudgetByUserId } from "@/services/BudgetService";
 import { Link } from "react-router-dom";
 import ProgressBar from "@/components/ProgressBar";
@@ -36,96 +35,113 @@ export default function Budget() {
   useEffect(() => {
     fetchBudgets();
   }, [fetchBudgets]);
+
+  const getDaysRemaining = (startDate, endDate) => {
+    // const start = new Date(startDate);
+    const end = new Date(endDate);
+    const today = new Date();
+    if (today > end) return 0;
+    const diffTime = end - today;
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return diffDays;
+  };
   return (
-    <div className="min-h-screen ">
-      <button
-        onClick={() => {
-          setShowFormBudget(true);
-        }}
-        className="w-[180px] flex items-center gap-2 px-4 py-2 text-white bg-[#ff6f61] rounded-lg shadow "
-      >
-        <PlusCircle size={20} />
-        <span>Thêm ngân sách</span>
-      </button>
-      <div className=" bg-[#f9e4d4] shadow-md rounded-lg mt-2  p-4">
-        <div className="flex justify-between items-center">
-          <h2 className="text-lg font-semibold">Lọc</h2>
-        </div>
-        <div className="grid grid-cols-3 gap-4  ">
-          <div className="col-span-1 ">
-            <label className="text-sm text-gray-600">Trạng thái</label>
-            <select
-              value={statusFilter}
-              onChange={handleStatusChange}
-              className=" border rounded p-2 w-full "
+    <div className="p-6 bg-gray-100">
+      <div className="bg-white rounded-lg shadow-md p-6 border border-gray-200">
+        <div className=" ">
+          <div className="flex justify-between items-center mb-6">
+            <h2 className="text-xl font-semibold text-purple-600">Budgets</h2>
+            <button
+              className="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700"
+              onClick={() => {
+                setShowFormBudget(true);
+              }}
             >
-              <option value="active">Đang hoạt động</option>
-              <option value="expired">Hết hạn</option>
-              <option value="overlimit">Vượt mức</option>
-            </select>
+              Create New Budget
+            </button>
           </div>
-          <div className="col-span-1"></div>
+          <div className=" border bg-white  shadow-sm rounded-lg p-6 ">
+            <div className="flex justify-between items-center">
+              <h2 className="text-lg font-semibold">Filter</h2>
+            </div>
+            <div className="grid grid-cols-3 gap-4  ">
+              <div className="col-span-1 ">
+                <label className="text-sm text-gray-600">Status</label>
+                <select
+                  value={statusFilter}
+                  onChange={handleStatusChange}
+                  className=" border rounded p-2 w-full "
+                >
+                  <option value="active">Active</option>
+                  <option value="expired"> expired</option>
+                  <option value="overlimit">over limit</option>
+                </select>
+              </div>
+              <div className="col-span-1"></div>
+            </div>
+          </div>
+          <div className="mt-6">
+            {filteredBudgets.length === 0 ? (
+              <div className="text-center py-8 bg-gray-50 rounded-xl mt-2">
+                <p className="text-gray-500">No budget yet</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-4 ">
+                {filteredBudgets.map((budget, index) => {
+                  const progress =
+                    (budget.totalSpent / budget.amountLimit) * 100;
+                  const progressColor =
+                    budget.totalSpent >= budget.amountLimit
+                      ? "bg-red-500"
+                      : "bg-purple-500";
+                  const daysRemaining = getDaysRemaining(
+                    budget.startDate,
+                    budget.endDate
+                  );
+                  return (
+                    <Link
+                      key={index}
+                      className="bg-white shadow-md rounded-lg p-4 cursor-pointer border hover:border-purple-300"
+                      to={`/budget/budget-detail/${budget.id}`}
+                    >
+                      <div className="space-y-2">
+                        <div className="flex items-center mb-4">
+                          <h3 className="text-lg font-semibold text-purple-600">
+                            {budget.budgetName}
+                          </h3>
+                        </div>
+                        <div>
+                          <p className="text-gray-600 mb-2">
+                            Spent: {budget.totalSpent.toLocaleString()} đ /{" "}
+                            {budget.amountLimit.toLocaleString()} đ
+                          </p>
+                        </div>
+                        {/* progress */}
+                        <ProgressBar
+                          progress={progress}
+                          progressColor={progressColor}
+                          startDate={budget.startDate}
+                          endDate={budget.endDate}
+                        />
+                      </div>
+                      <p className="text-gray-500">
+                        {daysRemaining} days remaining
+                      </p>
+                    </Link>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+
+          {showFormBudget && (
+            <BudgetForm
+              onClose={() => setShowFormBudget(false)}
+              onSuccess={fetchBudgets}
+            />
+          )}
         </div>
       </div>
-      <div className="mt-6">
-        <h3 className=" font-normal text-gray-700 mb-4">
-          Ngân sách
-        </h3>
-        {filteredBudgets.length === 0 ? (
-          <div className="text-center py-8 bg-gray-50 rounded-xl mt-2">
-            <p className="text-gray-500">Chưa có ngân sách nào</p>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-4">
-            {filteredBudgets.map((budget, index) => {
-              const progress = (budget.totalSpent / budget.amountLimit) * 100;
-              const progressColor =
-                budget.totalSpent >= budget.amountLimit
-                  ? "bg-red-500"
-                  : "bg-green-500";
-
-              return (
-                <Link
-                  key={index}
-                  className="bg-[#f9e4d4] shadow-md rounded-lg p-4 cursor-pointer"
-                  to={`/budget/budget-detail/${budget.id}`}
-                >
-                  <div className="space-y-2">
-                    <div>
-                      <p className="text-gray-500 text-xl font-bold">
-                        {budget.budgetName}
-                      </p>
-                      <p className="text-gray-500 text-sm">
-                        {budget.walletName}
-                      </p>
-                      <p className="text-xl font-bold text-red-500">
-                        Đã chi tiêu: {budget.totalSpent.toLocaleString()} đ
-                      </p>
-                      <p className="text-sm text-gray-900">
-                        Từ {budget.amountLimit.toLocaleString()} đ
-                      </p>
-                    </div>
-                    {/* progress */}
-                    <ProgressBar
-                      progress={progress}
-                      progressColor={progressColor}
-                      startDate={budget.startDate}
-                      endDate={budget.endDate}
-                    />
-                  </div>
-                </Link>
-              );
-            })}
-          </div>
-        )}
-      </div>
-
-      {showFormBudget && (
-        <BudgetForm
-          onClose={() => setShowFormBudget(false)}
-          onSuccess={fetchBudgets}
-        />
-      )}
     </div>
   );
 }

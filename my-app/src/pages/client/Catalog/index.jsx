@@ -30,9 +30,23 @@ function Catalog() {
 
   return (
     <div className="min-h-screen">
-      <h1>Danh mục tài chính</h1>
-      <div className="bg-gray-100 shadow-md  mx-4 mt-4 p-4">
+     
+      <div className="">
         {/* Tab Navigation */}
+        <div className="flex justify-between items-center mb-6">
+            <h2 className="text-xl font-semibold text-purple-600">
+              My Categories
+            </h2>
+            <button
+              className="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700"
+              onClick={() => {
+                setShowFormCategory(true);
+                setEditingCategory(null);
+              }}
+            >
+              Create New Category
+            </button>
+          </div>
         <div className="flex border-b mb-4 justify-between">
           <div>
             <button
@@ -43,7 +57,7 @@ function Catalog() {
               }`}
               onClick={() => setActiveTab("expense")}
             >
-              Chi tiêu
+              Expense
             </button>
             <button
               className={`px-4 py-2 font-semibold ${
@@ -53,27 +67,19 @@ function Catalog() {
               }`}
               onClick={() => setActiveTab("income")}
             >
-              Thu nhập
+              Income
             </button>
           </div>
-          <button
-            className="bg-white text-black font-semibold py-2 px-3 rounded-sm "
-            onClick={() => {
-              setShowFormCategory(true);
-              setEditingCategory(null);
-            }}
-          >
-            Thêm danh mục
-          </button>
+       
         </div>
 
         {/* Content */}
         {filteredCategories.length === 0 ? (
           <p className="text-gray-500">
             {categories.length === 0
-              ? "Đang tải dữ liệu..."
-              : `Không có danh mục ${
-                  activeTab === "income" ? "thu nhập" : "chi tiêu"
+              ? "Loading..."
+              : `No Category ${
+                  activeTab === "Income" ? "Income" : "Expense"
                 }`}
           </p>
         ) : (
@@ -86,7 +92,7 @@ function Catalog() {
               return (
                 <div
                   key={category.id}
-                  className="bg-white p-4 rounded-lg shadow hover:shadow-lg transition-shadow"
+                  className="bg-white p-4 border rounded-lg shadow hover:shadow-lg transition-shadow"
                 >
                   <div className="flex items-center space-x-3">
                     <div
@@ -109,13 +115,13 @@ function Catalog() {
                     </div>
                     <div>
                       <button
-                        className="ms-6 rounded w-[80px] px-2 py-1 text-black bg-gradient-to-r bg-[#f9e4d4]  shadow-md hover:shadow-lg transition-all duration-300 ease-in-out"
+                        className="ms-6 rounded w-[80px] px-2 py-1 text-black bg-gradient-to-r bg-purple-500  shadow-md hover:shadow-lg transition-all duration-300 ease-in-out"
                         onClick={() => {
                           setShowFormCategory(true);
                           setEditingCategory(category);
                         }}
                       >
-                        Chi tiết
+                        Detail
                       </button>
                     </div>
                   </div>
@@ -128,8 +134,8 @@ function Catalog() {
                       }`}
                     >
                       {category.categoryType === "income"
-                        ? "Thu nhập"
-                        : "Chi tiêu"}
+                        ? "Income"
+                        : "Expense"}
                     </span>
                     <span
                       className={`text-xs px-2 py-1 rounded-full  inline-block
@@ -140,7 +146,7 @@ function Catalog() {
                         }
                       `}
                     >
-                      {category.defaultCategory === true ? "Mặc định" : ""}
+                      {category.defaultCategory === true ? "Default" : ""}
                     </span>
                   </div>
                 </div>

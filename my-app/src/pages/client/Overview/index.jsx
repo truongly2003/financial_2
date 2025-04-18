@@ -45,7 +45,7 @@ Card.propTypes = {
 };
 const Overview = () => {
   const { userId } = useAuth();
-  const {walletId} =useWallet()
+  const { walletId } = useWallet();
   const [balance, setBalance] = useState({
     totalBalance: 0,
     totalIncome: 0,
@@ -55,7 +55,7 @@ const Overview = () => {
   const [filter, setFilter] = useState("month");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
- 
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -96,15 +96,21 @@ const Overview = () => {
           }
         }
 
-        const transactionResponse = await getAllTransactionsByUserIdAndFilterRange(userId, start, end,walletId);
-      
+        const transactionResponse =
+          await getAllTransactionsByUserIdAndFilterRange(
+            userId,
+            start,
+            end,
+            walletId
+          );
+
         setTransactions(transactionResponse.data || []);
       } catch (error) {
         console.error(error);
       }
     };
     fetchData();
-  }, [userId, filter, startDate, endDate,walletId]);
+  }, [userId, filter, startDate, endDate, walletId]);
 
   const getChartData = () => {
     let groupByKey;
@@ -169,12 +175,12 @@ const Overview = () => {
       labels,
       datasets: [
         {
-          label: "Thu nhập",
+          label: "Income",
           data: incomeData,
           backgroundColor: "#4caf50",
         },
         {
-          label: "Chi tiêu",
+          label: "Expense",
           data: expenseData,
           backgroundColor: "#f44336",
         },
@@ -223,171 +229,188 @@ const Overview = () => {
   const { incomeExpenseData, categoryData, filteredTotals } = getChartData();
 
   return (
-    <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
-      <div className="flex space-x-4 p-4 bg-gray-100">
-        <div className="bg-[#ff6f61] shadow-md rounded-lg p-4 w-64 text-center">
-          <p className="text-white">Tổng số dư</p>
-          <p className="text-white text-xl font-semibold">
-            {balance.totalBalance.toLocaleString()}đ
-          </p>
+    <div className="p-6 bg-gray-100">
+      <div className="bg-white rounded-lg shadow-md p-6 border border-gray-200">
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-xl font-semibold text-purple-600">Overview</h2>
+          <button className="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700">
+            cry huh huh
+          </button>
         </div>
-        <div className="bg-[#ff6f61] shadow-md rounded-lg p-4 w-64 text-center">
-          <p className="text-white">Tổng chi tiêu</p>
-          <p className="text-yellow-300 text-xl font-semibold">
-            - {balance.totalExpense.toLocaleString()}đ
-          </p>
-        </div>
-        <div className="bg-[#ff6f61] shadow-md rounded-lg p-4 w-64 text-center">
-          <p className="text-white">Tổng thu nhập</p>
-          <p className="text-green-300 text-xl font-semibold">
-            +{balance.totalIncome.toLocaleString()}đ
-          </p>
+        <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6 mt-4">
+            {[
+              { title: "Total Balance", value: balance.totalBalance },
+              { title: "Total Expense", value: balance.totalExpense },
+              { title: "Total Income", value: balance.totalIncome },
+            ].map((item, index) => (
+              <div
+                key={index}
+                className="bg-purple-50 rounded-lg p-4 border border-purple-200 text-center"
+              >
+                <h3 className="text-sm font-medium text-gray-600 mb-2">
+                  {item.title}
+                </h3>
+                <p
+                  className={`text-lg font-semibold ${
+                    item.title === "Total Income"
+                      ? "text-green-600"
+                      : item.title === "Total Expense"
+                      ? "text-red-600"
+                      : "text-purple-600"
+                  }`}
+                >
+                  {item.value.toLocaleString()}đ
+                </p>
+              </div>
+            ))}
+          </div>
+
+          <div className="grid grid-cols-3 gap-4 p-4">
+            <div className="col-span-1">
+              <label className="text-sm text-gray-600">To time line</label>
+              <select
+                className="border rounded p-2 w-full"
+                value={filter}
+                onChange={(e) => {
+                  setFilter(e.target.value);
+                  setStartDate("");
+                  setEndDate("");
+                }}
+              >
+                <option value="day">Day</option>
+                <option value="week">Week</option>
+                <option value="month">Month</option>
+                <option value="year">Year</option>
+              </select>
+            </div>
+            <div className="col-span-2">
+              <label className="text-sm text-gray-600">To time period</label>
+              <div className="flex gap-4 items-center">
+                <Input
+                  type="date"
+                  value={startDate}
+                  onChange={(e) => {
+                    setStartDate(e.target.value);
+                    setFilter("");
+                  }}
+                />
+                <Input
+                  type="date"
+                  value={endDate}
+                  onChange={(e) => {
+                    setEndDate(e.target.value);
+                    setFilter("");
+                  }}
+                />
+              </div>
+            </div>
+          </div>
+
+          <Card title="Income & Expenditure Statistics">
+            <h2 className="text-2xl font-bold text-gray-800">
+              Income & Expense
+            </h2>
+            <div className="p-4">
+              <p className="text-green-600 font-semibold">
+                Income: {filteredTotals.income.toLocaleString()}đ
+              </p>
+              <p className="text-red-600 font-semibold">
+                Expense: {filteredTotals.expense.toLocaleString()}đ
+              </p>
+            </div>
+            <div style={{ maxWidth: "1000px", margin: "0 auto" }}>
+              <Bar
+                data={incomeExpenseData}
+                options={{
+                  responsive: true,
+                  plugins: {
+                    legend: { position: "top" },
+                    tooltip: {
+                      callbacks: {
+                        label: (context) =>
+                          `${
+                            context.dataset.label
+                          }: ${context.parsed.y.toLocaleString()}đ`,
+                      },
+                    },
+                  },
+                  scales: {
+                    y: {
+                      beginAtZero: true,
+                      title: {
+                        display: true,
+                        text: "Amount (VNĐ)",
+                      },
+                      ticks: {
+                        callback: (value) => value.toLocaleString(),
+                      },
+                    },
+                    x: {
+                      title: {
+                        display: true,
+                        text:
+                          filter === "year"
+                            ? "Year"
+                            : filter === "month"
+                            ? "Month"
+                            : filter === "week"
+                            ? "Week"
+                            : "Day",
+                      },
+                    },
+                  },
+                }}
+              />
+            </div>
+          </Card>
+
+          <Card className="p-6 bg-white rounded-xl shadow-lg">
+            <h2 className="text-2xl font-bold text-gray-800 mb-6">
+              Spending By Category
+            </h2>
+            <div className="flex flex-wrap items-center gap-6">
+              {/* Pie Chart Container */}
+              <div className="w-[300px] flex-shrink-0">
+                <Pie
+                  data={categoryData}
+                  options={{ responsive: true }}
+                  className="w-full h-full"
+                />
+              </div>
+
+              {/* Transaction List */}
+              <div className="flex-1 min-w-[300px]">
+                <h3 className="text-xl font-semibold text-gray-700 mb-4">
+                  List Transaction
+                </h3>
+                <ul className="max-h-[300px] overflow-y-auto space-y-3 pr-2">
+                  {transactions
+                    .filter((t) => t.categoryType === "expense")
+                    .map((t, index) => (
+                      <li
+                        key={index}
+                        className="pb-3 border-b border-gray-200 last:border-b-0 flex justify-between items-center"
+                      >
+                        <div>
+                          <strong className="text-gray-800">
+                            {t.categoryName}:
+                          </strong>
+                          <span className="ml-2 text-gray-600">
+                            {t.amount.toLocaleString()}đ
+                          </span>
+                        </div>
+                        <span className="text-sm text-gray-500">
+                          {t.transactionDate}
+                        </span>
+                      </li>
+                    ))}
+                </ul>
+              </div>
+            </div>
+          </Card>
         </div>
       </div>
-
-      <div className="grid grid-cols-3 gap-4 p-4">
-        <div className="col-span-1">
-          <label className="text-sm text-gray-600">Theo mốc thời gian</label>
-          <select
-            className="border rounded p-2 w-full"
-            value={filter}
-            onChange={(e) => {
-              setFilter(e.target.value);
-              setStartDate("");
-              setEndDate("");
-            }}
-          >
-            <option value="day">Ngày</option>
-            <option value="week">Tuần</option>
-            <option value="month">Tháng</option>
-            <option value="year">Năm</option>
-          </select>
-        </div>
-        <div className="col-span-2">
-          <label className="text-sm text-gray-600">Theo khoảng thời gian</label>
-          <div className="flex gap-4 items-center">
-            <Input
-              type="date"
-              value={startDate}
-              onChange={(e) => {
-                setStartDate(e.target.value);
-                setFilter("");
-              }}
-            />
-            <Input
-              type="date"
-              value={endDate}
-              onChange={(e) => {
-                setEndDate(e.target.value);
-                setFilter("");
-              }}
-            />
-          </div>
-        </div>
-      </div>
-
-      <Card title="Thống Kê Thu & Chi">
-        <h2 className="text-2xl font-bold text-gray-800">
-          Thu nhập và chi tiêu
-        </h2>
-        <div className="p-4">
-          <p className="text-green-600 font-semibold">
-            Thu nhập: {filteredTotals.income.toLocaleString()}đ
-          </p>
-          <p className="text-red-600 font-semibold">
-            Chi tiêu: {filteredTotals.expense.toLocaleString()}đ
-          </p>
-        </div>
-        <div style={{ maxWidth: "1000px", margin: "0 auto" }}>
-          <Bar
-            data={incomeExpenseData}
-            options={{
-              responsive: true,
-              plugins: {
-                legend: { position: "top" },
-                tooltip: {
-                  callbacks: {
-                    label: (context) =>
-                      `${
-                        context.dataset.label
-                      }: ${context.parsed.y.toLocaleString()}đ`,
-                  },
-                },
-              },
-              scales: {
-                y: {
-                  beginAtZero: true,
-                  title: {
-                    display: true,
-                    text: "Số tiền (VNĐ)",
-                  },
-                  ticks: {
-                    callback: (value) => value.toLocaleString(),
-                  },
-                },
-                x: {
-                  title: {
-                    display: true,
-                    text:
-                      filter === "year"
-                        ? "Năm"
-                        : filter === "month"
-                        ? "Tháng"
-                        : filter === "week"
-                        ? "Tuần"
-                        : "Ngày",
-                  },
-                },
-              },
-            }}
-          />
-        </div>
-      </Card>
-
-      <Card className="p-6 bg-white rounded-xl shadow-lg">
-        <h2 className="text-2xl font-bold text-gray-800 mb-6">
-          Chi Tiêu Theo Danh Mục
-        </h2>
-        <div className="flex flex-wrap items-center gap-6">
-          {/* Pie Chart Container */}
-          <div className="w-[300px] flex-shrink-0">
-            <Pie
-              data={categoryData}
-              options={{ responsive: true }}
-              className="w-full h-full"
-            />
-          </div>
-
-          {/* Transaction List */}
-          <div className="flex-1 min-w-[300px]">
-            <h3 className="text-xl font-semibold text-gray-700 mb-4">
-              Danh sách giao dịch
-            </h3>
-            <ul className="max-h-[300px] overflow-y-auto space-y-3 pr-2">
-              {transactions
-                .filter((t) => t.categoryType === "expense")
-                .map((t, index) => (
-                  <li
-                    key={index}
-                    className="pb-3 border-b border-gray-200 last:border-b-0 flex justify-between items-center"
-                  >
-                    <div>
-                      <strong className="text-gray-800">
-                        {t.categoryName}:
-                      </strong>
-                      <span className="ml-2 text-gray-600">
-                        {t.amount.toLocaleString()}đ
-                      </span>
-                    </div>
-                    <span className="text-sm text-gray-500">
-                      {t.transactionDate}
-                    </span>
-                  </li>
-                ))}
-            </ul>
-          </div>
-        </div>
-      </Card>
     </div>
   );
 };

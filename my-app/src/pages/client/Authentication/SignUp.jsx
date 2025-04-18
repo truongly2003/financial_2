@@ -28,7 +28,7 @@ function SignUp() {
 
   const handleSubmit = async () => {
     if (formData.password !== formData.confirmPassword) {
-      notify("Nhập lại mật khẩu không đúng", "error");
+      notify("Re-enter incorrect password", "error");
       return;
     }
     setIsProcessing(true);
@@ -49,14 +49,14 @@ function SignUp() {
   };
 
   return (
-    <div className="flex h-screen items-center justify-center bg-[#f9e4d4]">
-      <div className="w-full max-w-md bg-[#ff6f61] p-6 rounded-lg shadow-md">
-        <h2 className="text-center text-2xl font-semibold mb-4">Đăng Ký</h2>
+    <div className="flex h-screen items-center justify-center bg-gray-100">
+      <div className="w-full max-w-md bg-white border p-6 rounded-lg shadow-md">
+        <h2 className="text-center text-2xl font-semibold mb-4">Sign Up</h2>
 
         <div className="">
           <div className="mb-3">
-            <div className="flex items-center border border-white rounded p-2 bg-[#fff5f0]">
-              <Email className="text-[#ff6f61]" />
+            <div className="flex items-center border border-purple-500 rounded p-2 ">
+              <Email className="text-purple-500" />
               <input
                 name="email"
                 type="email"
@@ -70,13 +70,13 @@ function SignUp() {
           </div>
 
           <div className="mb-3">
-            <div className="flex items-center border border-white rounded p-2 bg-[#fff5f0]">
-              <GppMaybeIcon className="text-[#ff6f61]" />
+            <div className="flex items-center border border-purple-500 rounded p-2 ">
+              <GppMaybeIcon className="text-purple-500" />
               <input
                 name="password"
                 type="password"
                 className="ml-2 w-full outline-none bg-transparent text-dark placeholder-slate-900"
-                placeholder="Nhập mật khẩu"
+                placeholder="Password"
                 required
                 value={formData.password}
                 onChange={handleChange}
@@ -85,13 +85,13 @@ function SignUp() {
           </div>
 
           <div className="mb-3">
-            <div className="flex items-center border border-white rounded p-2 bg-[#fff5f0]">
-              <GppMaybeIcon className="text-[#ff6f61]" />
+            <div className="flex items-center border border-purple-500 rounded p-2 ">
+              <GppMaybeIcon className="text-purple-500" />
               <input
                 name="confirmPassword"
                 type="password"
                 className="ml-2 w-full outline-none bg-transparent text-dark placeholder-slate-900"
-                placeholder="Nhập lại mật khẩu"
+                placeholder="Confirm password"
                 required
                 value={formData.confirmPassword}
                 onChange={handleChange}
@@ -102,45 +102,45 @@ function SignUp() {
           <div className="flex items-center">
             <input type="checkbox" id="terms" className="mr-2" />
             <label htmlFor="terms" className="text-sm">
-              Tôi đồng ý với các điều khoản
+            I agree to the terms
             </label>
           </div>
 
           <button
-            className="w-full bg-[#fff5f0] text-black py-2 rounded-lg hover:bg-white mt-2"
+            className="mt-4 w-full bg-purple-500 text-black py-2 rounded font-semibold"
             onClick={handleSubmit}
           
           >
-             Đăng ký
+            Sign Up
           </button>
         </div>
 
         <div className="flex items-center my-4">
           <hr className="flex-grow border-gray-300" />
-          <span className="px-3 text-gray-800">Hoặc đăng nhập với</span>
+          <span className="px-3 text-gray-800">Or Login with</span>
           <hr className="flex-grow border-gray-300" />
         </div>
 
         <div className="flex justify-center space-x-3">
-          <button className="p-2 bg-white text-[#ff6f61] rounded hover:bg-[#f9e4d4]">
-            <Google />
+          <button className="p-2 bg-white  rounded border">
+            <Google className="text-purple-500"/>
           </button>
-          <button className="p-2 bg-white text-[#ff6f61] rounded hover:bg-[#f9e4d4]">
-            <Facebook />
+          <button className="p-2 bg-white  rounded border">
+            <Facebook className="text-purple-500"/>
           </button>
-          <button className="p-2 bg-white text-[#ff6f61] rounded hover:bg-[#f9e4d4]">
-            <Twitter />
+          <button className="p-2 bg-white  rounded border">
+            <Twitter className="text-purple-500"/>
           </button>
-          <button className="p-2 bg-white text-[#ff6f61] rounded hover:bg-[#f9e4d4]">
-            <LinkedIn />
+          <button className="p-2 bg-white  rounded border">
+            <LinkedIn className="text-purple-500" />
           </button>
         </div>
 
         <div className="text-center mt-4">
           <span className="text-sm">
-            Bạn đã có tài khoản?{" "}
+            You already have a account?{" "}
             <Link to="/login" className="text-gray-500 hover:underline">
-              Đăng nhập ngay
+              Login now
             </Link>
           </span>
         </div>
